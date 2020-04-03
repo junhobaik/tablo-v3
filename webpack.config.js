@@ -30,10 +30,10 @@ if (fileSystem.existsSync(secretsPath)) {
 const options = {
   mode: process.env.NODE_ENV || "development",
   entry: {
-    index: path.join(__dirname, "src", "pages", "index.js"),
-    popup: path.join(__dirname, "src", "pages", "popup.js"),
-    options: path.join(__dirname, "src", "pages", "options.js"),
-    background: path.join(__dirname, "src", "pages", "background.js"),
+    index: path.join(__dirname, "src", "pages", "index.tsx"),
+    popup: path.join(__dirname, "src", "pages", "popup.tsx"),
+    options: path.join(__dirname, "src", "pages", "options.tsx"),
+    background: path.join(__dirname, "src", "pages", "background.ts"),
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -75,13 +75,22 @@ const options = {
         loader: "babel-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader",
+          },
+        ],
+      },
     ],
   },
   resolve: {
     alias: alias,
     extensions: fileExtensions
       .map(extension => "." + extension)
-      .concat([".jsx", ".js", ".css"]),
+      .concat([".ts", ".tsx", ".jsx", ".js", ".css"]),
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -125,7 +134,8 @@ const options = {
 };
 
 if (env.NODE_ENV === "development") {
-  options.devtool = "cheap-module-eval-source-map";
+  // options.devtool = "cheap-module-eval-source-map";
+  options.devtool = "source-map";
 }
 
 module.exports = options;
