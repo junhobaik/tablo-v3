@@ -6,6 +6,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin").CleanWebpackPlugin;
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const alias = {};
 const secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
@@ -43,22 +44,11 @@ const options = {
     rules: [
       {
         test: /\.scss/,
-        use: [
-          {
-            loader: "style-loader",
-          },
-          {
-            loader: "css-loader",
-            options: {
-              sourceMap: true,
-            },
-          },
-        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
         test: /\.css$/,
-        loader: "style-loader!css-loader",
-        exclude: /node_modules/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
         test: new RegExp(".(" + fileExtensions.join("|") + ")$"),
@@ -89,16 +79,17 @@ const options = {
   resolve: {
     alias: alias,
     extensions: fileExtensions
-      .map(extension => "." + extension)
-      .concat([".ts", ".tsx", ".jsx", ".js", ".css"]),
+      .map((extension) => "." + extension)
+      .concat([".ts", ".tsx", ".jsx", ".js", ".css", ".scss"]),
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     new CleanWebpackPlugin(),
     new webpack.EnvironmentPlugin(["NODE_ENV"]),
     new CopyWebpackPlugin([
       {
         from: "src/manifest.json",
-        transform: function(content, path) {
+        transform: function (content, path) {
           return Buffer.from(
             JSON.stringify({
               description: process.env.npm_package_description,
