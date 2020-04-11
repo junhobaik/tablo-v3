@@ -8,8 +8,11 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const alias = {};
 const secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
+
+const alias = {
+  "react-dom": "@hot-loader/react-dom",
+};
 
 const fileExtensions = [
   "jpg",
