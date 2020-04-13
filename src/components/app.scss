@@ -35,10 +35,15 @@ body {
         }
       }
     }
-    // 화면에 tab과 feed가 모두 활성화 되어있을때 가운데 라인을 위한 코드
+
+    & > :nth-child(1) {
+      & > div {
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+      }
+    }
     & > :nth-child(2) {
       & > div {
-        border-left: 1px solid black;
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
       }
     }
   }

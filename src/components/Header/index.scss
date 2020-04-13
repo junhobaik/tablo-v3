@@ -3,5 +3,13 @@
 #Header {
   height: $header-height;
   z-index: 2;
-  border-bottom: 1px solid black;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  box-shadow: 0 0.1rem 1rem rgba(180, 180, 200, 0.2);
+  h1 {
+    font-size: 1rem;
+  }
 }
