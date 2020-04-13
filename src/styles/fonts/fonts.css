@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "NotoSansKR";
+  font-weight: 100;
+  src: url(./NotoSansKR-Thin.otf);
+}
+@font-face {
+  font-family: "NotoSansKR";
+  font-weight: 300;
+  src: url(./NotoSansKR-Light.otf);
+}
+@font-face {
+  font-family: "NotoSansKR";
+  font-weight: 400;
+  src: url(./NotoSansKR-Regular.otf);
+}
+@font-face {
+  font-family: "NotoSansKR";
+  font-weight: 500;
+  src: url(./NotoSansKR-Medium.otf);
+}
+@font-face {
+  font-family: "NotoSansKR";
+  font-weight: 700;
+  src: url(./NotoSansKR-Bold.otf);
+}
+@font-face {
+  font-family: "NotoSansKR";
+  font-weight: 900;
+  src: url(./NotoSansKR-Black.otf);
+}

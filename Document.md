@@ -1,5 +1,11 @@
 # Development Document
 
+## Todo
+
+- 폰트 적용
+
+## Log
+
 - npm, git init
 - webpack, react 기반의 HMR이 가능한 보일러플레이트를 가져옴
 - 가져온 보일러 플레이트를 수정
@@ -13,3 +19,4 @@
 - HMR 관련 Warning 'react-🔥-dom patch is not detected. React 16.6+ features may not work.' 해결 (https://github.com/gaearon/react-hot-loader/issues/1227)
 - redux에 연결한 reducer가 없어 생기는 오류 해결을 위해 tab 관련 add tab 추가
 - Header, Feeds, Tabs 세 컴포넌트의 기본 화면의 위치 구현, 위 아래(아래의 좌우), 스크롤 관련 스타일 정의
+- Theme-ui 설치 미 적용

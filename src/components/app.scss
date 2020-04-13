@@ -5,6 +5,7 @@ body {
   margin: 0;
   padding: 0;
   overscroll-behavior-y: none;
+  font-family: "NotoSansKR";
 }
 
 #App {
@@ -28,11 +29,16 @@ body {
         margin-top: $header-height;
         flex-grow: 1;
         overflow: scroll;
+        &::-webkit-scrollbar {
+          display: none;
+        }
       }
     }
     // 화면에 tab과 feed가 모두 활성화 되어있을때 가운데 라인을 위한 코드
     & > :nth-child(2) {
-      border-left: 1px solid red;
+      & > div {
+        border-left: 1px solid black;
+      }
     }
   }
 }
