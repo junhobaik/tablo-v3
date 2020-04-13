@@ -1,5 +1,8 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
+import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+
 import { actionCreators } from "../../modules/global/actions";
 import { RootState } from "../../modules";
 import "./index.scss";
@@ -20,9 +23,18 @@ const Feeds = () => {
     <div id="Feeds">
       <div className="feeds-header content-header">
         <button onClick={openFeedsSetting}>
-          {windowStatus === "default"
-            ? "Open Feeds Setting"
-            : "Close Feeds Setting"}
+          {windowStatus === "default" ? (
+            <>
+              {" "}
+              <Fa icon={faAngleLeft} />
+              <span>Open Feeds Menu</span>
+            </>
+          ) : (
+            <>
+              <Fa icon={faAngleRight} />
+              <span>Close Feeds Menu</span>
+            </>
+          )}
         </button>
       </div>
     </div>
