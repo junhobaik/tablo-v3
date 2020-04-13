@@ -1,0 +1,13 @@
+#Feeds {
+  position: relative;
+
+  .feeds-header {
+    justify-content: flex-start;
+
+    button {
+      border-left: none;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+}

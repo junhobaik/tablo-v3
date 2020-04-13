@@ -26,6 +26,7 @@ body {
 
       // #Tabs, #Feeds
       & > div {
+        padding-top: 0.5rem;
         margin-top: $header-height;
         flex-grow: 1;
         overflow: scroll;

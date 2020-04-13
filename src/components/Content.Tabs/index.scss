@@ -1,0 +1,13 @@
+#Tabs {
+  position: relative;
+
+  .tabs-header {
+    justify-content: flex-end;
+
+    button {
+      border-right: none;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+  }
+}

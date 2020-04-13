@@ -1,0 +1,12 @@
+.content-header {
+  position: sticky;
+  top: 0;
+  min-height: 2rem;
+  height: 2rem;
+  display: flex;
+
+  button {
+    all: unset;
+    border: 1px solid black;
+  }
+}
