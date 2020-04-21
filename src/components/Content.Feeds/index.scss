@@ -1,13 +1,11 @@
 #Feeds {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
 
-  .feeds-header {
-    justify-content: flex-start;
-
-    button {
-      border-left: none;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-    }
+  .feeds-content {
+    flex-grow: 1;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
   }
 }

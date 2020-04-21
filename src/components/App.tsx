@@ -11,7 +11,6 @@ import TabsSetting from "./Content.TabsSetting";
 import FeedsSetting from "./Content.FeedsSetting";
 
 import "./app.scss";
-import "./content.scss";
 
 const App = () => {
   const windowStatus = useSelector((state: RootState) => state.global.window);
