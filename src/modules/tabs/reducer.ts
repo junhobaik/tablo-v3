@@ -17,10 +17,12 @@ const initialState: TabsState = {
     {
       id: "c1",
       title: "Collection 1",
+      folded: false,
     },
     {
       id: "c2",
       title: "Development",
+      folded: false,
     },
   ],
   tabs: [

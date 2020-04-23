@@ -6,6 +6,7 @@ export const RESET_TABS = "tabs/RESET_TABS";
 export interface CollectionItem {
   id: string;
   title: string;
+  folded: boolean;
 }
 export interface TabItem {
   id: string;
