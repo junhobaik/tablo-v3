@@ -8,6 +8,17 @@ import App from "../components/App";
 
 const store = configureStore();
 
+store.subscribe(() => {
+  const state = store.getState();
+
+  console.log("state: ", state);
+  if (chrome) {
+    chrome.storage.sync.set({
+      tablo3: state,
+    });
+  }
+});
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

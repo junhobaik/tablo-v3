@@ -1,3 +1,4 @@
+/* eslint-disable */
 const webpack = require("webpack");
 const path = require("path");
 const fileSystem = require("fs");
@@ -45,6 +46,14 @@ const options = {
   },
   module: {
     rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
+        options: {
+          // eslint options (if necessary)
+        },
+      },
       {
         test: /\.scss/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
