@@ -4,8 +4,10 @@ import {
   CollectionItem,
   ADD_TAB_ITEM,
   RESET_TABS,
+  SET_FOLDED_COLLECTION,
 } from "./actions";
 import { v4 as uuidv4 } from "uuid";
+import _ from "lodash";
 
 export interface TabsState {
   tabs: TabItem[];
@@ -61,6 +63,15 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
       };
     case RESET_TABS:
       return action.state ?? initialState;
+
+    case SET_FOLDED_COLLECTION: {
+      const newState = _.cloneDeep(state);
+      const findedIndex = _.findIndex(newState.collections, { id: action.id });
+      const folded = newState.collections[findedIndex].folded ?? false;
+      newState.collections[findedIndex].folded = !folded;
+      return newState;
+    }
+
     default:
       return state;
   }

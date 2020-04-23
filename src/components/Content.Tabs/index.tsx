@@ -1,14 +1,19 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import {
   faAngleDown,
   faCog,
   faPen,
   faTimes,
+  faAngleUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { faWindowRestore, faFile } from "@fortawesome/free-regular-svg-icons";
-import { CollectionItem, TabItem } from "../../modules/tabs/actions";
+import {
+  CollectionItem,
+  TabItem,
+  actionCreators,
+} from "../../modules/tabs/actions";
 import { RootState } from "../../modules";
 import _ from "lodash";
 
@@ -16,12 +21,16 @@ import "./index.scss";
 import ContentHeader from "../Content.Header";
 
 const Tabs = () => {
+  const dispatch = useDispatch();
   const tabsState = useSelector((state: RootState) => state.tabs);
   const { collections, tabs } = tabsState;
 
   const collectionListData = collections;
   const tabListData = tabs;
-  tabListData;
+
+  const toggleFoldedCollection = (id: string) => {
+    dispatch(actionCreators.setFoldedCollection(id));
+  };
 
   const createTabList = (tabList: TabItem[]) => {
     return tabList.map((v: TabItem) => {
@@ -61,8 +70,13 @@ const Tabs = () => {
         <div className="collection-header">
           <div className="collection-title">
             <div className="collection-fold">
-              <button className="fold-btn">
-                <Fa icon={faAngleDown} />
+              <button
+                className="fold-btn"
+                onClick={() => {
+                  toggleFoldedCollection(v.id);
+                }}
+              >
+                <Fa icon={v.folded ? faAngleDown : faAngleUp} />
               </button>
             </div>
             <h2 className="title-text">{v.title}</h2>
@@ -81,7 +95,12 @@ const Tabs = () => {
           </div>
         </div>
 
-        <ol className="collection-tab-list">{tabList}</ol>
+        <ol
+          className="collection-tab-list"
+          style={{ display: v.folded ? "none" : "flex" }}
+        >
+          {tabList}
+        </ol>
       </li>
     );
   });

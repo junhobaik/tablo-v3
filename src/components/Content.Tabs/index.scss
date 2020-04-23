@@ -15,13 +15,16 @@
 
         .collection-header {
           display: flex;
+          align-items: center;
           justify-content: space-between;
           margin-bottom: 0.25rem;
 
           .collection-title {
             display: flex;
+            align-items: center;
 
             .collection-fold {
+              display: flex;
               margin-right: 0.25rem;
             }
 
