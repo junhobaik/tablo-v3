@@ -1,11 +1,126 @@
 #Tabs {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: #fafafa;
-  
   .tabs-content {
-    flex-grow: 1;
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    button {
+      all: unset;
+      cursor: pointer;
+    }
+    .collection-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      .collection {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+        .collection-header {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0.25rem;
+
+          .collection-title {
+            display: flex;
+
+            .collection-flip {
+              margin-right: 0.25rem;
+            }
+
+            .title-text {
+              font-size: 1.2rem;
+              margin: 0;
+              padding: 0;
+            }
+          }
+
+          .collection-menu {
+            display: flex;
+            .collection-open-all,
+            .collection-setting {
+              .circle-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-left: 0.25rem;
+                font-size: 0.9rem;
+                background-color: rgba(0, 0, 0, 0.1);
+                border-radius: 100%;
+                color: rgba(0, 0, 0, 0.3);
+              }
+            }
+          }
+        }
+        .collection-tab-list {
+          min-height: 4rem;
+          padding: 0;
+          display: flex;
+          flex-wrap: wrap;
+
+          .tab-item {
+            display: flex;
+            flex-direction: column;
+            width: 9rem;
+            height: 4rem;
+            padding: 0.5rem;
+            background-color: #fff;
+            border-radius: 3px;
+            margin: 0.5rem;
+            box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.1),
+              2px 2px 4px 0px rgba(0, 0, 0, 0.1);
+
+            .tab-header {
+              display: flex;
+              height: 3rem;
+              position: relative;
+
+              .tab-icon {
+                margin-right: 0.25rem;
+              }
+
+              .tab-title {
+                font-weight: 500;
+              }
+              .tab-menu {
+                position: absolute;
+                top: 0;
+                right: -1rem;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+
+                button {
+                  display: flex;
+                  background-color: #999;
+                  border-radius: 100%;
+                  width: 1rem;
+                  height: 1rem;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                }
+                .edit-btn {
+                  font-size: 0.5rem;
+                  margin-bottom: 0.25rem;
+                }
+                .delete-btn {
+                  font-size: 0.7rem;
+                }
+              }
+            }
+            .tab-description {
+              height: 1rem;
+              p {
+                font-size: 0.9rem;
+                color: rgba(0, 0, 0, 0.6);
+                font-weight: 300;
+                margin: 0;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
