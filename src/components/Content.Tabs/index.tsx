@@ -60,8 +60,8 @@ const Tabs = () => {
       <li className="collection" key={`collection-${v.id}`}>
         <div className="collection-header">
           <div className="collection-title">
-            <div className="collection-flip">
-              <button className="flip-btn">
+            <div className="collection-fold">
+              <button className="fold-btn">
                 <Fa icon={faAngleDown} />
               </button>
             </div>
