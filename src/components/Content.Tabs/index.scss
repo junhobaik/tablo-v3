@@ -68,46 +68,56 @@
             margin: 0.5rem;
             box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.1),
               2px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            position: relative;
 
-            .tab-header {
-              display: flex;
-              height: 3rem;
-              position: relative;
-
-              .tab-icon {
-                margin-right: 0.25rem;
+            .tab-link {
+              all: unset;
+              cursor: grab;
+              &:active {
+                cursor: grabbing;
               }
 
-              .tab-title {
-                font-weight: 500;
-              }
-              .tab-menu {
-                position: absolute;
-                top: 0;
-                right: -1rem;
+              .tab-header {
                 display: flex;
-                flex-direction: column;
-                height: 100%;
+                height: 3rem;
 
-                button {
-                  display: flex;
-                  background-color: #999;
-                  border-radius: 100%;
-                  width: 1rem;
-                  height: 1rem;
-                  align-items: center;
-                  justify-content: center;
-                  color: white;
+                .tab-icon {
+                  margin-right: 0.25rem;
                 }
-                .edit-btn {
-                  font-size: 0.5rem;
-                  margin-bottom: 0.25rem;
-                }
-                .delete-btn {
-                  font-size: 0.7rem;
+
+                .tab-title {
+                  font-weight: 500;
                 }
               }
             }
+
+            .tab-menu {
+              position: absolute;
+              top: 0.5rem;
+              right: -0.5rem;
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+
+              button {
+                display: flex;
+                background-color: #999;
+                border-radius: 100%;
+                width: 1rem;
+                height: 1rem;
+                align-items: center;
+                justify-content: center;
+                color: white;
+              }
+              .edit-btn {
+                font-size: 0.5rem;
+                margin-bottom: 0.25rem;
+              }
+              .delete-btn {
+                font-size: 0.7rem;
+              }
+            }
+
             .tab-description {
               height: 1rem;
               p {

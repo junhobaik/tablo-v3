@@ -1,4 +1,9 @@
-import { WindowItem, GlobalActionTypes, SET_WINDOW } from "./actions";
+import {
+  WindowItem,
+  GlobalActionTypes,
+  SET_WINDOW,
+  RESET_GLOBAL,
+} from "./actions";
 
 export interface GlobalState {
   window: WindowItem;
@@ -18,6 +23,8 @@ function globalReducer(
         ...state,
         window: action.window,
       };
+    case RESET_GLOBAL:
+      return action.state ?? state;
     default:
       return state;
   }

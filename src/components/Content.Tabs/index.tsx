@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import {
   faAngleDown,
@@ -7,46 +8,56 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { faWindowRestore, faFile } from "@fortawesome/free-regular-svg-icons";
+import { CollectionItem, TabItem } from "../../modules/tabs/actions";
+import { RootState } from "../../modules";
+import _ from "lodash";
+
 import "./index.scss";
 import ContentHeader from "../Content.Header";
 
 const Tabs = () => {
-  const collectionListData: any = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  const tabsState = useSelector((state: RootState) => state.tabs);
+  const { collections, tabs } = tabsState;
 
-  const createTabList = (tabList: any) => {
-    return tabList.map(() => {
+  const collectionListData = collections;
+  const tabListData = tabs;
+  tabListData;
+
+  const createTabList = (tabList: TabItem[]) => {
+    return tabList.map((v: TabItem) => {
       return (
-        <li className="tab-item">
-          <div className="tab-header">
-            <div className="tab-icon">
-              <Fa icon={faFile} />
+        <li className="tab-item" key={`tab-${v.id}`}>
+          <a className="tab-link" href={v.url}>
+            <div className="tab-header">
+              <div className="tab-icon">
+                <Fa icon={faFile} />
+              </div>
+              <div className="tab-title">{v.title}</div>
             </div>
-            <div className="tab-title">Tab Title</div>
-
-            <div className="tab-menu">
-              <button className="edit-btn">
-                <Fa icon={faPen} />
-              </button>
-
-              <button className="delete-btn">
-                <Fa icon={faTimes} />
-              </button>
+            <div className="tab-description">
+              <p>{v.description}</p>
             </div>
-          </div>
-          <div className="tab-description">
-            <p>Tab Description</p>
+          </a>
+          <div className="tab-menu">
+            <button className="edit-btn">
+              <Fa icon={faPen} />
+            </button>
+
+            <button className="delete-btn">
+              <Fa icon={faTimes} />
+            </button>
           </div>
         </li>
       );
     });
   };
 
-  const collectionList = collectionListData.map((v: any, i: number) => {
-    v;
-    const tabList = createTabList([1, 1, 1, 1, 1, 1, 1, 1]);
-    console.log(tabList);
+  const collectionList = collectionListData.map((v: CollectionItem) => {
+    const filteredTabs = _.filter(tabListData, { collection: v.id });
+    const tabList = createTabList(filteredTabs);
+
     return (
-      <li className="collection" key={`collection-${i}`}>
+      <li className="collection" key={`collection-${v.id}`}>
         <div className="collection-header">
           <div className="collection-title">
             <div className="collection-flip">
@@ -54,7 +65,7 @@ const Tabs = () => {
                 <Fa icon={faAngleDown} />
               </button>
             </div>
-            <h2 className="title-text">Collection 1</h2>
+            <h2 className="title-text">{v.title}</h2>
           </div>
           <div className="collection-menu">
             <div className="collection-open-all">

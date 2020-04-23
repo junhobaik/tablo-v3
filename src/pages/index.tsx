@@ -11,12 +11,16 @@ const store = configureStore();
 store.subscribe(() => {
   const state = store.getState();
 
-  console.log("state: ", state);
-  if (chrome) {
-    chrome.storage.sync.set({
+  chrome.storage.sync.set(
+    {
       tablo3: state,
-    });
-  }
+    },
+    () => {
+      chrome.storage.sync.get("tablo3", (res) => {
+        console.log("SyncStorage Changed", res.tablo3);
+      });
+    }
+  );
 });
 
 ReactDOM.render(
