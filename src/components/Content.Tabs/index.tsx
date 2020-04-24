@@ -65,7 +65,23 @@ const Tabs = () => {
           <a className="tab-link" href={v.url}>
             <div className="tab-header">
               <div className="tab-icon">
-                <Fa icon={faFile} />
+                <div className="no-favicon">
+                  <Fa icon={faFile} />
+                </div>
+
+                <div className="favicon">
+                  <img
+                    src={`${v.url
+                      .split("/")
+                      .splice(0, 3)
+                      .join("/")}/favicon.ico`}
+                    onError={(e: any) => {
+                      e.currentTarget.style.display = "none";
+                      e.currentTarget.parentNode.parentNode.firstChild.style.display =
+                        "inline-block";
+                    }}
+                  />
+                </div>
               </div>
               <div className="tab-title">{v.title}</div>
             </div>

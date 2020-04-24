@@ -66,6 +66,7 @@
             width: 9rem;
             height: 4rem;
             padding: 0.5rem;
+            padding-left: 0.25rem;
             background-color: #fff;
             border-radius: 3px;
             margin: 0.5rem;
@@ -86,6 +87,23 @@
 
                 .tab-icon {
                   margin-right: 0.25rem;
+
+                  .no-favicon,
+                  .favicon {
+                    width: 1.2rem;
+                    // border: 1px solid red;
+                    text-align: center;
+                  }
+                  .no-favicon {
+                    display: none;
+                    font-size: 1rem;
+                  }
+                  .favicon {
+                    img {
+                      width: 1.1rem;
+                      height: 1.1rem;
+                    }
+                  }
                 }
 
                 .tab-title {
@@ -133,6 +151,7 @@
 
             .tab-description {
               height: 1rem;
+              margin-left: 0.25rem;
               p {
                 font-size: 0.9rem;
                 color: rgba(0, 0, 0, 0.6);
