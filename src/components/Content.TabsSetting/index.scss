@@ -1,0 +1,65 @@
+.tabs-setting {
+  display: flex;
+
+  .tabs-setting-inner-wrap {
+    display: flex;
+    flex-direction: column;
+
+    .list-wrap {
+      .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h2 {
+          margin: 0;
+          font-size: 1.2rem;
+        }
+      }
+
+      .list {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .link-item {
+          display: flex;
+          align-items: center;
+          padding: 0.25rem;
+          margin: 0 0.5rem 0.75rem 0;
+          background-color: rgba(0, 0, 0, 0.1);
+          border-radius: 5px;
+          cursor: grab;
+          &:active {
+            cursor: grabbing;
+          }
+
+          .link-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.2rem;
+
+            .no-favicon {
+              display: none;
+              font-size: 1.1rem;
+            }
+
+            .favicon {
+              img {
+                width: 1.1rem;
+                height: 1.1rem;
+              }
+            }
+          }
+
+          .link-title {
+            user-select: none;
+          }
+        }
+      }
+    }
+  }
+}
