@@ -1,6 +1,7 @@
 import { TabsState } from "./reducer";
 
 export const ADD_TAB_ITEM = "tabs/ADD_TAB_ITEM";
+export const DELETE_TAB_ITEM = "tabs/DELETE_TAB_ITEM";
 export const RESET_TABS = "tabs/RESET_TABS";
 export const SET_FOLDED_COLLECTION = "tabs/SET_FOLDED_COLLECTION";
 
@@ -22,6 +23,11 @@ interface AddTabItemAction {
   payload: TabItem;
 }
 
+interface DeleteTabItemAction {
+  type: typeof DELETE_TAB_ITEM;
+  id: string;
+}
+
 interface ResetTabsAction {
   type: typeof RESET_TABS;
   state: TabsState;
@@ -34,11 +40,16 @@ interface SetFoldedCollectionAction {
 
 export type TabActionTypes =
   | AddTabItemAction
+  | DeleteTabItemAction
   | ResetTabsAction
   | SetFoldedCollectionAction;
 
 const addTabItem = (title: string) => {
   return { type: ADD_TAB_ITEM, payload: { title } };
+};
+
+const deleteTabItem = (id: string) => {
+  return { type: DELETE_TAB_ITEM, id };
 };
 
 const resetTabs = (state: TabsState) => {
@@ -51,6 +62,7 @@ const setFoldedCollection = (id: string) => {
 
 export const actionCreators = {
   addTabItem,
+  deleteTabItem,
   resetTabs,
   setFoldedCollection,
 };

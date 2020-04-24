@@ -94,7 +94,12 @@ const Tabs = () => {
               <Fa icon={faPen} />
             </button>
 
-            <button className="delete-btn">
+            <button
+              className="delete-btn"
+              onClick={() => {
+                dispatch(actionCreators.deleteTabItem(v.id));
+              }}
+            >
               <Fa icon={faTimes} />
             </button>
           </div>

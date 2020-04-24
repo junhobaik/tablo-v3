@@ -5,6 +5,7 @@ import {
   ADD_TAB_ITEM,
   RESET_TABS,
   SET_FOLDED_COLLECTION,
+  DELETE_TAB_ITEM,
 } from "./actions";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -61,14 +62,24 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
           },
         ],
       };
+
+    case DELETE_TAB_ITEM: {
+      const newState = _.cloneDeep(state);
+      // const targetIndex = _.findIndex(newState.tabs, {id: action.id});
+      // newState.tabs[targetIndex]
+      _.remove(newState.tabs, { id: action.id });
+      console.log(newState.tabs);
+      return state;
+    }
+
     case RESET_TABS:
       return action.state ?? initialState;
 
     case SET_FOLDED_COLLECTION: {
       const newState = _.cloneDeep(state);
-      const findedIndex = _.findIndex(newState.collections, { id: action.id });
-      const folded = newState.collections[findedIndex].folded ?? false;
-      newState.collections[findedIndex].folded = !folded;
+      const targetIndex = _.findIndex(newState.collections, { id: action.id });
+      const folded = newState.collections[targetIndex].folded ?? false;
+      newState.collections[targetIndex].folded = !folded;
       return newState;
     }
 
