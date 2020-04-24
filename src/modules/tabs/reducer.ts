@@ -65,11 +65,8 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
 
     case DELETE_TAB_ITEM: {
       const newState = _.cloneDeep(state);
-      // const targetIndex = _.findIndex(newState.tabs, {id: action.id});
-      // newState.tabs[targetIndex]
       _.remove(newState.tabs, { id: action.id });
-      console.log(newState.tabs);
-      return state;
+      return newState;
     }
 
     case RESET_TABS:
