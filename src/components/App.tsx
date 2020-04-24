@@ -22,11 +22,11 @@ const App = () => {
 
   useEffect(() => {
     chrome.storage.sync.get("tablo3", (res) => {
-      const { tabs, global } = res.tablo3;
-
-      dispatch(globalActionCreators.resetGlobal(global));
-      dispatch(tabsActionCreators.resetTabs(tabs));
-
+      if (res.tablo3) {
+        const { tabs, global } = res.tablo3;
+        dispatch(globalActionCreators.resetGlobal(global));
+        dispatch(tabsActionCreators.resetTabs(tabs));
+      }
       setIsLoadedState(true);
     });
   }, []);
