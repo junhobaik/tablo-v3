@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import {
@@ -9,19 +10,26 @@ import {
   faAngleUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { faWindowRestore, faFile } from "@fortawesome/free-regular-svg-icons";
+import _ from "lodash";
+
+import { RootState } from "../../modules";
 import {
   CollectionItem,
   TabItem,
   actionCreators,
 } from "../../modules/tabs/actions";
-import { RootState } from "../../modules";
-import _ from "lodash";
-
-import "./index.scss";
 import ContentHeader from "../Content.Header";
+import "./index.scss";
+
+interface TargetData {
+  id: string;
+}
 
 const Tabs = () => {
   const dispatch = useDispatch();
+
+  const [targetData, setTargetData] = useState<TargetData | {}>();
+  targetData;
   const tabsState = useSelector((state: RootState) => state.tabs);
   const { collections, tabs } = tabsState;
 
@@ -35,7 +43,25 @@ const Tabs = () => {
   const createTabList = (tabList: TabItem[]) => {
     return tabList.map((v: TabItem) => {
       return (
-        <li className="tab-item" key={`tab-${v.id}`}>
+        <li
+          className="tab-item"
+          key={`tab-${v.id}`}
+          onMouseEnter={(e: React.MouseEvent) => {
+            const menu = e.currentTarget.querySelector(".tab-menu");
+            menu?.classList.remove("hide");
+            menu?.classList.add("show");
+
+            setTargetData({
+              id: v.id,
+            });
+          }}
+          onMouseLeave={(e: React.MouseEvent) => {
+            const menu = e.currentTarget.querySelector(".tab-menu");
+            menu?.classList.remove("show");
+            menu?.classList.add("hide");
+            setTargetData({});
+          }}
+        >
           <a className="tab-link" href={v.url}>
             <div className="tab-header">
               <div className="tab-icon">
@@ -47,7 +73,7 @@ const Tabs = () => {
               <p>{v.description}</p>
             </div>
           </a>
-          <div className="tab-menu">
+          <div className="tab-menu hide">
             <button className="edit-btn">
               <Fa icon={faPen} />
             </button>

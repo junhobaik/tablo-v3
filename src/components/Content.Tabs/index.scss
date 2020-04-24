@@ -102,6 +102,16 @@
               flex-direction: column;
               height: 100%;
 
+              &.hide {
+                visibility: hidden;
+                pointer-events: none;
+              }
+
+              &.show {
+                visibility: visible;
+                pointer-events: all;
+              }
+
               button {
                 display: flex;
                 background-color: #999;
