@@ -2,7 +2,11 @@
 
 ## Todo
 
-- 폰트 적용
+- 
+
+## IceBox
+
+- tab-item의 description 부분을 임시로 ellipsis 처리, 향후 마우스 오버시 슬라이드식으로 전체 내용을 보여줄 수 있도록 구현
 
 ## Log
 
@@ -20,3 +24,4 @@
 - redux에 연결한 reducer가 없어 생기는 오류 해결을 위해 tab 관련 add tab 추가
 - Header, Feeds, Tabs 세 컴포넌트의 기본 화면의 위치 구현, 위 아래(아래의 좌우), 스크롤 관련 스타일 정의
 - Theme-ui 설치 미 적용
+
