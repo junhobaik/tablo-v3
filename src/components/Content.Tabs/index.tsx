@@ -40,7 +40,9 @@ const Tabs = () => {
       const getIsEdit = () => v.id === editTarget;
       const isEdit = getIsEdit();
 
-      const disableEditFromKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      const disableEditFromKey = (
+        e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => {
         const { keyCode } = e;
         if (keyCode === 13 || keyCode === 27) setEditTarget("");
       };
@@ -93,14 +95,14 @@ const Tabs = () => {
               </div>
               <div className="tab-title">
                 {isEdit ? (
-                  <input
-                    type="text"
+                  <textarea
+                    cols={2}
                     className="title-input"
                     placeholder={v.title}
                     onKeyDown={(e) => {
                       disableEditFromKey(e);
                     }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                       dispatch(
                         actionCreators.editTabItemTitle(
                           v.id,

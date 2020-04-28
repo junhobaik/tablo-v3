@@ -112,25 +112,33 @@
                 }
 
                 .tab-title {
-                  input {
+                  // border: 1px solid blue;
+                  display: flex;
+                  overflow: hidden;
+                  height: 2.2rem;
+                  width: 100%;
+
+                  span,
+                  textarea {
+                    flex-grow: 1;
+                    font-weight: 500;
+                    // border: 1px solid red;
+                    word-break: break-word;
+                    line-height: 1.1rem;
+                  }
+
+                  textarea {
                     all: unset;
                     cursor: text;
-                  }
-                  span,
-                  input {
-                    font-weight: 500;
                   }
                 }
               }
             }
 
             .tab-description {
+              display: flex;
               height: 1rem;
               margin-left: 0.25rem;
-              input {
-                all: unset;
-                cursor: text;
-              }
 
               p,
               input {
@@ -139,6 +147,16 @@
                 font-weight: 300;
                 margin: 0;
                 white-space: nowrap;
+              }
+
+              input {
+                all: unset;
+                cursor: text;
+              }
+
+              p {
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
             }
 
