@@ -68,11 +68,16 @@
             padding: 0.5rem;
             padding-left: 0.25rem;
             background-color: #fff;
+            border: 2px solid transparent;
             border-radius: 3px;
             margin: 0.5rem;
             box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.1),
               2px 2px 4px 0px rgba(0, 0, 0, 0.1);
             position: relative;
+
+            &.edit-item {
+              border: 2px solid rgba(253, 22, 52, 0.5);
+            }
 
             .tab-link {
               all: unset;
@@ -107,8 +112,33 @@
                 }
 
                 .tab-title {
-                  font-weight: 500;
+                  input {
+                    all: unset;
+                    cursor: text;
+                  }
+                  span,
+                  input {
+                    font-weight: 500;
+                  }
                 }
+              }
+            }
+
+            .tab-description {
+              height: 1rem;
+              margin-left: 0.25rem;
+              input {
+                all: unset;
+                cursor: text;
+              }
+
+              p,
+              input {
+                font-size: 0.9rem;
+                color: rgba(0, 0, 0, 0.6);
+                font-weight: 300;
+                margin: 0;
+                white-space: nowrap;
               }
             }
 
@@ -146,18 +176,6 @@
               }
               .delete-btn {
                 font-size: 0.7rem;
-              }
-            }
-
-            .tab-description {
-              height: 1rem;
-              margin-left: 0.25rem;
-              p {
-                font-size: 0.9rem;
-                color: rgba(0, 0, 0, 0.6);
-                font-weight: 300;
-                margin: 0;
-                white-space: nowrap;
               }
             }
           }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import {
@@ -21,18 +21,13 @@ import {
 import ContentHeader from "../Content.Header";
 import "./index.scss";
 
-interface TargetData {
-  id: string;
-}
-
 const Tabs = () => {
   const dispatch = useDispatch();
-
-  const [targetData, setTargetData] = useState<TargetData | {}>();
-  targetData;
   const tabsState = useSelector((state: RootState) => state.tabs);
-  const { collections, tabs } = tabsState;
 
+  const [editTarget, setEditTarget] = useState<string | undefined>();
+
+  const { collections, tabs } = tabsState;
   const collectionListData = collections;
   const tabListData = tabs;
 
@@ -42,27 +37,35 @@ const Tabs = () => {
 
   const createTabList = (tabList: TabItem[]) => {
     return tabList.map((v: TabItem) => {
+      const getIsEdit = () => v.id === editTarget;
+      const isEdit = getIsEdit();
+
       return (
         <li
-          className="tab-item"
+          className={`tab-item ${isEdit ? "edit-item" : ""}`}
           key={`tab-${v.id}`}
           onMouseEnter={(e: React.MouseEvent) => {
             const menu = e.currentTarget.querySelector(".tab-menu");
-            menu?.classList.remove("hide");
-            menu?.classList.add("show");
-
-            setTargetData({
-              id: v.id,
-            });
+            if (!getIsEdit()) {
+              menu?.classList.remove("hide");
+              menu?.classList.add("show");
+            }
           }}
           onMouseLeave={(e: React.MouseEvent) => {
             const menu = e.currentTarget.querySelector(".tab-menu");
-            menu?.classList.remove("show");
-            menu?.classList.add("hide");
-            setTargetData({});
+            if (!getIsEdit()) {
+              menu?.classList.remove("show");
+              menu?.classList.add("hide");
+            }
           }}
         >
-          <a className="tab-link" href={v.url}>
+          <a
+            className="tab-link"
+            onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+              e.preventDefault();
+              if (!getIsEdit()) window.open(v.url, "_self");
+            }}
+          >
             <div className="tab-header">
               <div className="tab-icon">
                 <div className="no-favicon">
@@ -83,14 +86,37 @@ const Tabs = () => {
                   />
                 </div>
               </div>
-              <div className="tab-title">{v.title}</div>
+              <div className="tab-title">
+                {isEdit ? (
+                  <input
+                    type="text"
+                    className="title-input"
+                    placeholder={v.title}
+                  />
+                ) : (
+                  <span className="title-text">{v.title}</span>
+                )}
+              </div>
             </div>
             <div className="tab-description">
-              <p>{v.description}</p>
+              {isEdit ? (
+                <input
+                  type="text"
+                  className="description-input"
+                  placeholder={v.description}
+                />
+              ) : (
+                <p className="dexcription-text">{v.description}</p>
+              )}
             </div>
           </a>
-          <div className="tab-menu hide">
-            <button className="edit-btn">
+          <div className={`tab-menu hide ${isEdit ? "hide" : ""}`}>
+            <button
+              className="edit-btn"
+              onClick={() => {
+                setEditTarget(v.id);
+              }}
+            >
               <Fa icon={faPen} />
             </button>
 
@@ -151,6 +177,30 @@ const Tabs = () => {
       </li>
     );
   });
+
+  useEffect(() => {
+    const appBottom = document.querySelector(".app-bottom");
+    const disableEdit = (e: Event) => {
+      let parent = e.target as HTMLElement | null;
+      let isEdit: boolean = false;
+
+      while (
+        (parent && parent !== e.currentTarget) ||
+        parent?.classList.contains("tab-item")
+      ) {
+        parent = parent.parentElement;
+        if (parent?.classList.contains("edit-item")) isEdit = true;
+      }
+
+      if (!isEdit) setEditTarget("");
+    };
+    appBottom?.addEventListener("click", disableEdit);
+
+    return () => {
+      appBottom?.removeEventListener("click", disableEdit);
+    };
+  }, []);
+
   return (
     <div id="Tabs">
       <ContentHeader content="tabs" searchFunc={() => {}} reverse={false} />
