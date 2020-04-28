@@ -4,6 +4,8 @@ export const ADD_TAB_ITEM = "tabs/ADD_TAB_ITEM";
 export const DELETE_TAB_ITEM = "tabs/DELETE_TAB_ITEM";
 export const RESET_TABS = "tabs/RESET_TABS";
 export const SET_FOLDED_COLLECTION = "tabs/SET_FOLDED_COLLECTION";
+export const EDIT_TAB_ITEM_TITLE = "tabs/EDIT_TAB_ITEM_TITLE";
+export const EDIT_TAB_ITEM_DESCRIPTION = "tabs/EDIT_TAB_ITEM_DESCRIPTION";
 
 export interface CollectionItem {
   id: string;
@@ -38,11 +40,25 @@ interface SetFoldedCollectionAction {
   id: string;
 }
 
+interface EditTabItemTitle {
+  type: typeof EDIT_TAB_ITEM_TITLE;
+  id: string;
+  title: string;
+}
+
+interface EditTabItemDescription {
+  type: typeof EDIT_TAB_ITEM_DESCRIPTION;
+  id: string;
+  description: string;
+}
+
 export type TabActionTypes =
   | AddTabItemAction
   | DeleteTabItemAction
   | ResetTabsAction
-  | SetFoldedCollectionAction;
+  | SetFoldedCollectionAction
+  | EditTabItemTitle
+  | EditTabItemDescription;
 
 const addTabItem = (title: string) => {
   return { type: ADD_TAB_ITEM, payload: { title } };
@@ -60,9 +76,19 @@ const setFoldedCollection = (id: string) => {
   return { type: SET_FOLDED_COLLECTION, id };
 };
 
+const editTabItemTitle = (id: string, title: string) => {
+  return { type: EDIT_TAB_ITEM_TITLE, id, title };
+};
+
+const editTabItemDescription = (id: string, description: string) => {
+  return { type: EDIT_TAB_ITEM_DESCRIPTION, id, description };
+};
+
 export const actionCreators = {
   addTabItem,
   deleteTabItem,
   resetTabs,
   setFoldedCollection,
+  editTabItemTitle,
+  editTabItemDescription,
 };

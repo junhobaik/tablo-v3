@@ -6,6 +6,8 @@ import {
   RESET_TABS,
   SET_FOLDED_COLLECTION,
   DELETE_TAB_ITEM,
+  EDIT_TAB_ITEM_TITLE,
+  EDIT_TAB_ITEM_DESCRIPTION,
 } from "./actions";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -77,6 +79,20 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
       const targetIndex = _.findIndex(newState.collections, { id: action.id });
       const folded = newState.collections[targetIndex].folded ?? false;
       newState.collections[targetIndex].folded = !folded;
+      return newState;
+    }
+
+    case EDIT_TAB_ITEM_TITLE: {
+      const newState = _.cloneDeep(state);
+      const targetIndex = _.findIndex(newState.tabs, { id: action.id });
+      newState.tabs[targetIndex].title = action.title;
+      return newState;
+    }
+
+    case EDIT_TAB_ITEM_DESCRIPTION: {
+      const newState = _.cloneDeep(state);
+      const targetIndex = _.findIndex(newState.tabs, { id: action.id });
+      newState.tabs[targetIndex].description = action.description;
       return newState;
     }
 

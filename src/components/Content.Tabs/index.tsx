@@ -40,6 +40,11 @@ const Tabs = () => {
       const getIsEdit = () => v.id === editTarget;
       const isEdit = getIsEdit();
 
+      const disableEditFromKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const { keyCode } = e;
+        if (keyCode === 13 || keyCode === 27) setEditTarget("");
+      };
+
       return (
         <li
           className={`tab-item ${isEdit ? "edit-item" : ""}`}
@@ -92,6 +97,17 @@ const Tabs = () => {
                     type="text"
                     className="title-input"
                     placeholder={v.title}
+                    onKeyDown={(e) => {
+                      disableEditFromKey(e);
+                    }}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      dispatch(
+                        actionCreators.editTabItemTitle(
+                          v.id,
+                          e.currentTarget.value
+                        )
+                      );
+                    }}
                   />
                 ) : (
                   <span className="title-text">{v.title}</span>
@@ -104,6 +120,17 @@ const Tabs = () => {
                   type="text"
                   className="description-input"
                   placeholder={v.description}
+                  onKeyDown={(e) => {
+                    disableEditFromKey(e);
+                  }}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    dispatch(
+                      actionCreators.editTabItemDescription(
+                        v.id,
+                        e.currentTarget.value
+                      )
+                    );
+                  }}
                 />
               ) : (
                 <p className="dexcription-text">{v.description}</p>
