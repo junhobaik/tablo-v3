@@ -94,6 +94,7 @@ const Tabs = () => {
                 </div>
               </div>
               <div className="tab-title">
+                {/* FIXME: textarea와 span 전환시 미묘한 위치 안맞음이 있는 이슈 */}
                 {isEdit ? (
                   <textarea
                     cols={2}
