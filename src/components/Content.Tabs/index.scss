@@ -72,7 +72,7 @@
 
               .setting-expend {
                 pointer-events: none;
-                
+
                 .space-circle {
                   min-height: 1.5rem;
                   min-width: 1.5rem;
@@ -195,6 +195,7 @@
                   textarea {
                     all: unset;
                     cursor: text;
+                    width: 100%;
                   }
                 }
               }
@@ -205,6 +206,17 @@
               height: 1rem;
               margin-left: 0.25rem;
 
+              input {
+                all: unset;
+                cursor: text;
+                width: 100%;
+              }
+
+              p {
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+
               p,
               input {
                 font-size: 0.9rem;
@@ -212,16 +224,6 @@
                 font-weight: 300;
                 margin: 0;
                 white-space: nowrap;
-              }
-
-              input {
-                all: unset;
-                cursor: text;
-              }
-
-              p {
-                overflow: hidden;
-                text-overflow: ellipsis;
               }
             }
 
@@ -232,14 +234,24 @@
               display: flex;
               flex-direction: column;
               height: 100%;
+              transition: opacity 0.2s;
+
+              button {
+                transition: all 0.15s;
+                transition-timing-function: ease-out;
+              }
 
               &.hide {
-                visibility: hidden;
+                button {
+                  transform: scale(0);
+                }
                 pointer-events: none;
               }
 
               &.show {
-                visibility: visible;
+                button {
+                  transform: scale(1);
+                }
                 pointer-events: all;
               }
 
