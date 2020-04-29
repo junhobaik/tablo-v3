@@ -170,7 +170,7 @@ const Tabs = () => {
     return (
       <li className="collection" key={`collection-${v.id}`}>
         <div className="collection-header">
-          <div className="collection-title">
+          <div className="collection-title-wrap">
             <div className="collection-fold">
               <button
                 className="fold-btn"
@@ -181,7 +181,14 @@ const Tabs = () => {
                 <Fa icon={v.folded ? faAngleDown : faAngleUp} />
               </button>
             </div>
-            <h2 className="title-text">{v.title}</h2>
+            <div className="collection-title">
+              <h2 className="title-text">{v.title}</h2>
+              <input
+                type="text"
+                className="title-input"
+                placeholder={v.title}
+              />
+            </div>
           </div>
           <div className="collection-menu">
             <div className="collection-open-all">

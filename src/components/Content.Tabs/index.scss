@@ -19,7 +19,7 @@
           justify-content: space-between;
           margin-bottom: 0.25rem;
 
-          .collection-title {
+          .collection-title-wrap {
             display: flex;
             align-items: center;
 
@@ -28,10 +28,20 @@
               margin-right: 0.25rem;
             }
 
-            .title-text {
-              font-size: 1.2rem;
-              margin: 0;
-              padding: 0;
+            .collection-title {
+              .title-input {
+                all: unset;
+                display: none;
+                font-weight: bold;
+                border-bottom: 2px solid rgba(253, 22, 52, 0.5);
+              }
+
+              .title-input,
+              .title-text {
+                font-size: 1.2rem;
+                margin: 0;
+                padding: 0;
+              }
             }
           }
 
