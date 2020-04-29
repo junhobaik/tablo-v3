@@ -49,6 +49,10 @@
             display: flex;
             .collection-open-all,
             .collection-setting {
+              position: relative;
+              display: flex;
+              align-items: center;
+
               .circle-btn {
                 display: flex;
                 align-items: center;
@@ -57,9 +61,60 @@
                 height: 1.5rem;
                 margin-left: 0.25rem;
                 font-size: 0.9rem;
-                background-color: rgba(0, 0, 0, 0.1);
+                background-color: #e1e1e1;
                 border-radius: 100%;
-                color: rgba(0, 0, 0, 0.3);
+                color: #9d9d9d;
+              }
+
+              .setting-btn {
+                z-index: 2;
+              }
+
+              .setting-expend {
+                pointer-events: none;
+                
+                .space-circle {
+                  min-height: 1.5rem;
+                  min-width: 1.5rem;
+                  border-radius: 100%;
+                  border-top-left-radius: 0;
+                  border-top-right-radius: 0;
+                  background-color: #fafafa;
+                }
+
+                align-items: center;
+                width: 1.5rem;
+                z-index: 1;
+                margin-left: 0.25rem;
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: -0.75rem;
+                font-size: 0.9rem;
+                transition: all 0.2s;
+                transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+                opacity: 0;
+                background-color: #e1e1e1;
+                border-radius: 0.75rem;
+                color: #9d9d9d;
+
+                button {
+                  margin: 0.25rem 0;
+
+                  &.edit-btn {
+                    font-size: 0.7rem;
+                    margin-top: 0.5rem;
+                  }
+
+                  &.delete-btn {
+                    margin-bottom: 0.5rem;
+                  }
+                  transition: color 0.2s;
+
+                  &:hover {
+                    color: #474747;
+                  }
+                }
               }
             }
           }

@@ -196,10 +196,45 @@ const Tabs = () => {
                 <Fa icon={faWindowRestore} />
               </button>
             </div>
-            <div className="collection-setting">
-              <button className="setting-btn circle-btn">
+            <div
+              className="collection-setting"
+              onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                // TODO: 차후 중복 제거
+                const expend = e.currentTarget.parentNode?.querySelector(
+                  ".setting-expend"
+                ) as HTMLDivElement | null | undefined;
+                if (expend) {
+                  expend.style.top = "-0.75rem";
+                  expend.style.opacity = "0";
+                  expend.style.pointerEvents = "none";
+                }
+              }}
+            >
+              <div
+                className="setting-btn circle-btn"
+                onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
+                  // TODO: 차후 중복 제거
+                  const expend = e.currentTarget.parentNode?.querySelector(
+                    ".setting-expend"
+                  ) as HTMLDivElement | null | undefined;
+                  if (expend) {
+                    expend.style.top = "0";
+                    expend.style.opacity = "1";
+                    expend.style.pointerEvents = "all";
+                  }
+                }}
+              >
                 <Fa icon={faCog} />
-              </button>
+              </div>
+              <div className="setting-expend">
+                <div className="space-circle"></div>
+                <button className="edit-btn">
+                  <Fa icon={faPen} />
+                </button>
+                <button className="delete-btn">
+                  <Fa icon={faTimes} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
