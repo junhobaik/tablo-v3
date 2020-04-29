@@ -36,6 +36,10 @@
                 border-bottom: 2px solid rgba(253, 22, 52, 0.5);
               }
 
+              .title-text {
+                user-select: none;
+              }
+
               .title-input,
               .title-text {
                 font-size: 1.2rem;
@@ -177,7 +181,7 @@
                 }
 
                 .tab-title {
-                  // border: 1px solid blue;
+                  user-select: none;
                   display: flex;
                   overflow: hidden;
                   height: 2.2rem;
@@ -187,7 +191,6 @@
                   textarea {
                     flex-grow: 1;
                     font-weight: 500;
-                    // border: 1px solid red;
                     word-break: break-word;
                     line-height: 1.1rem;
                   }
@@ -215,6 +218,7 @@
               p {
                 overflow: hidden;
                 text-overflow: ellipsis;
+                user-select: none;
               }
 
               p,
