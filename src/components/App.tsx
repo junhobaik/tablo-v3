@@ -6,9 +6,9 @@ import { hot } from "react-hot-loader";
 import { RootState } from "../modules";
 import Tabs from "./Content.Tabs";
 import Feeds from "./Content.Feeds";
-import Header from "./Header";
-import TabsSetting from "./Content.TabsSetting";
-import FeedsSetting from "./Content.FeedsSetting";
+import Header from "./Global.Header";
+import TabsSetting from "./Menu.TabsSetting";
+import FeedsSetting from "./Menu.FeedsSetting";
 import { actionCreators as tabsActionCreators } from "../modules/tabs/actions";
 import { actionCreators as globalActionCreators } from "../modules/global/actions";
 
