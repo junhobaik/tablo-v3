@@ -77,7 +77,7 @@ const Tabs = () => {
         <div className="current-tab-list-wrap list-wrap">
           <div className="current-tab-list-header list-header">
             <h2>Current Tabs</h2>
-            <button>
+            <button className="circle-btn">
               <Fa icon={faArchive} />
             </button>
           </div>
@@ -87,7 +87,7 @@ const Tabs = () => {
         <div className="cart-list-wrap list-wrap">
           <div className="cart-list-header list-header">
             <h2>Cart</h2>
-            <button>
+            <button className="circle-btn">
               <Fa icon={faTrashAlt} />
             </button>
           </div>
