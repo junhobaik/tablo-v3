@@ -20,6 +20,11 @@ export interface TabItem {
   collection: string;
 }
 
+export interface CartItem {
+  title: string;
+  url: string;
+}
+
 interface AddTabItemAction {
   type: typeof ADD_TAB_ITEM;
   payload: TabItem;

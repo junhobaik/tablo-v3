@@ -1,7 +1,8 @@
 import {
   TabItem,
-  TabActionTypes,
   CollectionItem,
+  CartItem,
+  TabActionTypes,
   ADD_TAB_ITEM,
   RESET_TABS,
   SET_FOLDED_COLLECTION,
@@ -15,6 +16,7 @@ import _ from "lodash";
 export interface TabsState {
   tabs: TabItem[];
   collections: CollectionItem[];
+  cart: CartItem[];
 }
 
 const initialState: TabsState = {
@@ -44,6 +46,12 @@ const initialState: TabsState = {
       description: "Dev.White Blog",
       url: "https://junhobaik.github.io/",
       collection: "c2",
+    },
+  ],
+  cart: [
+    {
+      title: "Dev.White",
+      url: "https://junhobaik.github.io/",
     },
   ],
 };
