@@ -36,7 +36,8 @@ const Tabs = () => {
   };
 
   const createTabList = (tabList: TabItem[]) => {
-    return tabList.map((v: TabItem) => {
+    const tabListLength = tabList.length;
+    return tabList.map((v: TabItem, i: number) => {
       const getIsEdit = () => v.id === editTarget;
       const isEdit = getIsEdit();
 
@@ -48,64 +49,88 @@ const Tabs = () => {
       };
 
       return (
-        <li
-          className={`tab-item ${isEdit ? "edit-item" : ""}`}
-          key={`tab-${v.id}`}
-          onMouseEnter={(e: React.MouseEvent) => {
-            const menu = e.currentTarget.querySelector(".tab-menu");
-            if (!getIsEdit()) {
-              menu?.classList.remove("hide");
-              menu?.classList.add("show");
-            }
-          }}
-          onMouseLeave={(e: React.MouseEvent) => {
-            const menu = e.currentTarget.querySelector(".tab-menu");
-            if (!getIsEdit()) {
-              menu?.classList.remove("show");
-              menu?.classList.add("hide");
-            }
-          }}
-        >
-          <a
-            className="tab-link"
-            onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-              e.preventDefault();
-              if (!getIsEdit()) window.open(v.url, "_self");
+        <div className="tab-item-wrap" key={`tab-${v.id}`}>
+          <div className="drop-space front" id={v.id}></div>
+          <li
+            className={`tab-item ${isEdit ? "edit-item" : ""}`}
+            onMouseEnter={(e: React.MouseEvent) => {
+              const menu = e.currentTarget.querySelector(".tab-menu");
+              if (!getIsEdit()) {
+                menu?.classList.remove("hide");
+                menu?.classList.add("show");
+              }
+            }}
+            onMouseLeave={(e: React.MouseEvent) => {
+              const menu = e.currentTarget.querySelector(".tab-menu");
+              if (!getIsEdit()) {
+                menu?.classList.remove("show");
+                menu?.classList.add("hide");
+              }
             }}
           >
-            <div className="tab-header">
-              <div className="tab-icon">
-                <div className="no-favicon">
-                  <Fa icon={faFile} />
-                </div>
+            <a
+              className="tab-link"
+              onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+                e.preventDefault();
+                if (!getIsEdit()) window.open(v.url, "_self");
+              }}
+            >
+              <div className="tab-header">
+                <div className="tab-icon">
+                  <div className="no-favicon">
+                    <Fa icon={faFile} />
+                  </div>
 
-                <div className="favicon">
-                  <img
-                    src={`${v.url
-                      .split("/")
-                      .splice(0, 3)
-                      .join("/")}/favicon.ico`}
-                    onError={(e: any) => {
-                      e.currentTarget.style.display = "none";
-                      e.currentTarget.parentNode.parentNode.firstChild.style.display =
-                        "inline-block";
-                    }}
-                  />
+                  <div className="favicon">
+                    <img
+                      src={`${v.url
+                        .split("/")
+                        .splice(0, 3)
+                        .join("/")}/favicon.ico`}
+                      onError={(e: any) => {
+                        e.currentTarget.style.display = "none";
+                        e.currentTarget.parentNode.parentNode.firstChild.style.display =
+                          "inline-block";
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="tab-title">
+                  {/* FIXME: textarea와 span 전환시 미묘한 위치 안맞음이 있는 이슈 */}
+                  {isEdit ? (
+                    <textarea
+                      cols={2}
+                      className="title-input"
+                      placeholder={v.title}
+                      onKeyDown={(e) => {
+                        disableEditFromKey(e);
+                      }}
+                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                        dispatch(
+                          actionCreators.editTabItemTitle(
+                            v.id,
+                            e.currentTarget.value
+                          )
+                        );
+                      }}
+                    />
+                  ) : (
+                    <span className="title-text">{v.title}</span>
+                  )}
                 </div>
               </div>
-              <div className="tab-title">
-                {/* FIXME: textarea와 span 전환시 미묘한 위치 안맞음이 있는 이슈 */}
+              <div className="tab-description">
                 {isEdit ? (
-                  <textarea
-                    cols={2}
-                    className="title-input"
-                    placeholder={v.title}
+                  <input
+                    type="text"
+                    className="description-input"
+                    placeholder={v.description}
                     onKeyDown={(e) => {
                       disableEditFromKey(e);
                     }}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       dispatch(
-                        actionCreators.editTabItemTitle(
+                        actionCreators.editTabItemDescription(
                           v.id,
                           e.currentTarget.value
                         )
@@ -113,53 +138,34 @@ const Tabs = () => {
                     }}
                   />
                 ) : (
-                  <span className="title-text">{v.title}</span>
+                  <p className="dexcription-text">{v.description}</p>
                 )}
               </div>
-            </div>
-            <div className="tab-description">
-              {isEdit ? (
-                <input
-                  type="text"
-                  className="description-input"
-                  placeholder={v.description}
-                  onKeyDown={(e) => {
-                    disableEditFromKey(e);
-                  }}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    dispatch(
-                      actionCreators.editTabItemDescription(
-                        v.id,
-                        e.currentTarget.value
-                      )
-                    );
-                  }}
-                />
-              ) : (
-                <p className="dexcription-text">{v.description}</p>
-              )}
-            </div>
-          </a>
-          <div className={`tab-menu hide ${isEdit ? "hide" : ""}`}>
-            <button
-              className="edit-btn"
-              onClick={() => {
-                setEditTarget(v.id);
-              }}
-            >
-              <Fa icon={faPen} />
-            </button>
+            </a>
+            <div className={`tab-menu hide ${isEdit ? "hide" : ""}`}>
+              <button
+                className="edit-btn"
+                onClick={() => {
+                  setEditTarget(v.id);
+                }}
+              >
+                <Fa icon={faPen} />
+              </button>
 
-            <button
-              className="delete-btn"
-              onClick={() => {
-                dispatch(actionCreators.deleteTabItem(v.id));
-              }}
-            >
-              <Fa icon={faTimes} />
-            </button>
-          </div>
-        </li>
+              <button
+                className="delete-btn"
+                onClick={() => {
+                  dispatch(actionCreators.deleteTabItem(v.id));
+                }}
+              >
+                <Fa icon={faTimes} />
+              </button>
+            </div>
+          </li>
+          {tabListLength - 1 > i ? (
+            <div className="drop-space back" id={v.id}></div>
+          ) : null}
+        </div>
       );
     });
   };
@@ -251,6 +257,71 @@ const Tabs = () => {
   });
 
   useEffect(() => {
+    const resizeEvent = _.throttle(() => {
+      console.log("resizeEvent");
+
+      const tabItems: HTMLDivElement[] = Array.from(
+        document.querySelectorAll(".tab-item-wrap")
+      );
+      let prevY: number = tabItems[0].getBoundingClientRect().y;
+      let prevItem: HTMLDivElement = tabItems[0];
+
+      for (let i in tabItems) {
+        const y = tabItems[i].getBoundingClientRect().y;
+
+        const dropSapceBack = prevItem.querySelector(".drop-space.back") as
+          | HTMLDivElement
+          | undefined;
+
+        if (prevY !== y) {
+          if (dropSapceBack) dropSapceBack.style.display = "block";
+          prevItem.style.flexGrow = "1";
+        } else {
+          if (dropSapceBack) dropSapceBack.style.display = "none";
+          prevItem.style.flexGrow = "0";
+        }
+
+        prevY = y;
+        prevItem = tabItems[i];
+      }
+    }, 500);
+
+    // const resizeEvent = _.throttle(() => {
+    //   console.log("resizeEvent");
+
+    //   const tabItems: HTMLDivElement[] = Array.from(
+    //     document.querySelectorAll(".tab-item-wrap")
+    //   );
+    //   let prevY: number = 0;
+
+    //   for (const item of tabItems) {
+    //     const y = item.getBoundingClientRect().y;
+
+    //     const dropSapceFront = item.querySelector(".drop-space.front") as
+    //       | HTMLDivElement
+    //       | undefined;
+
+    //     if (prevY !== y) {
+    //       if (dropSapceFront) dropSapceFront.style.display = "block";
+    //     } else {
+    //       if (dropSapceFront) dropSapceFront.style.display = "none";
+    //     }
+
+    //     prevY = y;
+    //   }
+    // }, 300);
+
+    resizeEvent();
+
+    window.addEventListener("resize", resizeEvent);
+
+    return () => {
+      window.removeEventListener("resize", resizeEvent);
+    };
+  }, [window]);
+
+  useEffect(() => {
+    // Set Event disableEdit
     const appBottom = document.querySelector(".app-bottom");
     const disableEdit = (e: Event) => {
       let parent = e.target as HTMLElement | null;
