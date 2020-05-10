@@ -124,32 +124,57 @@
           }
         }
         .collection-tab-list {
+          border-radius: 3px;
           min-height: 4rem;
-          padding: 0 0.5rem 0 0;
+          padding: 0 0.5rem 1.5rem 0;
           display: flex;
           flex-wrap: wrap;
+          background-color: transparent;
+
+          &.drag-over {
+            background-color: #f1f1f1 !important;
+          }
 
           .tab-item-wrap {
-            display: flex;
-            // position: relative;
-            transition: all 0.1s;
+            position: relative;
+            padding: 0.5rem 0.3rem;
 
             .drop-space {
-              box-sizing: border-box;
+              display: none;
+              z-index: 2;
+              position: absolute;
+              top: 0;
+              left: 0;
+              min-height: 100%;
+              min-width: 100%;
+            }
+            .add-pin {
+              // display: flex;
+              display: none;
+              color: #9d9d9d;
+              position: absolute;
+              z-index: 2;
+              top: 0.25rem;
 
-              // border: 1px solid blue; //
-              min-width: 0.5rem;
-              min-height: 6rem;
-              margin-top: 2px;
+              height: 100%;
+              width: 1rem;
+              flex-direction: column;
+              justify-content: space-between;
+              align-items: center;
 
               &.front {
-                position: absolute;
+                left: -0.5rem;
+              }
+              &.last {
+                right: -0.5rem;
               }
 
-              &.back {
-                display: none;
-                right: 0;
-                flex-grow: 1;
+              .v-line {
+                position: absolute;
+                width: 2px;
+                background-color: #9d9d9d;
+                height: 4.5rem;
+                top: 1rem;
               }
             }
           }
@@ -164,8 +189,8 @@
             background-color: #fff;
             border: 2px solid transparent;
             border-radius: 3px;
-            margin: 0.5rem 0;
-            margin-left: 0.5rem;
+            // margin: 0.5rem 0;
+            // margin-left: 0.5rem;
             box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.1),
               2px 2px 4px 0px rgba(0, 0, 0, 0.1);
             position: relative;

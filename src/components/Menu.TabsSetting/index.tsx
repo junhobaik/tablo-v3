@@ -1,11 +1,12 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
-import { faFile } from "@fortawesome/free-regular-svg-icons";
-
-import "./index.scss";
+import { faFile, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { faArchive } from "@fortawesome/free-solid-svg-icons";
-import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+
+import { actionCreators as globalActionCreators } from "../../modules/global/actions";
+import "./index.scss";
 
 interface CurrentTabItem {
   title: string | undefined;
@@ -14,6 +15,7 @@ interface CurrentTabItem {
 }
 
 const Tabs = () => {
+  const dispatch = useDispatch();
   const [currentTabList, setCurrentTabList] = useState<CurrentTabItem[]>([]);
   const getAllTabs = () => {
     chrome.windows.getAll({ populate: true }, (windows) => {
@@ -42,10 +44,40 @@ const Tabs = () => {
     });
   }, []);
 
+  const toggleDropSapce = (isShow: boolean) => {
+    const dropSpace: HTMLDivElement[] = Array.from(
+      document.querySelectorAll(".drop-space")
+    );
+    for (const d of dropSpace) {
+      d.style.display = isShow ? "block" : "none";
+    }
+  };
+
   const mapCurrentTabList = currentTabList.map(
     (v: CurrentTabItem, i: number) => {
       return (
-        <li className="link-item" key={`link-${v.url}-${i}`}>
+        <li
+          className="link-item"
+          key={`link-${v.url}-${i}`}
+          draggable
+          onDragStart={() => {
+            if (v.title && v.url) {
+              dispatch(
+                globalActionCreators.setDragData({
+                  from: "tabs-setting",
+                  title: v.title,
+                  url: v.url,
+                })
+              );
+              toggleDropSapce(true);
+            }
+          }}
+          onDragEnd={() => {
+            dispatch(globalActionCreators.clearDragData());
+            dispatch(globalActionCreators.clearDropData());
+            toggleDropSapce(false);
+          }}
+        >
           <div className="link-icon">
             <div className="no-favicon">
               <Fa icon={faFile} />

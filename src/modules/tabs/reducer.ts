@@ -58,20 +58,32 @@ const initialState: TabsState = {
 
 function tabReducer(state = initialState, action: TabActionTypes): TabsState {
   switch (action.type) {
-    case ADD_TAB_ITEM:
+    case ADD_TAB_ITEM: {
+      const { index } = action.state;
+      const newItem = {
+        id: uuidv4(),
+        title: action.state.title,
+        description: action.state.description,
+        url: action.state.url,
+        collection: action.state.collection,
+      };
+
+      if (index !== null) {
+        return {
+          ...state,
+          tabs: [
+            ..._.slice(state.tabs, 0, index),
+            newItem,
+            ..._.slice(state.tabs, index, state.tabs.length),
+          ],
+        };
+      }
+
       return {
         ...state,
-        tabs: [
-          ...state.tabs,
-          {
-            id: uuidv4(),
-            title: action.payload.title,
-            description: action.payload.description,
-            url: action.payload.url,
-            collection: action.payload.collection,
-          },
-        ],
+        tabs: [...state.tabs, newItem],
       };
+    }
 
     case DELETE_TAB_ITEM: {
       const newState = _.cloneDeep(state);

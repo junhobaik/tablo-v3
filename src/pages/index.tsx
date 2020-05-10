@@ -16,8 +16,8 @@ store.subscribe(() => {
       tablo3: state,
     },
     () => {
-      chrome.storage.sync.get("tablo3", (res) => {
-        console.log("SyncStorage Changed", res.tablo3);
+      chrome.storage.sync.get("tablo3", () => {
+        // console.log("SyncStorage Changed", res.tablo3);
       });
     }
   );

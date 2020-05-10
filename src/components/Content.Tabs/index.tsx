@@ -8,6 +8,7 @@ import {
   faPen,
   faTimes,
   faAngleUp,
+  faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { faWindowRestore, faFile } from "@fortawesome/free-regular-svg-icons";
 import _ from "lodash";
@@ -18,12 +19,15 @@ import {
   TabItem,
   actionCreators,
 } from "../../modules/tabs/actions";
+import { actionCreators as globalActionCreators } from "../../modules/global/actions";
 import ContentHeader from "../Content.Header";
 import "./index.scss";
 
 const Tabs = () => {
   const dispatch = useDispatch();
   const tabsState = useSelector((state: RootState) => state.tabs);
+  const globalState = useSelector((state: RootState) => state.global);
+  const { drag, drop } = globalState;
 
   const [editTarget, setEditTarget] = useState<string | undefined>();
 
@@ -31,12 +35,44 @@ const Tabs = () => {
   const collectionListData = collections;
   const tabListData = tabs;
 
+  const dragEnterCollectionTabList = (
+    e: React.DragEvent<HTMLOListElement>,
+    tabItemID: string,
+    tabListLength: number
+  ) => {
+    const lastPin = e.currentTarget.querySelector(".add-pin.last") as
+      | HTMLDivElement
+      | undefined;
+
+    if (lastPin) lastPin.style.display = "flex";
+
+    const dragFrom = drag?.from;
+
+    if (dragFrom === "tabs-setting") {
+      dispatch(
+        globalActionCreators.setDropData({
+          collection: tabItemID,
+          index: tabListLength,
+        })
+      );
+    }
+  };
+  const dragLeaveCollectionTabList = (e: React.DragEvent<HTMLOListElement>) => {
+    // e.preventDefault();
+    const lastPin = e.currentTarget.querySelector(".add-pin.last") as
+      | HTMLDivElement
+      | undefined;
+
+    if (lastPin) lastPin.style.display = "none";
+  };
+
   const toggleFoldedCollection = (id: string) => {
     dispatch(actionCreators.setFoldedCollection(id));
   };
 
-  const createTabList = (tabList: TabItem[]) => {
+  const createTabList = (tabList: TabItem[], collectionId: string) => {
     const tabListLength = tabList.length;
+
     return tabList.map((v: TabItem, i: number) => {
       const getIsEdit = () => v.id === editTarget;
       const isEdit = getIsEdit();
@@ -49,8 +85,68 @@ const Tabs = () => {
       };
 
       return (
-        <div className="tab-item-wrap" key={`tab-${v.id}`}>
-          <div className="drop-space front" id={v.id}></div>
+        <div
+          className="tab-item-wrap"
+          key={`tab-${v.id}`}
+          onDragEnter={(e) => {
+            e.stopPropagation(); // collection-tab-list
+          }}
+          onDragLeave={(e) => {
+            e.stopPropagation(); // collection-tab-list
+          }}
+        >
+          <div
+            className="drop-space"
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
+            onDragEnter={(e) => {
+              const addPin = e.currentTarget.parentElement?.querySelector(
+                ".add-pin.front"
+              ) as HTMLDivElement | undefined;
+
+              if (addPin) addPin.style.display = "flex";
+
+              if (drag?.from === "tabs-setting") {
+                dispatch(
+                  globalActionCreators.setDropData({
+                    collection: collectionId,
+                    index: i,
+                  })
+                );
+              }
+            }}
+            onDragLeave={(e) => {
+              // TODO: add-pin 제어 관련 중복 제거 필요
+              const addPin = e.currentTarget.parentElement?.querySelector(
+                ".add-pin.front"
+              ) as HTMLDivElement | undefined;
+
+              if (addPin) addPin.style.display = "none";
+            }}
+            onDrop={() => {
+              if (drag && drop) {
+                dispatch(
+                  actionCreators.addTabItem({
+                    index: drop.index,
+                    title: drag.title,
+                    description: "",
+                    url: drag.url,
+                    collection: drop.collection,
+                  })
+                );
+              }
+            }}
+          ></div>
+          <div className="add-pin front">
+            <div className="add-icon">
+              <Fa icon={faPlusCircle} />
+            </div>
+            <div className="v-line"></div>
+            <div className="up-icon">
+              <Fa icon={faAngleUp} />
+            </div>
+          </div>
           <li
             className={`tab-item ${isEdit ? "edit-item" : ""}`}
             onMouseEnter={(e: React.MouseEvent) => {
@@ -162,8 +258,16 @@ const Tabs = () => {
               </button>
             </div>
           </li>
-          {tabListLength - 1 > i ? (
-            <div className="drop-space back" id={v.id}></div>
+          {tabListLength - 1 <= i ? (
+            <div className="add-pin last">
+              <div className="add-icon">
+                <Fa icon={faPlusCircle} />
+              </div>
+              <div className="v-line"></div>
+              <div className="up-icon">
+                <Fa icon={faAngleUp} />
+              </div>
+            </div>
           ) : null}
         </div>
       );
@@ -172,7 +276,7 @@ const Tabs = () => {
 
   const collectionList = collectionListData.map((v: CollectionItem) => {
     const filteredTabs = _.filter(tabListData, { collection: v.id });
-    const tabList = createTabList(filteredTabs);
+    const tabList = createTabList(filteredTabs, v.id);
 
     return (
       <li className="collection" key={`collection-${v.id}`}>
@@ -249,6 +353,28 @@ const Tabs = () => {
         <ol
           className="collection-tab-list"
           style={{ display: v.folded ? "none" : "flex" }}
+          onDragOver={(e) => {
+            e.preventDefault();
+          }}
+          onDragEnter={(e) => {
+            dragEnterCollectionTabList(e, v.id, tabList.length);
+          }}
+          onDragLeave={dragLeaveCollectionTabList}
+          onDrop={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+
+            if (drag && drop && e.currentTarget === e.target) {
+              dispatch(
+                actionCreators.addTabItem({
+                  index: null,
+                  title: drag.title,
+                  description: "",
+                  url: drag.url,
+                  collection: drop.collection,
+                })
+              );
+            }
+          }}
         >
           {tabList}
         </ol>
@@ -256,69 +382,53 @@ const Tabs = () => {
     );
   });
 
-  useEffect(() => {
-    const resizeEvent = _.throttle(() => {
-      console.log("resizeEvent");
+  // useEffect(() => {
+  //   const resizeEvent = _.throttle(() => {
+  //     const collections: HTMLOListElement[] | undefined = Array.from(
+  //       document.querySelectorAll(".collection-tab-list")
+  //     );
 
-      const tabItems: HTMLDivElement[] = Array.from(
-        document.querySelectorAll(".tab-item-wrap")
-      );
-      let prevY: number = tabItems[0].getBoundingClientRect().y;
-      let prevItem: HTMLDivElement = tabItems[0];
+  //     if (collections.length) {
+  //       for (const c of collections) {
+  //         const tabItems: HTMLDivElement[] = Array.from(
+  //           c.querySelectorAll(".tab-item-wrap")
+  //         );
 
-      for (let i in tabItems) {
-        const y = tabItems[i].getBoundingClientRect().y;
+  //         let prevItem = tabItems[0];
+  //         let prevY = prevItem.getBoundingClientRect().y;
+  //         let cnt: number = 0;
+  //         let maxCnt: number = 0;
 
-        const dropSapceBack = prevItem.querySelector(".drop-space.back") as
-          | HTMLDivElement
-          | undefined;
+  //         for (let i in tabItems) {
+  //           if (i !== "0") {
+  //             const item = tabItems[i];
+  //             const y = item.getBoundingClientRect().y;
 
-        if (prevY !== y) {
-          if (dropSapceBack) dropSapceBack.style.display = "block";
-          prevItem.style.flexGrow = "1";
-        } else {
-          if (dropSapceBack) dropSapceBack.style.display = "none";
-          prevItem.style.flexGrow = "0";
-        }
+  //             if (y !== prevY) {
+  //               if (cnt === maxCnt) prevItem.style.flexGrow = "1";
+  //               cnt = 0;
+  //             } else {
+  //               prevItem.style.flexGrow = "0";
+  //               cnt += 1;
+  //             }
 
-        prevY = y;
-        prevItem = tabItems[i];
-      }
-    }, 500);
+  //             prevItem = item;
+  //             prevY = y;
+  //             maxCnt = maxCnt < cnt ? cnt : maxCnt;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }, 500);
 
-    // const resizeEvent = _.throttle(() => {
-    //   console.log("resizeEvent");
+  //   resizeEvent();
 
-    //   const tabItems: HTMLDivElement[] = Array.from(
-    //     document.querySelectorAll(".tab-item-wrap")
-    //   );
-    //   let prevY: number = 0;
+  //   window.addEventListener("resize", resizeEvent);
 
-    //   for (const item of tabItems) {
-    //     const y = item.getBoundingClientRect().y;
-
-    //     const dropSapceFront = item.querySelector(".drop-space.front") as
-    //       | HTMLDivElement
-    //       | undefined;
-
-    //     if (prevY !== y) {
-    //       if (dropSapceFront) dropSapceFront.style.display = "block";
-    //     } else {
-    //       if (dropSapceFront) dropSapceFront.style.display = "none";
-    //     }
-
-    //     prevY = y;
-    //   }
-    // }, 300);
-
-    resizeEvent();
-
-    window.addEventListener("resize", resizeEvent);
-
-    return () => {
-      window.removeEventListener("resize", resizeEvent);
-    };
-  }, [window]);
+  //   return () => {
+  //     window.removeEventListener("resize", resizeEvent);
+  //   };
+  // }, [tabListData]);
 
   useEffect(() => {
     // Set Event disableEdit

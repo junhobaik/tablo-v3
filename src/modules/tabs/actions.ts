@@ -20,6 +20,14 @@ export interface TabItem {
   collection: string;
 }
 
+export interface AddTabItem {
+  index: number | null;
+  title: string;
+  description: string;
+  url: string;
+  collection: string;
+}
+
 export interface CartItem {
   title: string;
   url: string;
@@ -27,7 +35,7 @@ export interface CartItem {
 
 interface AddTabItemAction {
   type: typeof ADD_TAB_ITEM;
-  payload: TabItem;
+  state: AddTabItem;
 }
 
 interface DeleteTabItemAction {
@@ -65,8 +73,8 @@ export type TabActionTypes =
   | EditTabItemTitle
   | EditTabItemDescription;
 
-const addTabItem = (title: string) => {
-  return { type: ADD_TAB_ITEM, payload: { title } };
+const addTabItem = (state: AddTabItem) => {
+  return { type: ADD_TAB_ITEM, state };
 };
 
 const deleteTabItem = (id: string) => {
