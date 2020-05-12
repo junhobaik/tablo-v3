@@ -70,6 +70,14 @@ const Tabs = () => {
     dispatch(actionCreators.setFoldedCollection(id));
   };
 
+  const toggleAddPin = (e: React.DragEvent<HTMLElement>, isShow: boolean) => {
+    const addPin = e.currentTarget.parentElement?.querySelector(
+      ".add-pin.front"
+    ) as HTMLDivElement | undefined;
+
+    if (addPin) addPin.style.opacity = isShow ? "1" : "0";
+  };
+
   const createTabList = (tabList: TabItem[], collectionId: string) => {
     const tabListLength = tabList.length;
 
@@ -101,11 +109,7 @@ const Tabs = () => {
               e.preventDefault();
             }}
             onDragEnter={(e) => {
-              const addPin = e.currentTarget.parentElement?.querySelector(
-                ".add-pin.front"
-              ) as HTMLDivElement | undefined;
-
-              if (addPin) addPin.style.display = "flex";
+              toggleAddPin(e, true);
 
               if (drag?.from === "tabs-setting") {
                 dispatch(
@@ -117,14 +121,11 @@ const Tabs = () => {
               }
             }}
             onDragLeave={(e) => {
-              // TODO: add-pin 제어 관련 중복 제거 필요
-              const addPin = e.currentTarget.parentElement?.querySelector(
-                ".add-pin.front"
-              ) as HTMLDivElement | undefined;
-
-              if (addPin) addPin.style.display = "none";
+              toggleAddPin(e, false);
             }}
-            onDrop={() => {
+            onDrop={(e) => {
+              toggleAddPin(e, false);
+
               if (drag && drop) {
                 dispatch(
                   actionCreators.addTabItem({
@@ -381,54 +382,6 @@ const Tabs = () => {
       </li>
     );
   });
-
-  // useEffect(() => {
-  //   const resizeEvent = _.throttle(() => {
-  //     const collections: HTMLOListElement[] | undefined = Array.from(
-  //       document.querySelectorAll(".collection-tab-list")
-  //     );
-
-  //     if (collections.length) {
-  //       for (const c of collections) {
-  //         const tabItems: HTMLDivElement[] = Array.from(
-  //           c.querySelectorAll(".tab-item-wrap")
-  //         );
-
-  //         let prevItem = tabItems[0];
-  //         let prevY = prevItem.getBoundingClientRect().y;
-  //         let cnt: number = 0;
-  //         let maxCnt: number = 0;
-
-  //         for (let i in tabItems) {
-  //           if (i !== "0") {
-  //             const item = tabItems[i];
-  //             const y = item.getBoundingClientRect().y;
-
-  //             if (y !== prevY) {
-  //               if (cnt === maxCnt) prevItem.style.flexGrow = "1";
-  //               cnt = 0;
-  //             } else {
-  //               prevItem.style.flexGrow = "0";
-  //               cnt += 1;
-  //             }
-
-  //             prevItem = item;
-  //             prevY = y;
-  //             maxCnt = maxCnt < cnt ? cnt : maxCnt;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }, 500);
-
-  //   resizeEvent();
-
-  //   window.addEventListener("resize", resizeEvent);
-
-  //   return () => {
-  //     window.removeEventListener("resize", resizeEvent);
-  //   };
-  // }, [tabListData]);
 
   useEffect(() => {
     // Set Event disableEdit
