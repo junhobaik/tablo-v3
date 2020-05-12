@@ -309,7 +309,27 @@ const Tabs = () => {
                 icon={faWindowRestore}
                 text="Open all links"
                 size={7.75}
-                clickEvent={() => {}}
+                clickEvent={() => {
+                  const links: string[] = [];
+                  // TODO: 향후 설정의 모든 탭 열기 방식과 연동
+                  // const openMethod: "self" | "blank" = "blank";
+
+                  for (const tab of filteredTabs) {
+                    links.push(tab.url);
+                  }
+
+                  if (links.length) {
+                    chrome.windows.create({ url: links, type: "normal" });
+
+                    // if (openMethod === "self") {
+                    //   for (const link of links) {
+                    //     chrome.tabs.create({ url: link });
+                    //   }
+                    // } else {
+                    //   chrome.windows.create({ url: links, type: "normal" });
+                    // }
+                  }
+                }}
               />
             </div>
             <div
