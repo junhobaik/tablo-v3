@@ -22,6 +22,7 @@ import {
 import { actionCreators as globalActionCreators } from "../../modules/global/actions";
 import ContentHeader from "../Content.Header";
 import "./index.scss";
+import ExpendButton from "../utils/ExpendButton";
 
 const Tabs = () => {
   const dispatch = useDispatch();
@@ -303,10 +304,13 @@ const Tabs = () => {
             </div>
           </div>
           <div className="collection-menu">
-            <div className="collection-open-all">
-              <button className="open-all-btn circle-btn">
-                <Fa icon={faWindowRestore} />
-              </button>
+            <div className="collection-open-all-wrap">
+              <ExpendButton
+                icon={faWindowRestore}
+                text="Open all links"
+                size={7.75}
+                clickEvent={() => {}}
+              />
             </div>
             <div
               className="collection-setting"

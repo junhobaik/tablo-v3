@@ -7,6 +7,7 @@ import { faArchive } from "@fortawesome/free-solid-svg-icons";
 
 import { actionCreators as globalActionCreators } from "../../modules/global/actions";
 import "./index.scss";
+import ExpendButton from "../utils/ExpendButton";
 
 interface CurrentTabItem {
   title: string | undefined;
@@ -109,9 +110,14 @@ const Tabs = () => {
         <div className="current-tab-list-wrap list-wrap">
           <div className="current-tab-list-header list-header">
             <h2>Current Tabs</h2>
-            <button className="circle-btn">
-              <Fa icon={faArchive} />
-            </button>
+            <div className="save-all-link">
+              <ExpendButton
+                icon={faArchive}
+                text="Save all Tabs"
+                size={7.5}
+                clickEvent={() => {}}
+              />
+            </div>
           </div>
           <ul className="current-tab-list list">{mapCurrentTabList}</ul>
         </div>
@@ -119,9 +125,14 @@ const Tabs = () => {
         <div className="cart-list-wrap list-wrap">
           <div className="cart-list-header list-header">
             <h2>Cart</h2>
-            <button className="circle-btn">
-              <Fa icon={faTrashAlt} />
-            </button>
+            <div className="empty-cart">
+              <ExpendButton
+                icon={faTrashAlt}
+                text="Empty Cart"
+                size={7}
+                clickEvent={() => {}}
+              />
+            </div>
           </div>
           <ul className="cart-list list"></ul>
         </div>

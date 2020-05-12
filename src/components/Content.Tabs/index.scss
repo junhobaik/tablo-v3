@@ -1,9 +1,5 @@
 #Tabs {
   .tabs-content {
-    button {
-      all: unset;
-      cursor: pointer;
-    }
     .collection-list {
       list-style: none;
       margin: 0;
@@ -51,8 +47,12 @@
 
           .collection-menu {
             display: flex;
-            .collection-open-all,
+
             .collection-setting {
+              button {
+                all: unset;
+                cursor: pointer;
+              }
               position: relative;
               display: flex;
               align-items: center;
@@ -189,8 +189,6 @@
             background-color: #fff;
             border: 2px solid transparent;
             border-radius: 3px;
-            // margin: 0.5rem 0;
-            // margin-left: 0.5rem;
             box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.1),
               2px 2px 4px 0px rgba(0, 0, 0, 0.1);
             position: relative;
