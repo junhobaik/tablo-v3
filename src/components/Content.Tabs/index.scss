@@ -22,6 +22,11 @@
             .collection-fold {
               display: flex;
               margin-right: 0.25rem;
+
+              button.fold-btn {
+                all: unset;
+                cursor: pointer;
+              }
             }
 
             .collection-title {
