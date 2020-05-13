@@ -11,6 +11,7 @@ import {
   EDIT_TAB_ITEM_TITLE,
   EDIT_TAB_ITEM_DESCRIPTION,
   TABS_ARCHIVE,
+  DELETE_COLLECTION,
 } from "./actions";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -158,6 +159,23 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
         ],
         tabs: [...state.tabs, ...newItems],
       };
+    }
+
+    case DELETE_COLLECTION: {
+      const newState = _.cloneDeep(state);
+      const collectionID = action.collectionID;
+
+      _.remove(newState.tabs, (item) => {
+        if (item.collection === collectionID) return true;
+        return false;
+      });
+
+      _.remove(newState.collections, (collection) => {
+        if (collection.id === collectionID) return true;
+        return false;
+      });
+
+      return newState;
     }
 
     default:

@@ -2,6 +2,7 @@ import { TabsState } from "./reducer";
 
 export const ADD_TAB_ITEM = "tabs/ADD_TAB_ITEM";
 export const DELETE_TAB_ITEM = "tabs/DELETE_TAB_ITEM";
+export const DELETE_COLLECTION = "tabs/DELETE_COLLECTION";
 export const RESET_TABS = "tabs/RESET_TABS";
 export const SET_FOLDED_COLLECTION = "tabs/SET_FOLDED_COLLECTION";
 export const EDIT_TAB_ITEM_TITLE = "tabs/EDIT_TAB_ITEM_TITLE";
@@ -77,7 +78,13 @@ interface TabsArchiveAction {
   items: SimpleItem[];
 }
 
+interface DeleteCollectionAction {
+  type: typeof DELETE_COLLECTION;
+  collectionID: string;
+}
+
 export type TabActionTypes =
+  | DeleteCollectionAction
   | AddTabItemAction
   | DeleteTabItemAction
   | ResetTabsAction
@@ -119,6 +126,10 @@ const tabsArchive = (items: SimpleItem[]) => {
   return { type: TABS_ARCHIVE, items };
 };
 
+const deleteCollection = (collectionID: string) => {
+  return { type: DELETE_COLLECTION, collectionID };
+};
+
 export const actionCreators = {
   addTabItem,
   deleteTabItem,
@@ -128,4 +139,5 @@ export const actionCreators = {
   editTabItemDescription,
   addCollection,
   tabsArchive,
+  deleteCollection,
 };

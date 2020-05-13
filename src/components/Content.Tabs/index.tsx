@@ -367,7 +367,12 @@ const Tabs = () => {
                 <button className="edit-btn">
                   <Fa icon={faPen} />
                 </button>
-                <button className="delete-btn">
+                <button
+                  className="delete-btn"
+                  onClick={() => {
+                    dispatch(actionCreators.deleteCollection(v.id));
+                  }}
+                >
                   <Fa icon={faTimes} />
                 </button>
               </div>
