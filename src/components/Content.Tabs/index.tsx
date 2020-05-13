@@ -330,7 +330,6 @@ const Tabs = () => {
                       const collections = Array.from(
                         document.querySelectorAll(".collection")
                       ) as HTMLLIElement[];
-                      console.log(collections);
 
                       if (collections.length) {
                         for (const c of collections) {
@@ -351,6 +350,16 @@ const Tabs = () => {
 
                     if (collection) {
                       collection.style.opacity = "1";
+                    }
+
+                    const collections = Array.from(
+                      document.querySelectorAll(
+                        "li.collection>.collection-drop-space"
+                      )
+                    ) as HTMLLIElement[];
+                    console.log(collections);
+                    for (const c of collections) {
+                      c.style.display = "none";
                     }
                   }}
                 >
