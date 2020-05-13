@@ -154,6 +154,7 @@
               min-width: 100%;
             }
             .add-pin {
+              pointer-events: none;
               display: flex;
               color: #9d9d9d;
               position: absolute;
@@ -295,6 +296,9 @@
               transition: opacity 0.2s;
 
               button {
+                // TODO:
+                all: unset;
+                cursor: pointer;
                 transition: all 0.15s;
                 transition-timing-function: ease-out;
               }
