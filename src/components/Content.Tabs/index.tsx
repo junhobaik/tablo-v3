@@ -95,6 +95,30 @@ const Tabs = () => {
     if (keyCode === 13 || keyCode === 27) setEditTarget("");
   };
 
+  const toggleDropSapce = (
+    isShow: boolean,
+    currentDropSpace: HTMLDivElement | null | undefined = undefined,
+    nextDropSpace: HTMLDivElement | null | undefined = undefined
+  ) => {
+    const dropSpace: HTMLDivElement[] = Array.from(
+      document.querySelectorAll(".drop-space")
+    );
+
+    for (const i in dropSpace) {
+      if (!isShow) {
+        dropSpace[i].style.display = "none";
+      } else {
+        if (currentDropSpace && dropSpace[i] === currentDropSpace) {
+          dropSpace[i].style.display = "none";
+        } else if (nextDropSpace && dropSpace[i] === nextDropSpace) {
+          dropSpace[i].style.display = "none";
+        } else {
+          dropSpace[i].style.display = "block";
+        }
+      }
+    }
+  };
+
   const createTabList = (tabList: TabItem[], collectionId: string) => {
     const tabListLength = tabList.length;
 
@@ -107,30 +131,6 @@ const Tabs = () => {
         if (!getIsEdit()) {
           menu?.classList.remove(isShow ? "hide" : "show");
           menu?.classList.add(isShow ? "show" : "hide");
-        }
-      };
-
-      const toggleDropSapce = (
-        isShow: boolean,
-        currentDropSpace: HTMLDivElement | null | undefined = undefined,
-        nextDropSpace: HTMLDivElement | null | undefined = undefined
-      ) => {
-        const dropSpace: HTMLDivElement[] = Array.from(
-          document.querySelectorAll(".drop-space")
-        );
-
-        for (const i in dropSpace) {
-          if (!isShow) {
-            dropSpace[i].style.display = "none";
-          } else {
-            if (currentDropSpace && dropSpace[i] === currentDropSpace) {
-              dropSpace[i].style.display = "none";
-            } else if (nextDropSpace && dropSpace[i] === nextDropSpace) {
-              dropSpace[i].style.display = "none";
-            } else {
-              dropSpace[i].style.display = "block";
-            }
-          }
         }
       };
 
@@ -151,12 +151,12 @@ const Tabs = () => {
               e.preventDefault();
             }}
             onDragEnter={(e) => {
-              toggleAddPin(e, true);
-
               if (
                 (drag as DragData)?.from === "tabs-setting" ||
                 (drag as DragMoveData)?.type === "tabs"
               ) {
+                toggleAddPin(e, true);
+
                 dispatch(
                   globalActionCreators.setDropData({
                     collection: collectionId,
@@ -654,6 +654,8 @@ const Tabs = () => {
                         drop.index
                       )
                     );
+
+                    toggleDropSapce(false);
                   }
                 }
               }}
