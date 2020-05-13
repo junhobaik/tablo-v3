@@ -100,6 +100,38 @@ const Tabs = () => {
     return tabList.map((v: TabItem, i: number) => {
       const getIsEdit = () => v.id === editTarget;
       const isEdit = getIsEdit();
+      const toggleTabItemMenu = (tabItemEl: HTMLElement, isShow: boolean) => {
+        const menu = tabItemEl.querySelector(".tab-menu");
+
+        if (!getIsEdit()) {
+          menu?.classList.remove(isShow ? "hide" : "show");
+          menu?.classList.add(isShow ? "show" : "hide");
+        }
+      };
+
+      const toggleDropSapce = (
+        isShow: boolean,
+        currentDropSpace: HTMLDivElement | null | undefined = undefined,
+        nextDropSpace: HTMLDivElement | null | undefined = undefined
+      ) => {
+        const dropSpace: HTMLDivElement[] = Array.from(
+          document.querySelectorAll(".drop-space")
+        );
+
+        for (const i in dropSpace) {
+          if (!isShow) {
+            dropSpace[i].style.display = "none";
+          } else {
+            if (currentDropSpace && dropSpace[i] === currentDropSpace) {
+              dropSpace[i].style.display = "none";
+            } else if (nextDropSpace && dropSpace[i] === nextDropSpace) {
+              dropSpace[i].style.display = "none";
+            } else {
+              dropSpace[i].style.display = "block";
+            }
+          }
+        }
+      };
 
       return (
         <div
@@ -120,7 +152,10 @@ const Tabs = () => {
             onDragEnter={(e) => {
               toggleAddPin(e, true);
 
-              if ((drag as DragData)?.from === "tabs-setting") {
+              if (
+                (drag as DragData)?.from === "tabs-setting" ||
+                (drag as DragMoveData)?.type === "tabs"
+              ) {
                 dispatch(
                   globalActionCreators.setDropData({
                     collection: collectionId,
@@ -134,9 +169,10 @@ const Tabs = () => {
             }}
             onDrop={(e) => {
               toggleAddPin(e, false);
-              const dragData = drag as DragData;
+              toggleDropSapce(false);
 
-              if (drag && drop) {
+              if (drag && drop && (drag as DragData).from) {
+                const dragData = drag as DragData;
                 dispatch(
                   actionCreators.addTabItem({
                     index: drop.index,
@@ -145,6 +181,17 @@ const Tabs = () => {
                     url: dragData.url,
                     collection: drop.collection,
                   })
+                );
+              }
+
+              if (drag && drop && (drag as DragMoveData).type === "tabs") {
+                const dragData = drag as DragMoveData;
+                dispatch(
+                  actionCreators.moveTabItem(
+                    drop.collection,
+                    dragData.id,
+                    drop.index
+                  )
                 );
               }
             }}
@@ -158,117 +205,171 @@ const Tabs = () => {
               <Fa icon={faAngleUp} />
             </div>
           </div>
-          <li
-            className={`tab-item ${isEdit ? "edit-item" : ""}`}
-            onMouseEnter={(e: React.MouseEvent) => {
-              const menu = e.currentTarget.querySelector(".tab-menu");
-              if (!getIsEdit()) {
-                menu?.classList.remove("hide");
-                menu?.classList.add("show");
-              }
-            }}
-            onMouseLeave={(e: React.MouseEvent) => {
-              const menu = e.currentTarget.querySelector(".tab-menu");
-              if (!getIsEdit()) {
-                menu?.classList.remove("show");
-                menu?.classList.add("hide");
-              }
-            }}
-          >
-            <a
-              className="tab-link"
-              onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                e.preventDefault();
-                if (!getIsEdit()) window.open(v.url, "_self");
+          <div className="tab-item-shadow-wrap">
+            <li
+              className={`tab-item ${isEdit ? "edit-item" : ""}`}
+              onMouseEnter={(e: React.MouseEvent) => {
+                toggleTabItemMenu(e.currentTarget as HTMLElement, true);
+              }}
+              onMouseLeave={(e: React.MouseEvent) => {
+                toggleTabItemMenu(e.currentTarget as HTMLElement, false);
               }}
             >
-              <div className="tab-header">
-                <div className="tab-icon">
-                  <div className="no-favicon">
-                    <Fa icon={faFile} />
-                  </div>
+              <div
+                className="tab-link-wrap"
+                draggable
+                onDragStart={(e) => {
+                  const currentDropSpace = e.currentTarget.parentNode?.parentNode?.parentNode?.querySelector(
+                    ".drop-space"
+                  ) as HTMLDivElement | undefined;
 
-                  <div className="favicon">
-                    <img
-                      src={`${v.url
-                        .split("/")
-                        .splice(0, 3)
-                        .join("/")}/favicon.ico`}
-                      onError={(e: any) => {
-                        e.currentTarget.style.display = "none";
-                        e.currentTarget.parentNode.parentNode.firstChild.style.display =
-                          "inline-block";
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="tab-title">
-                  {/* FIXME: textarea와 span 전환시 미묘한 위치 안맞음이 있는 이슈 */}
-                  {isEdit ? (
-                    <textarea
-                      cols={2}
-                      className="title-input"
-                      placeholder={v.title}
-                      onKeyDown={(e) => {
-                        disableEditFromKey(e);
-                      }}
-                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                        dispatch(
-                          actionCreators.editTabItemTitle(
-                            v.id,
-                            e.currentTarget.value
-                          )
-                        );
-                      }}
-                    />
-                  ) : (
-                    <span className="title-text">{v.title}</span>
-                  )}
-                </div>
-              </div>
-              <div className="tab-description">
-                {isEdit ? (
-                  <input
-                    type="text"
-                    className="description-input"
-                    placeholder={v.description}
-                    onKeyDown={(e) => {
-                      disableEditFromKey(e);
-                    }}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      dispatch(
-                        actionCreators.editTabItemDescription(
-                          v.id,
-                          e.currentTarget.value
-                        )
-                      );
-                    }}
-                  />
-                ) : (
-                  <p className="dexcription-text">{v.description}</p>
-                )}
-              </div>
-            </a>
-            <div className={`tab-menu hide ${isEdit ? "hide" : ""}`}>
-              <button
-                className="edit-btn"
-                onClick={() => {
-                  setEditTarget(v.id);
+                  const getNextDropSpace = () => {
+                    const dropSpaces = Array.from(
+                      e.currentTarget.parentNode?.parentNode?.parentNode?.parentNode?.querySelectorAll(
+                        ".drop-space"
+                      ) ?? []
+                    );
+                    for (let di in dropSpaces) {
+                      if (
+                        currentDropSpace === dropSpaces[Number(di)] &&
+                        dropSpaces[Number(di) + 1] &&
+                        currentDropSpace?.classList[1] ===
+                          dropSpaces[Number(di) + 1].classList[1]
+                      ) {
+                        return dropSpaces[Number(di) + 1] as HTMLDivElement;
+                      }
+                    }
+                    return null;
+                  };
+
+                  toggleDropSapce(true, currentDropSpace, getNextDropSpace());
+
+                  dispatch(
+                    globalActionCreators.setDragData({
+                      type: "tabs",
+                      id: v.id,
+                    })
+                  );
+                }}
+                onDragEnd={() => {
+                  toggleDropSapce(false);
+                }}
+                onMouseDown={(e) => {
+                  const menu = e.currentTarget.parentNode?.querySelector(
+                    ".tab-menu"
+                  ) as HTMLDivElement;
+
+                  menu.style.display = "none";
+                  setTimeout(() => {
+                    menu.style.display = "flex";
+                  }, 100);
+
+                  toggleTabItemMenu(
+                    e.currentTarget.parentNode as HTMLElement,
+                    true
+                  );
                 }}
               >
-                <Fa icon={faPen} />
-              </button>
+                <a
+                  className="tab-link"
+                  onClick={(
+                    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+                  ) => {
+                    e.preventDefault();
+                    if (!getIsEdit()) window.open(v.url, "_self");
+                  }}
+                >
+                  <div className="tab-header">
+                    <div className="tab-icon">
+                      <div className="no-favicon">
+                        <Fa icon={faFile} />
+                      </div>
 
-              <button
-                className="delete-btn"
-                onClick={() => {
-                  dispatch(actionCreators.deleteTabItem(v.id));
-                }}
-              >
-                <Fa icon={faTimes} />
-              </button>
-            </div>
-          </li>
+                      <div className="favicon">
+                        <img
+                          src={`${v.url
+                            .split("/")
+                            .splice(0, 3)
+                            .join("/")}/favicon.ico`}
+                          onError={(e: any) => {
+                            e.currentTarget.style.display = "none";
+                            e.currentTarget.parentNode.parentNode.firstChild.style.display =
+                              "inline-block";
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="tab-title">
+                      {/* FIXME: textarea와 span 전환시 미묘한 위치 안맞음이 있는 이슈 */}
+                      {isEdit ? (
+                        <textarea
+                          cols={2}
+                          className="title-input"
+                          placeholder={v.title}
+                          onKeyDown={(e) => {
+                            disableEditFromKey(e);
+                          }}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLTextAreaElement>
+                          ) => {
+                            dispatch(
+                              actionCreators.editTabItemTitle(
+                                v.id,
+                                e.currentTarget.value
+                              )
+                            );
+                          }}
+                        />
+                      ) : (
+                        <span className="title-text">{v.title}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="tab-description">
+                    {isEdit ? (
+                      <input
+                        type="text"
+                        className="description-input"
+                        placeholder={v.description}
+                        onKeyDown={(e) => {
+                          disableEditFromKey(e);
+                        }}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          dispatch(
+                            actionCreators.editTabItemDescription(
+                              v.id,
+                              e.currentTarget.value
+                            )
+                          );
+                        }}
+                      />
+                    ) : (
+                      <p className="dexcription-text">{v.description}</p>
+                    )}
+                  </div>
+                </a>
+              </div>
+              <div className={`tab-menu hide ${isEdit ? "hide" : ""}`}>
+                <button
+                  className="edit-btn"
+                  onClick={() => {
+                    setEditTarget(v.id);
+                  }}
+                >
+                  <Fa icon={faPen} />
+                </button>
+
+                <button
+                  className="delete-btn"
+                  onClick={() => {
+                    dispatch(actionCreators.deleteTabItem(v.id));
+                  }}
+                >
+                  <Fa icon={faTimes} />
+                </button>
+              </div>
+            </li>
+          </div>
           {tabListLength - 1 <= i ? (
             <div className="add-pin last">
               <div className="add-icon">
@@ -530,7 +631,11 @@ const Tabs = () => {
                 e.currentTarget.style.backgroundColor = "transparent";
                 const dragData = drag as DragData;
 
-                if (drag && drop && e.currentTarget === e.target) {
+                if (
+                  dragData?.from === "tabs-setting" &&
+                  drop &&
+                  e.currentTarget === e.target
+                ) {
                   dispatch(
                     actionCreators.addTabItem({
                       index: null,

@@ -11,6 +11,7 @@ export const ADD_COLLECTION = "tabs/ADD_COLLECTION";
 export const TABS_ARCHIVE = "tabs/TABS_ARCHIVE";
 export const EDIT_COLLECTION_TITLE = "tabs/EDIT_COLLECTION_TITLE";
 export const MOVE_COLLECTION = "tabs/MOVE_COLLECTION";
+export const MOVE_TAB_ITEM = "tabs/MOVE_TAB_ITEM";
 
 export interface CollectionItem {
   id: string;
@@ -97,7 +98,15 @@ interface MoveCollectionAction {
   index: number;
 }
 
+interface MoveTabItemAction {
+  type: typeof MOVE_TAB_ITEM;
+  collectionID: string;
+  id: string;
+  index: number;
+}
+
 export type TabActionTypes =
+  | MoveTabItemAction
   | MoveCollectionAction
   | EditCollectionTitle
   | DeleteCollectionAction
@@ -153,8 +162,13 @@ const moveCollection = (id: string, index: number) => {
   return { type: MOVE_COLLECTION, id, index };
 };
 
+const moveTabItem = (collectionID: string, id: string, index: number) => {
+  return { type: MOVE_TAB_ITEM, collectionID, id, index };
+};
+
 export const actionCreators = {
   moveCollection,
+  moveTabItem,
   addTabItem,
   deleteTabItem,
   resetTabs,

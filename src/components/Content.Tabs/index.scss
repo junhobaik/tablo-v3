@@ -212,6 +212,7 @@
               left: 0;
               min-height: 100%;
               min-width: 100%;
+              // background-color: rgba(253, 22, 52, 0.2);
             }
             .add-pin {
               pointer-events: none;
@@ -248,10 +249,8 @@
           .tab-item {
             display: flex;
             flex-direction: column;
-            width: 9rem;
-            height: 4rem;
-            padding: 0.5rem;
-            padding-left: 0.25rem;
+            // width: 9rem;
+            // height: 4rem;
             background-color: #fff;
             border: 2px solid transparent;
             border-radius: 3px;
@@ -263,63 +262,70 @@
               border: 2px solid rgba(253, 22, 52, 0.5);
             }
 
-            .tab-link {
-              all: unset;
-              cursor: grab;
-              &:active {
-                cursor: grabbing;
-              }
+            .tab-link-wrap {
+              width: 9rem;
+              height: 4rem;
+              padding: 0.5rem;
+              padding-left: 0.25rem;
 
-              .tab-header {
-                display: flex;
-                height: 3rem;
+              .tab-link {
+                all: unset;
+                cursor: grab;
 
-                .tab-icon {
-                  margin-right: 0.25rem;
-
-                  .no-favicon,
-                  .favicon {
-                    width: 1.2rem;
-                    // border: 1px solid red;
-                    text-align: center;
-                  }
-                  .no-favicon {
-                    display: none;
-                    font-size: 1rem;
-                  }
-                  .favicon {
-                    img {
-                      pointer-events: none;
-                      width: 1.1rem;
-                      height: 1.1rem;
-                    }
-                  }
+                &:active {
+                  cursor: grabbing;
                 }
 
-                .tab-title {
-                  user-select: none;
+                .tab-header {
                   display: flex;
-                  overflow: hidden;
-                  height: 2.2rem;
-                  width: 100%;
+                  height: 3rem;
 
-                  span,
-                  textarea {
-                    flex-grow: 1;
-                    font-weight: 500;
-                    word-break: break-word;
-                    line-height: 1.1rem;
+                  .tab-icon {
+                    margin-right: 0.25rem;
+
+                    .no-favicon,
+                    .favicon {
+                      width: 1.2rem;
+                      // border: 1px solid red;
+                      text-align: center;
+                    }
+                    .no-favicon {
+                      display: none;
+                      font-size: 1rem;
+                    }
+                    .favicon {
+                      img {
+                        pointer-events: none;
+                        width: 1.1rem;
+                        height: 1.1rem;
+                      }
+                    }
                   }
 
-                  textarea {
-                    all: unset;
-                    cursor: text;
+                  .tab-title {
+                    user-select: none;
+                    display: flex;
+                    overflow: hidden;
+                    height: 2.2rem;
                     width: 100%;
+
+                    span,
+                    textarea {
+                      flex-grow: 1;
+                      font-weight: 500;
+                      word-break: break-word;
+                      line-height: 1.1rem;
+                    }
+
+                    textarea {
+                      all: unset;
+                      cursor: text;
+                      width: 100%;
+                    }
                   }
                 }
               }
             }
-
             .tab-description {
               display: flex;
               height: 1rem;
@@ -354,7 +360,6 @@
               display: flex;
               flex-direction: column;
               height: 100%;
-              transition: opacity 0.2s;
 
               button {
                 // TODO:
