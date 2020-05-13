@@ -45,7 +45,10 @@ const Tabs = () => {
       | HTMLDivElement
       | undefined;
 
-    if (lastPin) lastPin.style.display = "flex";
+    if (lastPin) {
+      lastPin.style.display = "flex";
+      lastPin.style.opacity = "1";
+    }
 
     const dragFrom = drag?.from;
 
