@@ -87,6 +87,7 @@
               display: flex;
               align-items: center;
               img {
+                pointer-events: none;
                 width: 1.1rem;
                 height: 1.1rem;
               }
