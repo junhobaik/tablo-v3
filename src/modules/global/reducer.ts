@@ -1,6 +1,7 @@
 import {
   WindowItem,
   DragData,
+  DragMoveData,
   DropData,
   GlobalActionTypes,
   SET_WINDOW,
@@ -13,7 +14,7 @@ import {
 
 export interface GlobalState {
   window: WindowItem;
-  drag: DragData | null;
+  drag: DragData | DragMoveData | null;
   drop: DropData | null;
 }
 
@@ -40,11 +41,7 @@ function globalReducer(
     case SET_DRAG_DATA: {
       return {
         ...state,
-        drag: {
-          from: action.state.from,
-          title: action.state.title,
-          url: action.state.url,
-        },
+        drag: action.state,
       };
     }
 

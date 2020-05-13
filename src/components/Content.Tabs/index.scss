@@ -1,6 +1,12 @@
 #Tabs {
   .tabs-content {
+    display: flex;
+    flex-direction: column;
+
     .collection-list {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
       list-style: none;
       margin: 0;
       padding: 0;
@@ -12,13 +18,49 @@
 
         .collection-drop-space {
           display: none;
+          box-sizing: border-box;
           z-index: 3;
           position: absolute;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: rgba(255, 0, 0, 0.1);
+          // background-color: rgba(255, 0, 0, 0.1);
+
+          .add-pin {
+            display: flex;
+            pointer-events: none;
+            font-size: 1.4rem;
+            width: 100%;
+            position: absolute;
+            height: 2rem;
+            align-items: center;
+            justify-content: center;
+            top: -1rem;
+            color: #999;
+            opacity: 0;
+            transition: opacity 0.2s;
+
+            .left-icon,
+            .right-icon {
+              position: absolute;
+              display: flex;
+              width: 1rem;
+            }
+            .left-icon {
+              left: 1px;
+              justify-content: flex-end;
+            }
+            .right-icon {
+              right: 1px;
+              justify-content: flex-start;
+            }
+            .line {
+              position: absolute;
+              border: 1.5px solid #999;
+              width: calc(100% - 2rem);
+            }
+          }
         }
         .collection-header {
           display: flex;
@@ -357,19 +399,25 @@
           }
         }
       }
-    }
 
-    .tabs-add-collection {
-      text-align: center;
-      button {
-        all: unset;
-        color: #bbbbbb;
-        font-size: 1.5rem;
-        margin: 0.5rem;
-        opacity: 0.5;
-        cursor: pointer;
-        &:hover {
-          opacity: 1;
+      .tabs-add-collection {
+        flex-grow: 1;
+        min-height: 7rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: none;
+
+        button {
+          all: unset;
+          color: #bbbbbb;
+          font-size: 1.5rem;
+          margin: 0.5rem;
+          opacity: 0.5;
+          cursor: pointer;
+          &:hover {
+            opacity: 1;
+          }
         }
       }
     }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import {
@@ -9,6 +9,8 @@ import {
   faTimes,
   faAngleUp,
   faPlusCircle,
+  faAngleRight,
+  faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { faWindowRestore, faFile } from "@fortawesome/free-regular-svg-icons";
 import _ from "lodash";
@@ -19,7 +21,11 @@ import {
   TabItem,
   actionCreators,
 } from "../../modules/tabs/actions";
-import { actionCreators as globalActionCreators } from "../../modules/global/actions";
+import {
+  actionCreators as globalActionCreators,
+  DragData,
+  DragMoveData,
+} from "../../modules/global/actions";
 import ContentHeader from "../Content.Header";
 import "./index.scss";
 import ExpendButton from "../utils/ExpendButton";
@@ -41,7 +47,7 @@ const Tabs = () => {
     tabItemID: string,
     tabListLength: number
   ) => {
-    const dragFrom = drag?.from;
+    const dragFrom = (drag as DragData)?.from;
 
     if (dragFrom === "tabs-setting") {
       const lastPin = e.currentTarget.querySelector(".add-pin.last") as
@@ -114,7 +120,7 @@ const Tabs = () => {
             onDragEnter={(e) => {
               toggleAddPin(e, true);
 
-              if (drag?.from === "tabs-setting") {
+              if ((drag as DragData)?.from === "tabs-setting") {
                 dispatch(
                   globalActionCreators.setDropData({
                     collection: collectionId,
@@ -128,14 +134,15 @@ const Tabs = () => {
             }}
             onDrop={(e) => {
               toggleAddPin(e, false);
+              const dragData = drag as DragData;
 
               if (drag && drop) {
                 dispatch(
                   actionCreators.addTabItem({
                     index: drop.index,
-                    title: drag.title,
+                    title: dragData.title,
                     description: "",
-                    url: drag.url,
+                    url: dragData.url,
                     collection: drop.collection,
                   })
                 );
@@ -278,226 +285,284 @@ const Tabs = () => {
     });
   };
 
-  const collectionList = collectionListData.map((v: CollectionItem) => {
-    const filteredTabs = _.filter(tabListData, { collection: v.id });
-    const tabList = createTabList(filteredTabs, v.id);
-    const isEdit = v.id === editTarget;
+  const collectionList = collectionListData.map(
+    (v: CollectionItem, i: number) => {
+      const isLast = collectionListData.length - 1 <= i;
+      const filteredTabs = _.filter(tabListData, { collection: v.id });
+      const tabList = createTabList(filteredTabs, v.id);
+      const isEdit = v.id === editTarget;
 
-    return (
-      <li className="collection" key={`collection-${v.id}`}>
-        <div className="collection-drop-space"></div>
-        <div className="collection-header">
-          <div className="collection-title-wrap">
-            <div className="collection-fold">
-              <button
-                className="fold-btn"
-                onClick={() => {
-                  toggleFoldedCollection(v.id);
-                }}
-              >
-                <Fa icon={v.folded ? faAngleDown : faAngleUp} />
-              </button>
-            </div>
-            <div className="collection-title">
-              {isEdit ? (
-                <input
-                  type="text"
-                  className="title-input"
-                  placeholder={v.title}
-                  onKeyDown={(e) => {
-                    disableEditFromKey(e);
-                  }}
-                  onChange={(e) => {
-                    dispatch(
-                      actionCreators.editCollectionTitle(
-                        v.id,
-                        e.currentTarget.value
-                      )
-                    );
-                  }}
-                />
-              ) : (
-                <h2
-                  className="title-text"
-                  draggable
-                  onDragStart={(e) => {
-                    const collection = e.currentTarget.parentNode?.parentNode
-                      ?.parentNode?.parentNode as HTMLLIElement | undefined;
-
-                    if (collection) {
-                      collection.style.opacity = "0.5";
-
-                      const collections = Array.from(
-                        document.querySelectorAll(".collection")
-                      ) as HTMLLIElement[];
-
-                      if (collections.length) {
-                        for (const c of collections) {
-                          if (c !== collection) {
-                            const dropSpace = c.querySelector(
-                              ".collection-drop-space"
-                            ) as HTMLDivElement;
-
-                            dropSpace.style.display = "flex";
-                          }
-                        }
-                      }
-                    }
-                  }}
-                  onDragEnd={(e) => {
-                    const collection = e.currentTarget.parentNode?.parentNode
-                      ?.parentNode?.parentNode as HTMLLIElement | undefined;
-
-                    if (collection) {
-                      collection.style.opacity = "1";
-                    }
-
-                    const collections = Array.from(
-                      document.querySelectorAll(
-                        "li.collection>.collection-drop-space"
-                      )
-                    ) as HTMLLIElement[];
-                    console.log(collections);
-                    for (const c of collections) {
-                      c.style.display = "none";
-                    }
-                  }}
-                >
-                  {v.title}
-                </h2>
-              )}
-            </div>
-          </div>
-          <div className="collection-menu">
-            <div className="collection-open-all-wrap">
-              <ExpendButton
-                icon={faWindowRestore}
-                text="Open all links"
-                size={7.75}
-                clickEvent={() => {
-                  const links: string[] = [];
-                  // TODO: 향후 설정의 모든 탭 열기 방식과 연동
-                  // const openMethod: "self" | "blank" = "blank";
-
-                  for (const tab of filteredTabs) {
-                    links.push(tab.url);
-                  }
-
-                  if (links.length) {
-                    chrome.windows.create({ url: links, type: "normal" });
-
-                    // if (openMethod === "self") {
-                    //   for (const link of links) {
-                    //     chrome.tabs.create({ url: link });
-                    //   }
-                    // } else {
-                    //   chrome.windows.create({ url: links, type: "normal" });
-                    // }
-                  }
-                }}
-              />
-            </div>
-            <div
-              className="collection-setting"
-              onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
-                // TODO: 차후 중복 제거
-                const expend = e.currentTarget.parentNode?.querySelector(
-                  ".setting-expend"
-                ) as HTMLDivElement | null | undefined;
-                if (expend) {
-                  expend.style.top = "-0.75rem";
-                  expend.style.opacity = "0";
-                  expend.style.pointerEvents = "none";
-                }
-              }}
-            >
-              <div
-                className="setting-btn circle-btn"
-                onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-                  // TODO: 차후 중복 제거
-                  const expend = e.currentTarget.parentNode?.querySelector(
-                    ".setting-expend"
-                  ) as HTMLDivElement | null | undefined;
-                  if (expend) {
-                    expend.style.top = "0";
-                    expend.style.opacity = "1";
-                    expend.style.pointerEvents = "all";
-                  }
-                }}
-              >
-                <Fa icon={faCog} />
-              </div>
-              <div className="setting-expend">
-                <div className="space-circle"></div>
-                <button
-                  className="edit-btn"
-                  onClick={() => {
-                    // const collectionHeader =
-                    //   e.currentTarget.parentNode?.parentNode?.parentNode
-                    //     ?.parentNode;
-                    // if (collectionHeader) {
-                    //   const titleText = collectionHeader.querySelector(
-                    //     ".title-text"
-                    //   ) as HTMLHeadingElement;
-                    //   const titleInput = collectionHeader.querySelector(
-                    //     ".title-input"
-                    //   ) as HTMLInputElement;
-
-                    //   titleText.style.display = "none";
-                    //   titleInput.style.display = "flex";
-                    // }
-                    setEditTarget(v.id);
-                  }}
-                >
-                  <Fa icon={faPen} />
-                </button>
-                <button
-                  className="delete-btn"
-                  onClick={() => {
-                    dispatch(actionCreators.deleteCollection(v.id));
-                  }}
-                >
-                  <Fa icon={faTimes} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <ol
-          className="collection-tab-list"
-          style={{ display: v.folded ? "none" : "flex" }}
+      const toggleDropSpaceAddPin = (
+        e: React.DragEvent<HTMLDivElement>,
+        isShow: boolean
+      ) => {
+        const addPin = e.currentTarget.firstChild as HTMLDivElement;
+        addPin.style.opacity = isShow ? "1" : "0";
+      };
+      const dropSpace = (
+        <div
+          className="collection-drop-space"
+          onDragEnter={(e) => {
+            toggleDropSpaceAddPin(e, true);
+          }}
+          onDragLeave={(e) => {
+            toggleDropSpaceAddPin(e, false);
+          }}
           onDragOver={(e) => {
             e.preventDefault();
           }}
-          onDragEnter={(e) => {
-            e.stopPropagation();
-            dragEnterCollectionTabList(e, v.id, tabList.length);
-          }}
-          onDragLeave={(e) => {
-            dragLeaveCollectionTabList(e);
-          }}
           onDrop={(e) => {
-            e.currentTarget.style.backgroundColor = "transparent";
+            toggleDropSpaceAddPin(e, false);
 
-            if (drag && drop && e.currentTarget === e.target) {
-              dispatch(
-                actionCreators.addTabItem({
-                  index: null,
-                  title: drag.title,
-                  description: "",
-                  url: drag.url,
-                  collection: drop.collection,
-                })
-              );
-            }
+            const dragData = drag as DragMoveData;
+            if (dragData)
+              dispatch(actionCreators.moveCollection(dragData.id, i));
           }}
         >
-          {tabList}
-        </ol>
-      </li>
-    );
-  });
+          <div className="add-pin">
+            <div className="left-icon">
+              <Fa icon={faAngleRight} />
+            </div>
+            <div className="right-icon">
+              <Fa icon={faAngleLeft} />
+            </div>
+            <div className="line"></div>
+          </div>
+        </div>
+      );
+
+      return (
+        <Fragment key={`collection-${v.id}`}>
+          <li className="collection">
+            {dropSpace}
+
+            <div className="collection-header">
+              <div className="collection-title-wrap">
+                <div className="collection-fold">
+                  <button
+                    className="fold-btn"
+                    onClick={() => {
+                      toggleFoldedCollection(v.id);
+                    }}
+                  >
+                    <Fa icon={v.folded ? faAngleDown : faAngleUp} />
+                  </button>
+                </div>
+                <div className="collection-title">
+                  {isEdit ? (
+                    <input
+                      type="text"
+                      className="title-input"
+                      placeholder={v.title}
+                      onKeyDown={(e) => {
+                        disableEditFromKey(e);
+                      }}
+                      onChange={(e) => {
+                        dispatch(
+                          actionCreators.editCollectionTitle(
+                            v.id,
+                            e.currentTarget.value
+                          )
+                        );
+                      }}
+                    />
+                  ) : (
+                    <h2
+                      className="title-text"
+                      draggable
+                      onDragStart={(e) => {
+                        dispatch(
+                          globalActionCreators.setDragData({
+                            type: "collection",
+                            id: v.id,
+                          })
+                        );
+                        const collection = e.currentTarget.parentNode
+                          ?.parentNode?.parentNode?.parentNode as
+                          | HTMLLIElement
+                          | undefined;
+
+                        if (collection) {
+                          collection.style.opacity = "0.5";
+
+                          const collections = Array.from(
+                            document.querySelectorAll(".collection")
+                          ) as HTMLLIElement[];
+
+                          if (collections.length) {
+                            for (let fi in collections) {
+                              const index = Number(fi);
+                              if (!(index === i + 1 || index === i)) {
+                                const dropSpace = collections[fi].querySelector(
+                                  ".collection-drop-space"
+                                ) as HTMLDivElement;
+
+                                dropSpace.style.display = "flex";
+                              }
+                            }
+                          }
+                        }
+                      }}
+                      onDragEnd={(e) => {
+                        dispatch(globalActionCreators.clearDragData());
+
+                        const collection = e.currentTarget.parentNode
+                          ?.parentNode?.parentNode?.parentNode as
+                          | HTMLLIElement
+                          | undefined;
+
+                        if (collection) {
+                          collection.style.opacity = "1";
+                        }
+
+                        const collections = Array.from(
+                          document.querySelectorAll(
+                            ".collection>.collection-drop-space"
+                          )
+                        ) as HTMLLIElement[];
+
+                        for (const c of collections) {
+                          c.style.display = "none";
+                        }
+                      }}
+                    >
+                      {v.title}
+                    </h2>
+                  )}
+                </div>
+              </div>
+              <div className="collection-menu">
+                <div className="collection-open-all-wrap">
+                  <ExpendButton
+                    icon={faWindowRestore}
+                    text="Open all links"
+                    size={7.75}
+                    clickEvent={() => {
+                      const links: string[] = [];
+                      // TODO: 향후 설정의 모든 탭 열기 방식과 연동
+                      // const openMethod: "self" | "blank" = "blank";
+
+                      for (const tab of filteredTabs) {
+                        links.push(tab.url);
+                      }
+
+                      if (links.length) {
+                        chrome.windows.create({ url: links, type: "normal" });
+
+                        // if (openMethod === "self") {
+                        //   for (const link of links) {
+                        //     chrome.tabs.create({ url: link });
+                        //   }
+                        // } else {
+                        //   chrome.windows.create({ url: links, type: "normal" });
+                        // }
+                      }
+                    }}
+                  />
+                </div>
+                <div
+                  className="collection-setting"
+                  onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                    // TODO: 차후 중복 제거
+                    const expend = e.currentTarget.parentNode?.querySelector(
+                      ".setting-expend"
+                    ) as HTMLDivElement | null | undefined;
+                    if (expend) {
+                      expend.style.top = "-0.75rem";
+                      expend.style.opacity = "0";
+                      expend.style.pointerEvents = "none";
+                    }
+                  }}
+                >
+                  <div
+                    className="setting-btn circle-btn"
+                    onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
+                      // TODO: 차후 중복 제거
+                      const expend = e.currentTarget.parentNode?.querySelector(
+                        ".setting-expend"
+                      ) as HTMLDivElement | null | undefined;
+                      if (expend) {
+                        expend.style.top = "0";
+                        expend.style.opacity = "1";
+                        expend.style.pointerEvents = "all";
+                      }
+                    }}
+                  >
+                    <Fa icon={faCog} />
+                  </div>
+                  <div className="setting-expend">
+                    <div className="space-circle"></div>
+                    <button
+                      className="edit-btn"
+                      onClick={() => {
+                        setEditTarget(v.id);
+                      }}
+                    >
+                      <Fa icon={faPen} />
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => {
+                        dispatch(actionCreators.deleteCollection(v.id));
+                      }}
+                    >
+                      <Fa icon={faTimes} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <ol
+              className="collection-tab-list"
+              style={{ display: v.folded ? "none" : "flex" }}
+              onDragOver={(e) => {
+                e.preventDefault();
+              }}
+              onDragEnter={(e) => {
+                e.stopPropagation();
+                dragEnterCollectionTabList(e, v.id, tabList.length);
+              }}
+              onDragLeave={(e) => {
+                dragLeaveCollectionTabList(e);
+              }}
+              onDrop={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                const dragData = drag as DragData;
+
+                if (drag && drop && e.currentTarget === e.target) {
+                  dispatch(
+                    actionCreators.addTabItem({
+                      index: null,
+                      title: dragData.title,
+                      description: "",
+                      url: dragData.url,
+                      collection: drop.collection,
+                    })
+                  );
+                }
+              }}
+            >
+              {tabList}
+            </ol>
+          </li>
+          {isLast ? (
+            <div className="collection tabs-add-collection">
+              {dropSpace}
+              <button
+                className="add-collection-btn"
+                onClick={() => {
+                  dispatch(actionCreators.addCollection());
+                }}
+              >
+                <Fa icon={faPlusCircle} />
+              </button>
+            </div>
+          ) : null}
+        </Fragment>
+      );
+    }
+  );
 
   useEffect(() => {
     // Set Event disableEdit
@@ -521,16 +586,6 @@ const Tabs = () => {
       <ContentHeader content="tabs" searchFunc={() => {}} reverse={false} />
       <div className="tabs-content">
         <ol className="collection-list">{collectionList}</ol>
-        <div className="tabs-add-collection">
-          <button
-            className="add-collection-btn"
-            onClick={() => {
-              dispatch(actionCreators.addCollection());
-            }}
-          >
-            <Fa icon={faPlusCircle} />
-          </button>
-        </div>
       </div>
     </div>
   );

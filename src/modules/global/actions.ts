@@ -9,10 +9,17 @@ export const CLEAR_DROP_DATA = "global/CLEAR_DROP_DATA";
 
 export type WindowItem = "default" | "tabs-setting" | "feeds-setting";
 type DragDataFrom = "tabs-setting" | "feeds";
+type DragMoveDataFrom = "collection" | "tabs";
+
 export interface DragData {
   from: DragDataFrom;
   title: string;
   url: string;
+}
+
+export interface DragMoveData {
+  type: DragMoveDataFrom;
+  id: string;
 }
 
 export interface DropData {
@@ -63,7 +70,7 @@ const resetGlobal = (state: GlobalState) => {
   return { type: RESET_GLOBAL, state };
 };
 
-const setDragData = (state: DragData) => {
+const setDragData = (state: DragData | DragMoveData) => {
   return { type: SET_DRAG_DATA, state };
 };
 
