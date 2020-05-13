@@ -79,19 +79,19 @@ const Tabs = () => {
     if (addPin) addPin.style.opacity = isShow ? "1" : "0";
   };
 
+  const disableEditFromKey = (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { keyCode } = e;
+    if (keyCode === 13 || keyCode === 27) setEditTarget("");
+  };
+
   const createTabList = (tabList: TabItem[], collectionId: string) => {
     const tabListLength = tabList.length;
 
     return tabList.map((v: TabItem, i: number) => {
       const getIsEdit = () => v.id === editTarget;
       const isEdit = getIsEdit();
-
-      const disableEditFromKey = (
-        e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-      ) => {
-        const { keyCode } = e;
-        if (keyCode === 13 || keyCode === 27) setEditTarget("");
-      };
 
       return (
         <div
@@ -279,6 +279,7 @@ const Tabs = () => {
   const collectionList = collectionListData.map((v: CollectionItem) => {
     const filteredTabs = _.filter(tabListData, { collection: v.id });
     const tabList = createTabList(filteredTabs, v.id);
+    const isEdit = v.id === editTarget;
 
     return (
       <li className="collection" key={`collection-${v.id}`}>
@@ -295,12 +296,26 @@ const Tabs = () => {
               </button>
             </div>
             <div className="collection-title">
-              <h2 className="title-text">{v.title}</h2>
-              <input
-                type="text"
-                className="title-input"
-                placeholder={v.title}
-              />
+              {isEdit ? (
+                <input
+                  type="text"
+                  className="title-input"
+                  placeholder={v.title}
+                  onKeyDown={(e) => {
+                    disableEditFromKey(e);
+                  }}
+                  onChange={(e) => {
+                    dispatch(
+                      actionCreators.editCollectionTitle(
+                        v.id,
+                        e.currentTarget.value
+                      )
+                    );
+                  }}
+                />
+              ) : (
+                <h2 className="title-text">{v.title}</h2>
+              )}
             </div>
           </div>
           <div className="collection-menu">
@@ -364,7 +379,26 @@ const Tabs = () => {
               </div>
               <div className="setting-expend">
                 <div className="space-circle"></div>
-                <button className="edit-btn">
+                <button
+                  className="edit-btn"
+                  onClick={() => {
+                    // const collectionHeader =
+                    //   e.currentTarget.parentNode?.parentNode?.parentNode
+                    //     ?.parentNode;
+                    // if (collectionHeader) {
+                    //   const titleText = collectionHeader.querySelector(
+                    //     ".title-text"
+                    //   ) as HTMLHeadingElement;
+                    //   const titleInput = collectionHeader.querySelector(
+                    //     ".title-input"
+                    //   ) as HTMLInputElement;
+
+                    //   titleText.style.display = "none";
+                    //   titleInput.style.display = "flex";
+                    // }
+                    setEditTarget(v.id);
+                  }}
+                >
                   <Fa icon={faPen} />
                 </button>
                 <button
@@ -416,16 +450,9 @@ const Tabs = () => {
     // Set Event disableEdit
     const appBottom = document.querySelector(".app-bottom");
     const disableEdit = (e: Event) => {
-      let parent = e.target as HTMLElement | null;
-      let isEdit: boolean = false;
-
-      while (
-        (parent && parent !== e.currentTarget) ||
-        parent?.classList.contains("tab-item")
-      ) {
-        parent = parent.parentElement;
-        if (parent?.classList.contains("edit-item")) isEdit = true;
-      }
+      const target = e.target as HTMLElement;
+      const tag = target.tagName;
+      const isEdit = tag === "INPUT" || tag === "TEXTAREA";
 
       if (!isEdit) setEditTarget("");
     };
