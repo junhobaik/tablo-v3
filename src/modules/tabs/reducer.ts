@@ -3,6 +3,7 @@ import {
   CollectionItem,
   CartItem,
   TabActionTypes,
+  ADD_COLLECTION,
   ADD_TAB_ITEM,
   RESET_TABS,
   SET_FOLDED_COLLECTION,
@@ -12,6 +13,7 @@ import {
 } from "./actions";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
+import moment from "moment";
 
 export interface TabsState {
   tabs: TabItem[];
@@ -58,6 +60,19 @@ const initialState: TabsState = {
 
 function tabReducer(state = initialState, action: TabActionTypes): TabsState {
   switch (action.type) {
+    case ADD_COLLECTION: {
+      return {
+        ...state,
+        collections: [
+          ...state.collections,
+          {
+            id: uuidv4(),
+            title: `Collection [${moment().format("YYMMDD HH:mm:ss")}]`,
+            folded: false,
+          },
+        ],
+      };
+    }
     case ADD_TAB_ITEM: {
       const { index } = action.state;
       const newItem = {

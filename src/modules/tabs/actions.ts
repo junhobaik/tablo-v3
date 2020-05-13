@@ -6,6 +6,7 @@ export const RESET_TABS = "tabs/RESET_TABS";
 export const SET_FOLDED_COLLECTION = "tabs/SET_FOLDED_COLLECTION";
 export const EDIT_TAB_ITEM_TITLE = "tabs/EDIT_TAB_ITEM_TITLE";
 export const EDIT_TAB_ITEM_DESCRIPTION = "tabs/EDIT_TAB_ITEM_DESCRIPTION";
+export const ADD_COLLECTION = "tabs/ADD_COLLECTION";
 
 export interface CollectionItem {
   id: string;
@@ -33,6 +34,9 @@ export interface CartItem {
   url: string;
 }
 
+interface AddCollectionAction {
+  type: typeof ADD_COLLECTION;
+}
 interface AddTabItemAction {
   type: typeof ADD_TAB_ITEM;
   state: AddTabItem;
@@ -71,7 +75,12 @@ export type TabActionTypes =
   | ResetTabsAction
   | SetFoldedCollectionAction
   | EditTabItemTitle
-  | EditTabItemDescription;
+  | EditTabItemDescription
+  | AddCollectionAction;
+
+const addCollection = () => {
+  return { type: ADD_COLLECTION };
+};
 
 const addTabItem = (state: AddTabItem) => {
   return { type: ADD_TAB_ITEM, state };
@@ -104,4 +113,5 @@ export const actionCreators = {
   setFoldedCollection,
   editTabItemTitle,
   editTabItemDescription,
+  addCollection,
 };

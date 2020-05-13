@@ -339,5 +339,20 @@
         }
       }
     }
+
+    .tabs-add-collection {
+      text-align: center;
+      button {
+        all: unset;
+        color: #bbbbbb;
+        font-size: 1.5rem;
+        margin: 0.5rem;
+        opacity: 0.5;
+        cursor: pointer;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
   }
 }
