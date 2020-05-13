@@ -8,6 +8,10 @@ import { faArchive } from "@fortawesome/free-solid-svg-icons";
 import { actionCreators as globalActionCreators } from "../../modules/global/actions";
 import "./index.scss";
 import ExpendButton from "../utils/ExpendButton";
+import {
+  actionCreators as tabsActionCreators,
+  SimpleItem,
+} from "../../modules/tabs/actions";
 
 interface CurrentTabItem {
   title: string | undefined;
@@ -115,7 +119,10 @@ const Tabs = () => {
                 icon={faArchive}
                 text="Save all Tabs"
                 size={7.5}
-                clickEvent={() => {}}
+                clickEvent={() => {
+                  const items = currentTabList as SimpleItem[];
+                  dispatch(tabsActionCreators.tabsArchive(items));
+                }}
               />
             </div>
           </div>

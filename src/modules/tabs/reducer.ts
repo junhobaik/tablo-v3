@@ -1,7 +1,7 @@
 import {
   TabItem,
   CollectionItem,
-  CartItem,
+  SimpleItem,
   TabActionTypes,
   ADD_COLLECTION,
   ADD_TAB_ITEM,
@@ -10,6 +10,7 @@ import {
   DELETE_TAB_ITEM,
   EDIT_TAB_ITEM_TITLE,
   EDIT_TAB_ITEM_DESCRIPTION,
+  TABS_ARCHIVE,
 } from "./actions";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -18,7 +19,7 @@ import moment from "moment";
 export interface TabsState {
   tabs: TabItem[];
   collections: CollectionItem[];
-  cart: CartItem[];
+  cart: SimpleItem[];
 }
 
 const initialState: TabsState = {
@@ -129,6 +130,34 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
       const targetIndex = _.findIndex(newState.tabs, { id: action.id });
       newState.tabs[targetIndex].description = action.description;
       return newState;
+    }
+
+    case TABS_ARCHIVE: {
+      const collectionID = uuidv4();
+      const newItems = [];
+
+      for (const v of action.items) {
+        newItems.push({
+          id: uuidv4(),
+          title: v.title,
+          description: "",
+          url: v.url,
+          collection: collectionID,
+        });
+      }
+
+      return {
+        ...state,
+        collections: [
+          ...state.collections,
+          {
+            id: collectionID,
+            title: `Archive [${moment().format("YYMMDD HH:mm:ss")}]`,
+            folded: false,
+          },
+        ],
+        tabs: [...state.tabs, ...newItems],
+      };
     }
 
     default:

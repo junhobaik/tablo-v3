@@ -7,6 +7,7 @@ export const SET_FOLDED_COLLECTION = "tabs/SET_FOLDED_COLLECTION";
 export const EDIT_TAB_ITEM_TITLE = "tabs/EDIT_TAB_ITEM_TITLE";
 export const EDIT_TAB_ITEM_DESCRIPTION = "tabs/EDIT_TAB_ITEM_DESCRIPTION";
 export const ADD_COLLECTION = "tabs/ADD_COLLECTION";
+export const TABS_ARCHIVE = "tabs/TABS_ARCHIVE";
 
 export interface CollectionItem {
   id: string;
@@ -29,10 +30,12 @@ export interface AddTabItem {
   collection: string;
 }
 
-export interface CartItem {
+export interface SimpleItem {
   title: string;
   url: string;
 }
+
+// Action Types
 
 interface AddCollectionAction {
   type: typeof ADD_COLLECTION;
@@ -69,6 +72,11 @@ interface EditTabItemDescription {
   description: string;
 }
 
+interface TabsArchiveAction {
+  type: typeof TABS_ARCHIVE;
+  items: SimpleItem[];
+}
+
 export type TabActionTypes =
   | AddTabItemAction
   | DeleteTabItemAction
@@ -76,7 +84,8 @@ export type TabActionTypes =
   | SetFoldedCollectionAction
   | EditTabItemTitle
   | EditTabItemDescription
-  | AddCollectionAction;
+  | AddCollectionAction
+  | TabsArchiveAction;
 
 const addCollection = () => {
   return { type: ADD_COLLECTION };
@@ -106,6 +115,10 @@ const editTabItemDescription = (id: string, description: string) => {
   return { type: EDIT_TAB_ITEM_DESCRIPTION, id, description };
 };
 
+const tabsArchive = (items: SimpleItem[]) => {
+  return { type: TABS_ARCHIVE, items };
+};
+
 export const actionCreators = {
   addTabItem,
   deleteTabItem,
@@ -114,4 +127,5 @@ export const actionCreators = {
   editTabItemTitle,
   editTabItemDescription,
   addCollection,
+  tabsArchive,
 };
