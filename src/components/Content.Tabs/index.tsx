@@ -48,8 +48,9 @@ const Tabs = () => {
     tabListLength: number
   ) => {
     const dragFrom = (drag as DragData)?.from;
+    const dragFromMove = (drag as DragMoveData)?.type;
 
-    if (dragFrom === "tabs-setting") {
+    if (dragFrom === "tabs-setting" || dragFromMove === "tabs") {
       const lastPin = e.currentTarget.querySelector(".add-pin.last") as
         | HTMLDivElement
         | undefined;
@@ -58,6 +59,7 @@ const Tabs = () => {
         lastPin.style.display = "flex";
         lastPin.style.opacity = "1";
       }
+
       dispatch(
         globalActionCreators.setDropData({
           collection: tabItemID,
@@ -67,7 +69,6 @@ const Tabs = () => {
     }
   };
   const dragLeaveCollectionTabList = (e: React.DragEvent<HTMLOListElement>) => {
-    // e.preventDefault();
     const lastPin = e.currentTarget.querySelector(".add-pin.last") as
       | HTMLDivElement
       | undefined;
@@ -630,21 +631,30 @@ const Tabs = () => {
               onDrop={(e) => {
                 e.currentTarget.style.backgroundColor = "transparent";
                 const dragData = drag as DragData;
+                const dragDataMove = drag as DragMoveData;
 
-                if (
-                  dragData?.from === "tabs-setting" &&
-                  drop &&
-                  e.currentTarget === e.target
-                ) {
-                  dispatch(
-                    actionCreators.addTabItem({
-                      index: null,
-                      title: dragData.title,
-                      description: "",
-                      url: dragData.url,
-                      collection: drop.collection,
-                    })
-                  );
+                if (drop && e.currentTarget === e.target) {
+                  if (dragData?.from === "tabs-setting") {
+                    dispatch(
+                      actionCreators.addTabItem({
+                        index: null,
+                        title: dragData.title,
+                        description: "",
+                        url: dragData.url,
+                        collection: drop.collection,
+                      })
+                    );
+                  }
+
+                  if (dragDataMove?.type === "tabs") {
+                    dispatch(
+                      actionCreators.moveTabItem(
+                        drop.collection,
+                        dragDataMove.id,
+                        drop.index
+                      )
+                    );
+                  }
                 }
               }}
             >
