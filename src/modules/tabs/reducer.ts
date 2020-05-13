@@ -213,16 +213,10 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
       const newState = _.cloneDeep(state);
       const { collectionID, id, index } = action;
       const { tabs } = newState;
-      console.log("옮겨갈 콜렉션 아이디 = ", collectionID);
-      console.log("옮길 아이템의 id", id);
-      console.log("옮겨갈 콜렉션에서의 위치", index);
-
       const item = _.find(tabs, ["id", id]);
       _.remove(tabs, ["id", id]);
-
       const filteredTab = _.filter(tabs, ["collection", collectionID]);
       _.remove(tabs, ["collection", collectionID]);
-
       if (item) {
         item.collection = collectionID;
         newState.tabs = [
@@ -232,7 +226,6 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
           ..._.slice(filteredTab, index, filteredTab.length),
         ];
       }
-
       return newState;
     }
 
