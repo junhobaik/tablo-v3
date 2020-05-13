@@ -41,18 +41,17 @@ const Tabs = () => {
     tabItemID: string,
     tabListLength: number
   ) => {
-    const lastPin = e.currentTarget.querySelector(".add-pin.last") as
-      | HTMLDivElement
-      | undefined;
-
-    if (lastPin) {
-      lastPin.style.display = "flex";
-      lastPin.style.opacity = "1";
-    }
-
     const dragFrom = drag?.from;
 
     if (dragFrom === "tabs-setting") {
+      const lastPin = e.currentTarget.querySelector(".add-pin.last") as
+        | HTMLDivElement
+        | undefined;
+
+      if (lastPin) {
+        lastPin.style.display = "flex";
+        lastPin.style.opacity = "1";
+      }
       dispatch(
         globalActionCreators.setDropData({
           collection: tabItemID,
@@ -286,6 +285,7 @@ const Tabs = () => {
 
     return (
       <li className="collection" key={`collection-${v.id}`}>
+        <div className="collection-drop-space"></div>
         <div className="collection-header">
           <div className="collection-title-wrap">
             <div className="collection-fold">
@@ -317,7 +317,45 @@ const Tabs = () => {
                   }}
                 />
               ) : (
-                <h2 className="title-text">{v.title}</h2>
+                <h2
+                  className="title-text"
+                  draggable
+                  onDragStart={(e) => {
+                    const collection = e.currentTarget.parentNode?.parentNode
+                      ?.parentNode?.parentNode as HTMLLIElement | undefined;
+
+                    if (collection) {
+                      collection.style.opacity = "0.5";
+
+                      const collections = Array.from(
+                        document.querySelectorAll(".collection")
+                      ) as HTMLLIElement[];
+                      console.log(collections);
+
+                      if (collections.length) {
+                        for (const c of collections) {
+                          if (c !== collection) {
+                            const dropSpace = c.querySelector(
+                              ".collection-drop-space"
+                            ) as HTMLDivElement;
+
+                            dropSpace.style.display = "flex";
+                          }
+                        }
+                      }
+                    }
+                  }}
+                  onDragEnd={(e) => {
+                    const collection = e.currentTarget.parentNode?.parentNode
+                      ?.parentNode?.parentNode as HTMLLIElement | undefined;
+
+                    if (collection) {
+                      collection.style.opacity = "1";
+                    }
+                  }}
+                >
+                  {v.title}
+                </h2>
               )}
             </div>
           </div>
@@ -424,9 +462,12 @@ const Tabs = () => {
             e.preventDefault();
           }}
           onDragEnter={(e) => {
+            e.stopPropagation();
             dragEnterCollectionTabList(e, v.id, tabList.length);
           }}
-          onDragLeave={dragLeaveCollectionTabList}
+          onDragLeave={(e) => {
+            dragLeaveCollectionTabList(e);
+          }}
           onDrop={(e) => {
             e.currentTarget.style.backgroundColor = "transparent";
 
