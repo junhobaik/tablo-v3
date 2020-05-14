@@ -40,7 +40,7 @@ const ContentHeader = (props: ContentHeaderProps) => {
     >
       <div className="content-search">
         <Fa icon={faSearch} />
-        <input type="text" name="" id={`${content}-search-input`} />
+        {/* <input type="text" name="" id={`${content}-search-input`} /> */}
       </div>
       <button onClick={openSetting}>
         {windowStatus === "default" ? (
