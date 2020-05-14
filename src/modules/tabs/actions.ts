@@ -12,6 +12,8 @@ export const TABS_ARCHIVE = "tabs/TABS_ARCHIVE";
 export const EDIT_COLLECTION_TITLE = "tabs/EDIT_COLLECTION_TITLE";
 export const MOVE_COLLECTION = "tabs/MOVE_COLLECTION";
 export const MOVE_TAB_ITEM = "tabs/MOVE_TAB_ITEM";
+export const EMPTY_CART = "tabs/EMPTY_CART";
+export const DELETE_CART_ITEM = "tabs/DELETE_CART_ITEM";
 
 export interface CollectionItem {
   id: string;
@@ -105,7 +107,18 @@ interface MoveTabItemAction {
   index: number;
 }
 
+interface EmptyCartAction {
+  type: typeof EMPTY_CART;
+}
+
+interface DeleteCartItemAction {
+  type: typeof DELETE_CART_ITEM;
+  url: string;
+}
+
 export type TabActionTypes =
+  | DeleteCartItemAction
+  | EmptyCartAction
   | MoveTabItemAction
   | MoveCollectionAction
   | EditCollectionTitle
@@ -166,6 +179,14 @@ const moveTabItem = (collectionID: string, id: string, index: number) => {
   return { type: MOVE_TAB_ITEM, collectionID, id, index };
 };
 
+const emptyCart = () => {
+  return { type: EMPTY_CART };
+};
+
+const deleteCartItem = (url: string) => {
+  return { type: DELETE_CART_ITEM, url };
+};
+
 export const actionCreators = {
   moveCollection,
   moveTabItem,
@@ -179,4 +200,6 @@ export const actionCreators = {
   tabsArchive,
   deleteCollection,
   editCollectionTitle,
+  emptyCart,
+  deleteCartItem,
 };

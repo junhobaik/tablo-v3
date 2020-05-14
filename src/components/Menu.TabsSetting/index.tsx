@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import { faFile, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { faArchive } from "@fortawesome/free-solid-svg-icons";
+import { faArchive, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import { actionCreators as globalActionCreators } from "../../modules/global/actions";
 import "./index.scss";
@@ -11,26 +11,24 @@ import ExpendButton from "../utils/ExpendButton";
 import {
   actionCreators as tabsActionCreators,
   SimpleItem,
+  actionCreators,
 } from "../../modules/tabs/actions";
-
-interface CurrentTabItem {
-  title: string | undefined;
-  url: string | undefined;
-  favIconUrl: string | undefined;
-}
+import { RootState } from "../../modules";
 
 const Tabs = () => {
   const dispatch = useDispatch();
-  const [currentTabList, setCurrentTabList] = useState<CurrentTabItem[]>([]);
+  const cart = useSelector((state: RootState) => state.tabs.cart);
+  const [currentTabList, setCurrentTabList] = useState<SimpleItem[]>([]);
+
   const getAllTabs = () => {
     chrome.windows.getAll({ populate: true }, (windows) => {
-      const list = [];
+      const list: SimpleItem[] = [];
       for (const window of windows) {
         if (window?.tabs) {
           for (const tab of window.tabs) {
-            const { title, url, favIconUrl } = tab;
-            if (url !== "chrome://newtab/")
-              list.push({ title, url, favIconUrl });
+            const { title, url } = tab;
+            if (url && url !== "chrome://newtab/")
+              list.push({ title: title ?? "Untitled", url });
           }
         }
       }
@@ -58,12 +56,28 @@ const Tabs = () => {
     }
   };
 
-  const mapCurrentTabList = currentTabList.map(
-    (v: CurrentTabItem, i: number) => {
+  const createList = (list: SimpleItem[], deletable: boolean = false) => {
+    return list.map((v: SimpleItem, i: number) => {
+      const toggleDeleteButton = deletable
+        ? (e: React.MouseEvent<HTMLLIElement>, isShow: boolean) => {
+            const deleteBtn = e.currentTarget.lastChild as HTMLButtonElement;
+            deleteBtn.classList.remove(isShow ? "hide" : "show");
+            deleteBtn.classList.add(isShow ? "show" : "hide");
+          }
+        : (e: React.MouseEvent<HTMLLIElement>) => {
+            e.preventDefault();
+          };
+
       return (
         <li
           className="link-item"
           key={`link-${v.url}-${i}`}
+          onMouseEnter={(e) => {
+            toggleDeleteButton(e, true);
+          }}
+          onMouseLeave={(e) => {
+            toggleDeleteButton(e, false);
+          }}
           draggable
           onDragStart={() => {
             if (v.title && v.url) {
@@ -103,10 +117,23 @@ const Tabs = () => {
             </div>
           </div>
           <span className="link-title">{v.title}</span>
+          {deletable ? (
+            <button
+              className="delete-btn hide"
+              onClick={() => {
+                dispatch(actionCreators.deleteCartItem(v.url));
+              }}
+            >
+              <Fa icon={faTimes} />
+            </button>
+          ) : null}
         </li>
       );
-    }
-  );
+    });
+  };
+
+  const mapCurrentTabList = createList(currentTabList);
+  const mapCartList = createList(cart, true);
 
   return (
     <div className="tabs-setting">
@@ -137,11 +164,13 @@ const Tabs = () => {
                 icon={faTrashAlt}
                 text="Empty Cart"
                 size={7}
-                clickEvent={() => {}}
+                clickEvent={() => {
+                  dispatch(actionCreators.emptyCart());
+                }}
               />
             </div>
           </div>
-          <ul className="cart-list list"></ul>
+          <ul className="cart-list list">{mapCartList}</ul>
         </div>
       </div>
     </div>

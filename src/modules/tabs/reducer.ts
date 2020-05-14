@@ -15,6 +15,8 @@ import {
   EDIT_COLLECTION_TITLE,
   MOVE_COLLECTION,
   MOVE_TAB_ITEM,
+  EMPTY_CART,
+  DELETE_CART_ITEM,
 } from "./actions";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -226,6 +228,16 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
           ..._.slice(filteredTab, index, filteredTab.length),
         ];
       }
+      return newState;
+    }
+
+    case EMPTY_CART: {
+      return { ...state, cart: [] };
+    }
+
+    case DELETE_CART_ITEM: {
+      const newState = _.cloneDeep(state);
+      _.remove(newState.cart, ["url", action.url]);
       return newState;
     }
 
