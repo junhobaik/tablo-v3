@@ -29,7 +29,7 @@ interface LocalData {
 const Feeds = () => {
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
-  const { feeds, isChanged } = feedsState;
+  const { feeds, isChanged, loaded } = feedsState;
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
 
   const delay = (s: number) => {
@@ -91,6 +91,7 @@ const Feeds = () => {
     };
 
     localStorage.setItem("tablo3_local", JSON.stringify(localData));
+
     return;
   }
 
@@ -117,11 +118,9 @@ const Feeds = () => {
   });
 
   useEffect(() => {
-    console.log("useEffect");
-
-    if (!isChanged) {
+    if (!isChanged && feeds.length) {
       const localData: LocalData | null = getLocalData();
-      const reloadInterval = 30000; // TODO: 차후 설정과 연동 3600000 1hour
+      const reloadInterval = 60000; // TODO: 차후 설정과 연동 3600000 1hour
 
       console.log(Date.now() - Number(localData?.lastLoadDate ?? 0), "지남");
 
@@ -133,7 +132,7 @@ const Feeds = () => {
         setFeedItems(localData?.items ?? []);
       }
     }
-  }, []);
+  }, [loaded]);
 
   useEffect(() => {
     if (isChanged) loadAndSetFeedItems();
@@ -143,7 +142,7 @@ const Feeds = () => {
     <div id="Feeds">
       <ContentHeader content="feeds" searchFunc={() => {}} reverse={true} />
       <div className="feeds-content">
-        <ol>{mapToFeedItems}</ol>
+        {feeds.length ? <ol>{mapToFeedItems}</ol> : null}
       </div>
     </div>
   );

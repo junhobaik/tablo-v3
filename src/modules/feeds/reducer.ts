@@ -10,37 +10,9 @@ import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState: FeedsState = {
+  loaded: false,
   isChanged: false,
-  feeds: [
-    {
-      id: "f1",
-      title: "Dev.White",
-      siteUrl: "https://junhobaik.github.io",
-      feedUrl: "https://junhobaik.github.io/rss",
-      faildCount: 0,
-    },
-    {
-      id: "f2",
-      title: "Kakao Tech",
-      siteUrl: "https://tech.kakao.com",
-      feedUrl: "https://tech.kakao.com/feed",
-      faildCount: 0,
-    },
-    {
-      id: "f5",
-      title: "Dev.White (Error)",
-      siteUrl: "https://junhobaik.github.io",
-      feedUrl: "https://junhobaik.github.io/rs",
-      faildCount: 0,
-    },
-    {
-      id: "f3",
-      title: "Naver D2",
-      siteUrl: "https://d2.naver.com",
-      feedUrl: "https://d2.naver.com/d2.atom",
-      faildCount: 0,
-    },
-  ],
+  feeds: [],
 };
 
 const feedsReducer = (
@@ -49,7 +21,8 @@ const feedsReducer = (
 ): FeedsState => {
   switch (action.type) {
     case RESET_FEED: {
-      return action.state ?? state;
+      sessionStorage.setItem("tablo3_feeds", "true");
+      return { ...action.state, loaded: true };
     }
 
     case SET_ISCHANGED: {

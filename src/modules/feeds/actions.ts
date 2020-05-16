@@ -23,6 +23,7 @@ export interface FeedItem {
 }
 
 export interface FeedsState {
+  loaded: boolean;
   feeds: Feed[];
   isChanged: boolean;
 }
