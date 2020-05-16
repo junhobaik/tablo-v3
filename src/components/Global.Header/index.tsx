@@ -8,7 +8,12 @@ const Header = () => {
   return (
     <div id="Header">
       <h1>Tablo</h1>
-      <button>
+      <button
+        onClick={() => {
+          chrome.storage.sync.clear();
+          localStorage.clear();
+        }}
+      >
         <Fa icon={faCog} />
       </button>
     </div>
