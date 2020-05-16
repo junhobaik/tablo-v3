@@ -11,6 +11,7 @@ import TabsSetting from "./Menu.TabsSetting";
 import FeedsSetting from "./Menu.FeedsSetting";
 import { actionCreators as tabsActionCreators } from "../modules/tabs/actions";
 import { actionCreators as globalActionCreators } from "../modules/global/actions";
+import { actionCreators as feedsActionCreators } from "../modules/feeds/actions";
 
 import "./app.scss";
 import "../styles/content.scss";
@@ -23,9 +24,10 @@ const App = () => {
   useEffect(() => {
     chrome.storage.sync.get("tablo3", (res) => {
       if (res.tablo3) {
-        const { tabs, global } = res.tablo3;
+        const { tabs, global, feeds } = res.tablo3;
         dispatch(globalActionCreators.resetGlobal(global));
         dispatch(tabsActionCreators.resetTabs(tabs));
+        dispatch(feedsActionCreators.resetFeeds(feeds));
       }
       setIsLoadedState(true);
     });
