@@ -1,0 +1,213 @@
+$info-0: #f9ffff;
+$info-1: #b9dfe7;
+$info-2: #27556a;
+
+$warn-0: #fefaf4;
+$warn-1: #c7bb9f;
+$warn-2: #724d17;
+
+$error-0: #fdf7f6;
+$error-1: #d9b6b5;
+$error-2: #86342f;
+
+$success-0: #fcfff6;
+$success-1: #a9c198;
+$success-2: #2c662d;
+
+.feeds-setting {
+  display: flex;
+  flex-direction: column;
+
+  .add-feed {
+    display: flex;
+    flex-direction: column;
+
+    .add-feed-header {
+      padding: 0.5rem;
+      display: flex;
+
+      button,
+      h2 {
+        all: unset;
+      }
+
+      button {
+        cursor: pointer;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: gray;
+        transition: background-color ease-in-out 0.1s;
+      }
+      h2 {
+        font-size: 1.2rem;
+        user-select: none;
+        opacity: 0;
+        transition: all 0.3s;
+      }
+
+      &.hover {
+        button {
+          transition-delay: 0;
+          background-color: transparent;
+        }
+        h2 {
+          opacity: 1;
+        }
+      }
+    }
+
+    .add-feed-content {
+      padding: 0 10%;
+
+      .add-feed-form {
+        border: 1px solid #d8d8da;
+        border-radius: 3px;
+
+        .add-feed-url-check {
+          display: flex;
+          height: 2rem;
+
+          .url-input-wrap {
+            position: relative;
+            flex-grow: 1;
+
+            input.url-input {
+              all: unset;
+              width: calc(100% - 1rem);
+              height: calc(100% - 0.5rem);
+              padding: 0.25rem 0.5rem;
+            }
+
+            .icon-wrap {
+              position: absolute;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              top: 0;
+              background-color: rgba(0, 255, 0, 0.2);
+              color: green;
+              width: 100%;
+              height: 100%;
+              cursor: not-allowed;
+            }
+          }
+          button.url-check-btn {
+            all: unset;
+            cursor: pointer;
+            background-color: #d8d8da;
+            padding: 0.25rem;
+            color: #686868;
+            width: 5rem;
+            text-align: center;
+          }
+        }
+        .add-feed-info {
+          border-top: 1px solid #d8d8da;
+          display: flex;
+          flex-direction: column;
+          padding: 1rem 0.5rem;
+
+          .add-feed-info-inputs-wrap {
+            display: flex;
+
+            & > div {
+              flex-grow: 1;
+              display: flex;
+              flex-direction: column;
+
+              h3 {
+                all: unset;
+                font-size: 0.9rem;
+                font-weight: bold;
+              }
+            }
+
+            .title-info {
+              input {
+                all: unset;
+                cursor: text;
+                border: 1px solid #d8d8da;
+                border-radius: 5px;
+                padding: 0.25rem 0.5rem;
+                height: 1.5rem;
+                max-width: 12rem;
+              }
+            }
+
+            .collection-info {
+              select {
+                height: 2.2rem;
+                max-width: 12rem;
+                background-color: #fff;
+                border: 1px solid #d8d8da;
+
+                &:focus {
+                  outline: none;
+                }
+              }
+            }
+          }
+          .add-button {
+            margin-top: 1rem;
+
+            button {
+              all: unset;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+
+              background-color: #4284cb;
+              color: #fff;
+              padding: 0.5rem 1rem;
+              border-radius: 3px;
+
+              svg {
+                margin-right: 0.25rem;
+              }
+            }
+          }
+        }
+      }
+
+      .add-feed-message {
+        display: flex;
+        margin-top: 1rem;
+        border-radius: 3px;
+        border: 1px solid $info-1;
+        background-color: $info-0;
+        color: $info-2;
+
+        .icon-wrap {
+          padding-left: 0.25rem;
+          width: 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .text-wrap {
+          padding: 0.5rem;
+        }
+
+        &.warn {
+          border: 1px solid $warn-1;
+          background-color: $warn-0;
+          color: $warn-2;
+        }
+        &.error {
+          border: 1px solid $error-1;
+          background-color: $error-0;
+          color: $error-2;
+        }
+        &.success {
+          border: 1px solid $success-1;
+          background-color: $success-0;
+          color: $success-2;
+        }
+      }
+    }
+  }
+}
