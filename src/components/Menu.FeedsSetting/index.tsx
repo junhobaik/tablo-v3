@@ -25,6 +25,7 @@ import {
   actionCreators as feedsActionCreators,
   FeedForAdd,
   Feed,
+  FeedTargetType,
 } from "../../modules/feeds/actions";
 import _ from "lodash";
 import { RootState } from "../../modules";
@@ -64,6 +65,9 @@ const FeedsSetting = () => {
   });
   const [editTarget, setEditTarget] = useState<string>("");
 
+  const toggleVisiblity = (id: string, target: FeedTargetType) => {
+    dispatch(feedsActionCreators.toggleVisibility(id, target));
+  };
   const disableEditFromKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { keyCode } = e;
     if (keyCode === 13 || keyCode === 27) setEditTarget("");
@@ -173,7 +177,12 @@ const FeedsSetting = () => {
             btns.classList.remove("show");
           }}
         >
-          <button className="toggle-visiblility-btn" onClick={() => {}}>
+          <button
+            className="toggle-visiblility-btn"
+            onClick={() => {
+              toggleVisiblity(id, "feed");
+            }}
+          >
             <div className={`inner ${visibility ? "vislble" : "hidden"}`}></div>
           </button>
 
@@ -205,7 +214,12 @@ const FeedsSetting = () => {
       <li className="feed-collection" key={collectionId}>
         <div className="feed-collection-header">
           <div className="left">
-            <button className="toggle-visiblility-btn" onClick={() => {}}>
+            <button
+              className="toggle-visiblility-btn"
+              onClick={() => {
+                toggleVisiblity(id, "collection");
+              }}
+            >
               <div
                 className={`inner ${visibility ? "vislble" : "hidden"}`}
               ></div>

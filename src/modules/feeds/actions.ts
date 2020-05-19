@@ -5,7 +5,9 @@ export const SET_ISCHANGED = "feeds/SET_ISCHANGED";
 export const ADD_COLLECTION = "feeds/ADD_COLLECTION";
 export const DELETE_COLLECTION = "feeds/DELETE_COLLECTION";
 export const EDIT_COLLECTION_TITLE = "feeds/EDIT_COLLECTION_TITLE";
+export const TOGGLE_VISIBILITY = "feeds/TOGGLE_VISIBILITY";
 
+export type FeedTargetType = "feed" | "collection";
 export interface FeedForAdd {
   title: string;
   siteUrl: string;
@@ -77,7 +79,14 @@ interface EditCollectionTitleAction {
   title: string;
 }
 
+interface ToggleVisibilityAction {
+  type: typeof TOGGLE_VISIBILITY;
+  id: string;
+  targetType: FeedTargetType;
+}
+
 export type FeedActionType =
+  | ToggleVisibilityAction
   | DeleteCollectionAction
   | EditCollectionTitleAction
   | AddCollectionAction
@@ -110,6 +119,10 @@ const editTitleCollection = (id: string, title: string) => {
   return { type: EDIT_COLLECTION_TITLE, id, title };
 };
 
+const toggleVisibility = (id: string, targetType: FeedTargetType) => {
+  return { type: TOGGLE_VISIBILITY, id, targetType };
+};
+
 export const actionCreators = {
   addFeed,
   faildLoadFeed,
@@ -117,4 +130,5 @@ export const actionCreators = {
   setIsChanged,
   deleteCollection,
   editTitleCollection,
+  toggleVisibility,
 };

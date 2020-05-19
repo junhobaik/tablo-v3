@@ -8,6 +8,7 @@ import {
   ADD_COLLECTION,
   DELETE_COLLECTION,
   EDIT_COLLECTION_TITLE,
+  TOGGLE_VISIBILITY,
 } from "./actions";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
@@ -168,6 +169,22 @@ const feedsReducer = (
       const newState = _.cloneDeep(state);
       const index = _.findIndex(newState.collections, ["id", action.id]);
       newState.collections[index].title = action.title;
+      return newState;
+    }
+
+    case TOGGLE_VISIBILITY: {
+      const newState = _.cloneDeep(state);
+
+      if (action.targetType === "feed") {
+        const index = _.findIndex(newState.feeds, ["id", action.id]);
+        const old = newState.feeds[index].visibility;
+        newState.feeds[index].visibility = !old;
+      } else {
+        const index = _.findIndex(newState.collections, ["id", action.id]);
+        const old = newState.collections[index].visibility;
+        newState.collections[index].visibility = !old;
+      }
+
       return newState;
     }
 
