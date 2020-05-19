@@ -17,12 +17,8 @@ import {
   faAngleDown,
   faAngleUp,
   faTimes,
-  faFile,
   faPen,
   faPlusCircle,
-  faEye,
-  faEyeSlash,
-  faGripVertical,
   faCog,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -66,8 +62,12 @@ const FeedsSetting = () => {
     type: "info",
     msg: messages.first,
   });
+  const [editTarget, setEditTarget] = useState<string>("");
 
-  const [editTarget, setEditTarge] = useState<string>("");
+  const disableEditFromKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { keyCode } = e;
+    if (keyCode === 13 || keyCode === 27) setEditTarget("");
+  };
 
   const addFeedReset = () => {
     setAddUrlValue("");
@@ -210,7 +210,26 @@ const FeedsSetting = () => {
                 className={`inner ${visibility ? "vislble" : "hidden"}`}
               ></div>
             </button>
-            <h2>{title}</h2>
+            {editTarget === id ? (
+              <input
+                type="text"
+                className="collection-title-input"
+                onKeyDown={(e) => {
+                  disableEditFromKey(e);
+                }}
+                onChange={(e) => {
+                  dispatch(
+                    feedsActionCreators.editTitleCollection(
+                      id,
+                      e.currentTarget.value
+                    )
+                  );
+                }}
+                placeholder={title}
+              />
+            ) : (
+              <h2>{title}</h2>
+            )}
           </div>
 
           <div
@@ -223,10 +242,20 @@ const FeedsSetting = () => {
             }}
           >
             <div className="expend">
-              <button className="delete-btn">
+              <button
+                className="delete-btn"
+                onClick={() => {
+                  dispatch(feedsActionCreators.deleteCollection(id));
+                }}
+              >
                 <Fa icon={faTimes} />
               </button>
-              <button className="edit-btn">
+              <button
+                className="edit-btn"
+                onClick={() => {
+                  setEditTarget(id);
+                }}
+              >
                 <Fa icon={faPen} />
               </button>
             </div>
@@ -256,6 +285,23 @@ const FeedsSetting = () => {
       </option>
     );
   });
+
+  useEffect(() => {
+    // Set Event disableEdit
+    const appBottom = document.querySelector(".app-bottom");
+    const disableEdit = (e: Event) => {
+      const target = e.target as HTMLElement;
+      const tag = target.tagName;
+      const isEdit = tag === "INPUT" || tag === "TEXTAREA";
+
+      if (!isEdit) setEditTarget("");
+    };
+    appBottom?.addEventListener("click", disableEdit);
+
+    return () => {
+      appBottom?.removeEventListener("click", disableEdit);
+    };
+  }, []);
 
   return (
     <div className="feeds-setting">
