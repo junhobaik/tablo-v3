@@ -3,6 +3,8 @@ export const FAILD_LOAD_FEED = "feeds/FAILD_LOAD_FEED";
 export const RESET_FEED = "feeds/RESET_FEED";
 export const SET_ISCHANGED = "feeds/SET_ISCHANGED";
 export const ADD_COLLECTION = "feeds/ADD_COLLECTION";
+export const DELETE_COLLECTION = "feeds/DELETE_COLLECTION";
+export const EDIT_COLLECTION_TITLE = "feeds/EDIT_COLLECTION_TITLE";
 
 export interface FeedForAdd {
   title: string;
@@ -55,18 +57,31 @@ interface ResetFeedsAction {
   state: FeedsState;
 }
 
-interface SetIsChanged {
+interface SetIsChangedAction {
   type: typeof SET_ISCHANGED;
   isChanged: boolean;
 }
 
-interface AddCollection {
+interface AddCollectionAction {
   type: typeof ADD_COLLECTION;
 }
 
+interface DeleteCollectionAction {
+  type: typeof DELETE_COLLECTION;
+  id: string;
+}
+
+interface EditCollectionTitleAction {
+  type: typeof EDIT_COLLECTION_TITLE;
+  id: string;
+  title: string;
+}
+
 export type FeedActionType =
-  | AddCollection
-  | SetIsChanged
+  | DeleteCollectionAction
+  | EditCollectionTitleAction
+  | AddCollectionAction
+  | SetIsChangedAction
   | ResetFeedsAction
   | AddFeedAction
   | FaildLoadFeedAction;
@@ -87,9 +102,19 @@ const setIsChanged = (isChanged: boolean) => {
   return { type: SET_ISCHANGED, isChanged };
 };
 
+const deleteCollection = (id: string) => {
+  return { type: DELETE_COLLECTION, id };
+};
+
+const editTitleCollection = (id: string, title: string) => {
+  return { type: EDIT_COLLECTION_TITLE, id, title };
+};
+
 export const actionCreators = {
   addFeed,
   faildLoadFeed,
   resetFeeds,
   setIsChanged,
+  deleteCollection,
+  editTitleCollection,
 };

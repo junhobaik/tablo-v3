@@ -6,6 +6,8 @@ import {
   FeedsState,
   SET_ISCHANGED,
   ADD_COLLECTION,
+  DELETE_COLLECTION,
+  EDIT_COLLECTION_TITLE,
 } from "./actions";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
@@ -145,6 +147,27 @@ const feedsReducer = (
       const findedIndex = _.findIndex(newState.feeds, ["id", action.id]);
       newState.feeds[findedIndex].faildCount += 1;
 
+      return newState;
+    }
+
+    case DELETE_COLLECTION: {
+      const newState = _.cloneDeep(state);
+      const collectionID = action.id;
+      _.remove(newState.feeds, (item) => {
+        if (item.collectionId === collectionID) return true;
+        return false;
+      });
+      _.remove(newState.collections, (collection) => {
+        if (collection.id === collectionID) return true;
+        return false;
+      });
+      return newState;
+    }
+
+    case EDIT_COLLECTION_TITLE: {
+      const newState = _.cloneDeep(state);
+      const index = _.findIndex(newState.collections, ["id", action.id]);
+      newState.collections[index].title = action.title;
       return newState;
     }
 
