@@ -368,9 +368,9 @@ const FeedsSetting = () => {
                     value={addUrlValue}
                     disabled={validationData ? true : false}
                     onChange={addUrlOnChange}
-                    onFocus={() => {
-                      if (!addUrlValue.length) setAddUrlValue("http");
-                    }}
+                    // onFocus={() => {
+                    //   if (!addUrlValue.length) setAddUrlValue("http");
+                    // }}
                   />
                   {message.type === "success" && validationData ? (
                     <div className="icon-wrap">
