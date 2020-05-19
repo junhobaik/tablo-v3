@@ -23,6 +23,7 @@ import {
   faEye,
   faEyeSlash,
   faGripVertical,
+  faCog,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   actionCreators as feedsActionCreators,
@@ -212,7 +213,36 @@ const FeedsSetting = () => {
             <h2>{title}</h2>
           </div>
 
-          <div className="right"></div>
+          <div
+            className="right"
+            onMouseLeave={(e) => {
+              const expend = e.currentTarget.querySelector(
+                ".expend"
+              ) as HTMLDivElement;
+              expend.classList.remove("show");
+            }}
+          >
+            <div className="expend">
+              <button className="delete-btn">
+                <Fa icon={faTimes} />
+              </button>
+              <button className="edit-btn">
+                <Fa icon={faPen} />
+              </button>
+            </div>
+            <div
+              className="cog"
+              onMouseEnter={(e) => {
+                const expend = (e.currentTarget
+                  .parentNode as HTMLDivElement).querySelector(
+                  ".expend"
+                ) as HTMLDivElement;
+                expend.classList.add("show");
+              }}
+            >
+              <Fa icon={faCog} />
+            </div>
+          </div>
         </div>
         <ol className="feed-collection-content">{feedList}</ol>
       </li>

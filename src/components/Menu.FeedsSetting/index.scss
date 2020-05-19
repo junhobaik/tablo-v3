@@ -282,6 +282,54 @@ $success-2: #2c662d;
             font-weight: bold;
           }
         }
+
+        .right {
+          color: white;
+          font-size: 0.8rem;
+          display: flex;
+          align-items: center;
+          position: relative;
+
+          .expend {
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            background-color: #999;
+            position: absolute;
+            right: 0rem;
+            padding-right: 1.2rem;
+            height: 1.2rem;
+            border-radius: 1.2rem;
+            justify-content: space-around;
+            width: 0;
+            transition: width 0.1s;
+            overflow: hidden;
+
+            button {
+              display: flex;
+              align-items: center;
+            }
+            .edit-btn {
+              font-size: 0.7rem;
+            }
+
+            &.show {
+              padding-left: 0.25rem;
+              width: 3rem;
+            }
+          }
+
+          .cog {
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 1.2rem;
+            width: 1.2rem;
+            border-radius: 100%;
+            background-color: #999;
+          }
+        }
       }
 
       .feed-collection-content {
