@@ -5,14 +5,60 @@ import {
   RESET_FEED,
   FeedsState,
   SET_ISCHANGED,
+  ADD_COLLECTION,
 } from "./actions";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 const initialState: FeedsState = {
   loaded: false,
   isChanged: false,
-  feeds: [],
+  feeds: [
+    // {
+    //   id: "ff1",
+    //   title: "Dev.White",
+    //   siteUrl: "https://junhobaik.github.io",
+    //   feedUrl: "https://junhobaik.github.io/rss",
+    //   collectionId: "fc1",
+    //   faildCount: 0,
+    //   visibility: true,
+    // },
+    {
+      id: "ff2",
+      title: "Kakao Tech",
+      siteUrl: "https://tech.kakao.com",
+      feedUrl: "https://tech.kakao.com/feed",
+      collectionId: "fc2",
+      faildCount: 0,
+      visibility: true,
+    },
+  ],
+  collections: [
+    {
+      id: "fc1",
+      title: "collection 1",
+      visibility: true,
+    },
+
+    {
+      id: "fc2",
+      title: "collection 2",
+      visibility: true,
+    },
+
+    {
+      id: "fc3",
+      title: "collection 3",
+      visibility: false,
+    },
+
+    {
+      id: "fc4",
+      title: "collection 4",
+      visibility: true,
+    },
+  ],
 };
 
 const feedsReducer = (
@@ -29,11 +75,45 @@ const feedsReducer = (
       return { ...state, isChanged: action.isChanged };
     }
 
+    case ADD_COLLECTION: {
+      return {
+        ...state,
+        collections: [
+          ...state.collections,
+          {
+            id: uuidv4(),
+            title: `Collection [${moment().format("YYMMDD HH:mm:ss")}]`,
+            visibility: true,
+          },
+        ],
+      };
+    }
+
     case ADD_FEED: {
-      const { title, siteUrl, feedUrl } = action.payload;
+      const { title, siteUrl, feedUrl, collectionId } = action.payload;
       const findedFeed = _.find(state.feeds, ["feedUrl", feedUrl]);
       if (findedFeed) return state;
 
+      if (collectionId) {
+        return {
+          ...state,
+          feeds: [
+            ...state.feeds,
+            {
+              id: uuidv4(),
+              title,
+              siteUrl,
+              feedUrl,
+              faildCount: 0,
+              visibility: true,
+              collectionId,
+            },
+          ],
+          isChanged: true,
+        };
+      }
+
+      const newCollectionId = uuidv4();
       return {
         ...state,
         feeds: [
@@ -44,6 +124,16 @@ const feedsReducer = (
             siteUrl,
             feedUrl,
             faildCount: 0,
+            visibility: true,
+            collectionId: newCollectionId,
+          },
+        ],
+        collections: [
+          ...state.collections,
+          {
+            id: newCollectionId,
+            title: `Collection [${moment().format("YYMMDD HH:mm:ss")}]`,
+            visibility: true,
           },
         ],
         isChanged: true,

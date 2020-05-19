@@ -2,15 +2,18 @@ export const ADD_FEED = "feeds/ADD_FEED";
 export const FAILD_LOAD_FEED = "feeds/FAILD_LOAD_FEED";
 export const RESET_FEED = "feeds/RESET_FEED";
 export const SET_ISCHANGED = "feeds/SET_ISCHANGED";
+export const ADD_COLLECTION = "feeds/ADD_COLLECTION";
 
 export interface FeedForAdd {
   title: string;
   siteUrl: string;
   feedUrl: string;
+  collectionId: string | null | undefined;
 }
 
 export interface Feed extends FeedForAdd {
   id: string;
+  visibility: boolean;
   faildCount: number;
 }
 
@@ -22,9 +25,16 @@ export interface FeedItem {
   postUrl: string;
 }
 
+export interface Collection {
+  id: string;
+  title: string;
+  visibility: boolean;
+}
+
 export interface FeedsState {
   loaded: boolean;
   feeds: Feed[];
+  collections: Collection[];
   isChanged: boolean;
 }
 
@@ -45,13 +55,18 @@ interface ResetFeedsAction {
   state: FeedsState;
 }
 
-interface SET_ISCHANGED {
+interface SetIsChanged {
   type: typeof SET_ISCHANGED;
   isChanged: boolean;
 }
 
+interface AddCollection {
+  type: typeof ADD_COLLECTION;
+}
+
 export type FeedActionType =
-  | SET_ISCHANGED
+  | AddCollection
+  | SetIsChanged
   | ResetFeedsAction
   | AddFeedAction
   | FaildLoadFeedAction;

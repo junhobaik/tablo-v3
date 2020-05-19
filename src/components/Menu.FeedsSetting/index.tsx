@@ -6,7 +6,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import "./index.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import {
   faExclamationCircle,
@@ -17,12 +17,20 @@ import {
   faAngleDown,
   faAngleUp,
   faTimes,
+  faFile,
+  faPen,
+  faPlusCircle,
+  faEye,
+  faEyeSlash,
+  faGripVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   actionCreators as feedsActionCreators,
   FeedForAdd,
+  Feed,
 } from "../../modules/feeds/actions";
 import _ from "lodash";
+import { RootState } from "../../modules";
 
 type MessageType = "warn" | "error" | "info" | "success";
 interface Message {
@@ -41,16 +49,30 @@ const messages = {
 };
 
 const FeedsSetting = () => {
+  const isDevelopment = false;
+
   const dispatch = useDispatch();
+  const feedsState = useSelector((state: RootState) => state.feeds);
+  const { feeds, collections } = feedsState;
   const [addUrlValue, setAddUrlValue] = useState<string>("");
   const [addTitleValue, setTitleValue] = useState<string>("");
   const [validationData, setValidationData] = useState<FeedForAdd | null>(null);
   const [isAddFeedMouseOver, setIsAddFeedMouseOver] = useState<boolean>(false);
-  const [isActiveAddFeed, setIsActiveAddFeed] = useState<boolean>(false);
+  const [isActiveAddFeed, setIsActiveAddFeed] = useState<boolean>(
+    isDevelopment ? true : true
+  );
   const [message, setMessage] = useState<Message>({
     type: "info",
     msg: messages.first,
   });
+
+  const [editTarget, setEditTarge] = useState<string>("");
+
+  const addFeedReset = () => {
+    setAddUrlValue("");
+    setTitleValue("");
+    setValidationData(null);
+  };
 
   async function feedUrlValidation(requestUrl: string) {
     try {
@@ -59,15 +81,23 @@ const FeedsSetting = () => {
       const feedData = await response.json();
 
       if (response.ok) {
-        setValidationData({
-          title: feedData.feed.title ?? "Untitled",
-          siteUrl: feedData.feed.link,
-          feedUrl: feedData.feed.url,
-        });
-        setMessage({
-          type: "success",
-          msg: messages.success,
-        });
+        if (_.find(feeds, ["feedUrl", feedData.feed.url])) {
+          setMessage({
+            type: "error",
+            msg: `이미 존재하는 피드입니다.`,
+          });
+        } else {
+          setValidationData({
+            title: feedData.feed.title ?? "Untitled",
+            siteUrl: feedData.feed.link,
+            feedUrl: feedData.feed.url,
+            collectionId: null,
+          });
+          setMessage({
+            type: "success",
+            msg: messages.success,
+          });
+        }
       } else {
         setMessage({
           type: "error",
@@ -121,6 +151,81 @@ const FeedsSetting = () => {
       });
     }
   };
+
+  const createFeedList = (feedList: Feed[]) => {
+    return feedList.map((f) => {
+      const { id, title, visibility, siteUrl } = f;
+      return (
+        <li
+          key={id}
+          className="feed-item"
+          onMouseEnter={(e) => {
+            const btns = e.currentTarget.querySelector(
+              ".btns-wrap"
+            ) as HTMLDivElement;
+            btns.classList.add("show");
+          }}
+          onMouseLeave={(e) => {
+            const btns = e.currentTarget.querySelector(
+              ".btns-wrap"
+            ) as HTMLDivElement;
+            btns.classList.remove("show");
+          }}
+        >
+          <button className="toggle-visiblility-btn" onClick={() => {}}>
+            <div className={`inner ${visibility ? "vislble" : "hidden"}`}></div>
+          </button>
+
+          <a href={siteUrl}>
+            <h3>{title}</h3>
+          </a>
+
+          <div className="btns-wrap">
+            <button className="edit-btn">
+              <Fa icon={faPen} />
+            </button>
+            <button className="delete-btn">
+              <Fa icon={faTimes} />
+            </button>
+          </div>
+        </li>
+      );
+    });
+  };
+
+  const mapCollections = collections.map((c) => {
+    const { id, title, visibility } = c;
+    const collectionId = id;
+    const feedList = createFeedList(
+      _.filter(feeds, ["collectionId", collectionId])
+    );
+
+    return (
+      <li className="feed-collection" key={collectionId}>
+        <div className="feed-collection-header">
+          <div className="left">
+            <button className="toggle-visiblility-btn" onClick={() => {}}>
+              <div
+                className={`inner ${visibility ? "vislble" : "hidden"}`}
+              ></div>
+            </button>
+            <h2>{title}</h2>
+          </div>
+
+          <div className="right"></div>
+        </div>
+        <ol className="feed-collection-content">{feedList}</ol>
+      </li>
+    );
+  });
+
+  const mapCollectionsForSelect = collections.map((c) => {
+    return (
+      <option key={`option-${c.id}`} value={c.id}>
+        {c.title}
+      </option>
+    );
+  });
 
   return (
     <div className="feeds-setting">
@@ -202,7 +307,8 @@ const FeedsSetting = () => {
                 </button>
               </div>
 
-              {message.type === "success" && validationData ? (
+              {(message.type === "success" && validationData) ||
+              isDevelopment ? (
                 <div className="add-feed-info">
                   <div className="add-feed-info-inputs-wrap">
                     <div className="title-info">
@@ -224,13 +330,52 @@ const FeedsSetting = () => {
                     </div>
                     <div className="collection-info">
                       <h3>Collection</h3>
-                      <select name="job">
-                        <option value="">Select collection</option>
+                      <select id="addFeedSelect">
+                        {mapCollectionsForSelect.length ? (
+                          mapCollectionsForSelect
+                        ) : (
+                          <option value="new">New collection</option>
+                        )}
                       </select>
                     </div>
                   </div>
                   <div className="add-button">
-                    <button>Add</button>
+                    <button
+                      onClick={() => {
+                        const selectEl = document.getElementById(
+                          "addFeedSelect"
+                        ) as HTMLSelectElement;
+                        const title = addTitleValue
+                          ? addTitleValue
+                          : validationData?.title ?? "Untitled";
+
+                        if (validationData) {
+                          dispatch(
+                            feedsActionCreators.addFeed({
+                              title: title,
+                              siteUrl: validationData.siteUrl,
+                              feedUrl: validationData.feedUrl,
+                              collectionId:
+                                selectEl.value === "new"
+                                  ? null
+                                  : selectEl.value,
+                            })
+                          );
+                          addFeedReset();
+                          setMessage({
+                            type: "info",
+                            msg: `"${title}" 피드가 정상적으로 추가되었습니다.`,
+                          });
+                        } else {
+                          setMessage({
+                            type: "error",
+                            msg: `알 수 없는 오류가 발생했습니다, URL Check를 다시 해주세요.`,
+                          });
+                        }
+                      }}
+                    >
+                      Add
+                    </button>
                   </div>
                 </div>
               ) : null}
@@ -255,7 +400,12 @@ const FeedsSetting = () => {
         ) : null}
       </div>
 
-      <ul className="feed-collection-list"></ul>
+      <ol className="feed-collection-list">
+        {mapCollections}
+        <div className="add-collection">
+          <Fa icon={faPlusCircle} />
+        </div>
+      </ol>
     </div>
   );
 };
