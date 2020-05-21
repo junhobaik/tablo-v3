@@ -157,44 +157,109 @@ const FeedsSetting = () => {
     }
   };
 
+  // >feed
   const createFeedList = (feedList: Feed[]) => {
     return feedList.map((f) => {
       const { id, title, visibility, siteUrl } = f;
+
+      const setBtnsShow = (
+        feedItemEl: HTMLLIElement,
+        isShow: boolean,
+        immediately: boolean = false
+      ) => {
+        const btnsWrap = feedItemEl.querySelector(
+          ".btns-wrap"
+        ) as HTMLDivElement;
+
+        if (immediately) {
+          btnsWrap.classList.remove("is-transition");
+        } else {
+          btnsWrap.classList.add("is-transition");
+        }
+
+        if (isShow) {
+          btnsWrap.classList.add("show");
+        } else {
+          btnsWrap.classList.remove("show");
+        }
+      };
+
       return (
         <li
+          draggable
           key={id}
           className="feed-item"
           onMouseEnter={(e) => {
-            const btns = e.currentTarget.querySelector(
-              ".btns-wrap"
-            ) as HTMLDivElement;
-            btns.classList.add("show");
+            setBtnsShow(e.currentTarget, true);
           }}
           onMouseLeave={(e) => {
-            const btns = e.currentTarget.querySelector(
-              ".btns-wrap"
-            ) as HTMLDivElement;
-            btns.classList.remove("show");
+            setBtnsShow(e.currentTarget, false);
           }}
+          onMouseDown={(e) => {
+            setBtnsShow(e.currentTarget, false, true);
+          }}
+          onClick={() => {
+            window.open(siteUrl, "_blank");
+          }}
+          onDragStart={(e) => {}}
+          onDragEnd={(e) => {}}
+          role="link"
         >
           <button
             className="toggle-visiblility-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               toggleVisiblity(id, "feed");
+            }}
+            onMouseDown={(e) => {
+              e.stopPropagation();
             }}
           >
             <div className={`inner ${visibility ? "vislble" : "hidden"}`}></div>
           </button>
 
-          <a href={siteUrl}>
-            <h3>{title}</h3>
-          </a>
+          {editTarget === id ? (
+            <div className="title-input-wrap">
+              <input
+                type="text"
+                className="title-input"
+                placeholder={title}
+                onKeyDown={disableEditFromKey}
+                onChange={(e) => {
+                  dispatch(
+                    feedsActionCreators.editFeedTitle(id, e.currentTarget.value)
+                  );
+                }}
+              />
+            </div>
+          ) : (
+            <h3 className="title-text">{title}</h3>
+          )}
 
-          <div className="btns-wrap">
-            <button className="edit-btn">
+          <div
+            className="btns-wrap"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            onMouseDown={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <button
+              className="edit-btn"
+              onClick={() => {
+                setEditTarget(id);
+              }}
+            >
               <Fa icon={faPen} />
             </button>
-            <button className="delete-btn">
+            <button
+              className="delete-btn"
+              onClick={() => {
+                dispatch(feedsActionCreators.deleteFeed(id));
+                dispatch(feedsActionCreators.setIsChanged(true));
+              }}
+            >
               <Fa icon={faTimes} />
             </button>
           </div>
@@ -203,6 +268,7 @@ const FeedsSetting = () => {
     });
   };
 
+  // >collection
   const mapCollections = collections.map((c) => {
     const { id, title, visibility } = c;
     const collectionId = id;
@@ -301,6 +367,7 @@ const FeedsSetting = () => {
   });
 
   useEffect(() => {
+    // TODO: input에 변화가 있었다면 isChanged true로 새로 불러오도록 구현할 것 (collection 수정 제외)
     // Set Event disableEdit
     const appBottom = document.querySelector(".app-bottom");
     const disableEdit = (e: Event) => {

@@ -9,6 +9,8 @@ import {
   DELETE_COLLECTION,
   EDIT_COLLECTION_TITLE,
   TOGGLE_VISIBILITY,
+  EDIT_FEED_TITEL,
+  DELETE_FEED,
 } from "./actions";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
@@ -141,6 +143,23 @@ const feedsReducer = (
         ],
         isChanged: true,
       };
+    }
+
+    case EDIT_FEED_TITEL: {
+      const newState = _.cloneDeep(state);
+      const index = _.findIndex(newState.feeds, ["id", action.id]);
+      newState.feeds[index].title = action.title;
+      return newState;
+    }
+
+    case DELETE_FEED: {
+      const newState = _.cloneDeep(state);
+      const feedId = action.id;
+      _.remove(newState.feeds, (feed) => {
+        if (feed.id === feedId) return true;
+        return false;
+      });
+      return newState;
     }
 
     case FAILD_LOAD_FEED: {

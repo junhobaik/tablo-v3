@@ -1,11 +1,15 @@
-export const ADD_FEED = "feeds/ADD_FEED";
-export const FAILD_LOAD_FEED = "feeds/FAILD_LOAD_FEED";
 export const RESET_FEED = "feeds/RESET_FEED";
 export const SET_ISCHANGED = "feeds/SET_ISCHANGED";
+export const TOGGLE_VISIBILITY = "feeds/TOGGLE_VISIBILITY";
+
+export const ADD_FEED = "feeds/ADD_FEED";
+export const FAILD_LOAD_FEED = "feeds/FAILD_LOAD_FEED";
+export const EDIT_FEED_TITEL = "feeds/EDIT_FEED_TITEL";
+export const DELETE_FEED = "feeds/DELETE_FEED";
+
 export const ADD_COLLECTION = "feeds/ADD_COLLECTION";
 export const DELETE_COLLECTION = "feeds/DELETE_COLLECTION";
 export const EDIT_COLLECTION_TITLE = "feeds/EDIT_COLLECTION_TITLE";
-export const TOGGLE_VISIBILITY = "feeds/TOGGLE_VISIBILITY";
 
 export type FeedTargetType = "feed" | "collection";
 export interface FeedForAdd {
@@ -85,7 +89,20 @@ interface ToggleVisibilityAction {
   targetType: FeedTargetType;
 }
 
+interface EditFeedTitleAction {
+  type: typeof EDIT_FEED_TITEL;
+  id: string;
+  title: string;
+}
+
+interface DeleteFeedAction {
+  type: typeof DELETE_FEED;
+  id: string;
+}
+
 export type FeedActionType =
+  | DeleteFeedAction
+  | EditFeedTitleAction
   | ToggleVisibilityAction
   | DeleteCollectionAction
   | EditCollectionTitleAction
@@ -127,6 +144,14 @@ const toggleVisibility = (id: string, targetType: FeedTargetType) => {
   return { type: TOGGLE_VISIBILITY, id, targetType };
 };
 
+const editFeedTitle = (id: string, title: string) => {
+  return { type: EDIT_FEED_TITEL, id, title };
+};
+
+const deleteFeed = (id: string) => {
+  return { type: DELETE_FEED, id };
+};
+
 export const actionCreators = {
   addFeed,
   faildLoadFeed,
@@ -136,4 +161,6 @@ export const actionCreators = {
   editTitleCollection,
   toggleVisibility,
   addCollection,
+  editFeedTitle,
+  deleteFeed,
 };

@@ -18,6 +18,21 @@ $success-2: #2c662d;
   display: flex;
   flex-direction: column;
 
+  button,
+  h2,
+  h3,
+  input {
+    all: unset;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  input {
+    cursor: text;
+  }
+
   .add-feed {
     position: sticky;
     left: 0;
@@ -28,13 +43,7 @@ $success-2: #2c662d;
       padding: 0.5rem;
       display: flex;
 
-      button,
-      h2 {
-        all: unset;
-      }
-
       button {
-        cursor: pointer;
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 100%;
@@ -229,15 +238,6 @@ $success-2: #2c662d;
       padding: 1rem 0.5rem;
       border-bottom: 1px solid #e1e1e1;
 
-      h2,
-      h3,
-      button {
-        all: unset;
-      }
-      button {
-        cursor: pointer;
-      }
-
       .toggle-visiblility-btn {
         border: 1px solid #aaa;
         border-radius: 100%;
@@ -276,9 +276,8 @@ $success-2: #2c662d;
             height: 0.75rem;
           }
 
-          .collection-title-input {
-            //
-          }
+          // .collection-title-input {
+          // }
 
           h2 {
             margin-top: 2px;
@@ -342,6 +341,7 @@ $success-2: #2c662d;
         flex-wrap: wrap;
 
         .feed-item {
+          cursor: grab;
           display: flex;
           align-items: center;
           padding: 0.25rem;
@@ -356,26 +356,28 @@ $success-2: #2c662d;
           .toggle-visiblility-btn {
             height: 0.5rem;
             width: 0.5rem;
+            min-width: 0.5rem;
           }
 
-          a {
-            all: unset;
-            cursor: grab;
+          h3.title-text {
+            display: block;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin-top: 1px;
+          }
+
+          // div.title-input-wrap {
+          //   input.title-input {
+          //   }
+          // }
+
+          a.title-text-link,
+          div.title-input-wrap {
             flex-grow: 1;
             margin-right: 0.5rem;
-
-            h3 {
-              display: block;
-              max-width: 9rem;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              margin-top: 1px;
-            }
-
-            &:active {
-              cursor: grabbing;
-            }
+            max-width: 9rem;
+            overflow: hidden;
           }
 
           .btns-wrap {
@@ -395,7 +397,8 @@ $success-2: #2c662d;
               justify-content: center;
               color: white;
               transform: scale(0);
-              transition: all 0.15s;
+              // transition: 0.15s;
+              transition: 0;
             }
             .edit-btn {
               font-size: 0.5rem;
@@ -411,6 +414,13 @@ $success-2: #2c662d;
                 transform: scale(1);
               }
             }
+
+            &.is-transition {
+              .edit-btn,
+              .delete-btn {
+                transition: 0.15s;
+              }
+            }
           }
         }
       }
@@ -423,8 +433,6 @@ $success-2: #2c662d;
       justify-content: center;
 
       button {
-        all: unset;
-        cursor: pointer;
         color: rgba(0, 0, 0, 0.5);
         transition: 0.2s;
 
