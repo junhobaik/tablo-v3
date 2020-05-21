@@ -31,6 +31,7 @@ import _ from "lodash";
 import { RootState } from "../../modules";
 
 type MessageType = "warn" | "error" | "info" | "success";
+
 interface Message {
   type: MessageType;
   msg: string;
@@ -47,27 +48,26 @@ const messages = {
 };
 
 const FeedsSetting = () => {
-  const isDevelopment = false;
-
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
-  const { feeds, collections } = feedsState;
+
   const [addUrlValue, setAddUrlValue] = useState<string>("");
   const [addTitleValue, setTitleValue] = useState<string>("");
   const [validationData, setValidationData] = useState<FeedForAdd | null>(null);
   const [isAddFeedMouseOver, setIsAddFeedMouseOver] = useState<boolean>(false);
-  const [isActiveAddFeed, setIsActiveAddFeed] = useState<boolean>(
-    isDevelopment ? true : true
-  );
+  const [isActiveAddFeed, setIsActiveAddFeed] = useState<boolean>(true);
   const [message, setMessage] = useState<Message>({
     type: "info",
     msg: messages.first,
   });
   const [editTarget, setEditTarget] = useState<string>("");
 
+  const { feeds, collections } = feedsState;
+
   const toggleVisiblity = (id: string, target: FeedTargetType) => {
     dispatch(feedsActionCreators.toggleVisibility(id, target));
   };
+
   const disableEditFromKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { keyCode } = e;
     if (keyCode === 13 || keyCode === 27) setEditTarget("");
@@ -397,8 +397,7 @@ const FeedsSetting = () => {
                 </button>
               </div>
 
-              {(message.type === "success" && validationData) ||
-              isDevelopment ? (
+              {message.type === "success" && validationData ? (
                 <div className="add-feed-info">
                   <div className="add-feed-info-inputs-wrap">
                     <div className="title-info">
@@ -493,7 +492,14 @@ const FeedsSetting = () => {
       <ol className="feed-collection-list">
         {mapCollections}
         <div className="add-collection">
-          <Fa icon={faPlusCircle} />
+          <button
+            className="add-collection-btn"
+            onClick={() => {
+              dispatch(feedsActionCreators.addCollection());
+            }}
+          >
+            <Fa icon={faPlusCircle} />
+          </button>
         </div>
       </ol>
     </div>

@@ -103,6 +103,10 @@ const addFeed = (payload: FeedForAdd) => {
   return { type: ADD_FEED, payload };
 };
 
+const addCollection = () => {
+  return { type: ADD_COLLECTION };
+};
+
 const faildLoadFeed = (id: string) => {
   return { type: FAILD_LOAD_FEED, id };
 };
@@ -131,4 +135,5 @@ export const actionCreators = {
   deleteCollection,
   editTitleCollection,
   toggleVisibility,
+  addCollection,
 };
