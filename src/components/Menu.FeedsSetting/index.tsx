@@ -224,6 +224,9 @@ const FeedsSetting = () => {
                 type="text"
                 className="title-input"
                 placeholder={title}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
                 onKeyDown={disableEditFromKey}
                 onChange={(e) => {
                   dispatch(
