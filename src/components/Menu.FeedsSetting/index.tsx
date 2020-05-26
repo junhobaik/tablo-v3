@@ -1,11 +1,5 @@
-/* eslint no-unused-vars: 0 */
-/* eslint @typescript-eslint/no-unused-vars: 0 */
-/* eslint no-sparse-arrays: 0 */
-/* eslint no-fallthrough: 0 */
-
 import * as React from "react";
 import { useSelector } from "react-redux";
-import _ from "lodash";
 
 import "./index.scss";
 import { RootState } from "../../modules";
