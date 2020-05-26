@@ -29,6 +29,10 @@ import {
 } from "../../modules/feeds/actions";
 import _ from "lodash";
 import { RootState } from "../../modules";
+import {
+  actionCreators as globalActionCreators,
+  DragMoveData,
+} from "../../modules/global/actions";
 
 type MessageType = "warn" | "error" | "info" | "success";
 
@@ -50,6 +54,7 @@ const messages = {
 const FeedsSetting = () => {
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
+  const globalState = useSelector((state: RootState) => state.global);
 
   const [addUrlValue, setAddUrlValue] = useState<string>("");
   const [addTitleValue, setTitleValue] = useState<string>("");
@@ -63,6 +68,7 @@ const FeedsSetting = () => {
   const [editTarget, setEditTarget] = useState<string>("");
 
   const { feeds, collections } = feedsState;
+  const { drag, drop } = globalState;
 
   const toggleVisiblity = (id: string, target: FeedTargetType) => {
     dispatch(feedsActionCreators.toggleVisibility(id, target));
@@ -158,8 +164,15 @@ const FeedsSetting = () => {
   };
 
   // >feed
-  const createFeedList = (feedList: Feed[]) => {
-    return feedList.map((f) => {
+  const createFeedList = (feedList: Feed[], collectionId: string) => {
+    const addPinEl = (
+      <div className="add-pin">
+        <Fa icon={faPlusCircle} />
+        <div className="line"></div>
+      </div>
+    );
+
+    const mapFeedList = feedList.map((f, i) => {
       const { id, title, visibility, siteUrl } = f;
 
       const setBtnsShow = (
@@ -184,91 +197,201 @@ const FeedsSetting = () => {
         }
       };
 
+      const toggleAddPin = (
+        e: React.DragEvent<HTMLElement>,
+        isShow: boolean
+      ) => {
+        const parent = e.currentTarget.parentNode as HTMLDivElement;
+        const addPin = parent.querySelector(".add-pin") as HTMLDivElement;
+        addPin.style.opacity = isShow ? "1" : "0";
+      };
       return (
-        <li
-          draggable
-          key={id}
-          className="feed-item"
-          onMouseEnter={(e) => {
-            setBtnsShow(e.currentTarget, true);
+        <div
+          className="feed-wrap"
+          key={`feed-${id}`}
+          onDragEnter={(e) => {
+            e.stopPropagation();
           }}
-          onMouseLeave={(e) => {
-            setBtnsShow(e.currentTarget, false);
+          onDragLeave={(e) => {
+            e.stopPropagation();
           }}
-          onMouseDown={(e) => {
-            setBtnsShow(e.currentTarget, false, true);
-          }}
-          onClick={() => {
-            window.open(siteUrl, "_blank");
-          }}
-          onDragStart={(e) => {}}
-          onDragEnd={(e) => {}}
-          role="link"
         >
-          <button
-            className="toggle-visiblility-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleVisiblity(id, "feed");
-            }}
-            onMouseDown={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            <div className={`inner ${visibility ? "vislble" : "hidden"}`}></div>
-          </button>
-
-          {editTarget === id ? (
-            <div className="title-input-wrap">
-              <input
-                type="text"
-                className="title-input"
-                placeholder={title}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                onKeyDown={disableEditFromKey}
-                onChange={(e) => {
-                  dispatch(
-                    feedsActionCreators.editFeedTitle(id, e.currentTarget.value)
-                  );
-                }}
-              />
-            </div>
-          ) : (
-            <h3 className="title-text">{title}</h3>
-          )}
-
           <div
-            className="btns-wrap"
-            onClick={(e) => {
-              e.stopPropagation();
+            className="drop-space"
+            onDragEnter={(e) => {
+              const dragMoveData = drag as DragMoveData | null;
+
+              if (dragMoveData && dragMoveData.type === "feeds-setting-feed") {
+                dispatch(
+                  globalActionCreators.setDropData({
+                    collection: collectionId,
+                    index: i,
+                  })
+                );
+                toggleAddPin(e, true);
+              }
+            }}
+            onDragLeave={(e) => {
+              toggleAddPin(e, false);
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
+            onDrop={(e) => {
+              console.log(drag, drop);
+              toggleAddPin(e, false);
+            }}
+          ></div>
+          {addPinEl}
+          <li
+            draggable
+            key={id}
+            className="feed-item"
+            onMouseEnter={(e) => {
+              e.isPropagationStopped();
+              setBtnsShow(e.currentTarget, true);
+            }}
+            onMouseLeave={(e) => {
+              e.isPropagationStopped();
+              setBtnsShow(e.currentTarget, false);
             }}
             onMouseDown={(e) => {
-              e.stopPropagation();
+              setBtnsShow(e.currentTarget, false, true);
             }}
+            onClick={() => {
+              window.open(siteUrl, "_blank");
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
+            onDragStart={(e) => {
+              dispatch(
+                globalActionCreators.setDragData({
+                  type: "feeds-setting-feed",
+                  id,
+                })
+              );
+
+              const feedWrapEl = e.currentTarget.parentNode as HTMLDivElement;
+              const feedCollectionContent = feedWrapEl.parentNode as HTMLOListElement;
+              const feedCollection = feedCollectionContent.parentNode as HTMLLIElement;
+              const feedCollectionList = feedCollection.parentNode as HTMLOListElement;
+
+              const currentCollectionDropSapces = feedCollectionContent.querySelectorAll(
+                ".drop-space"
+              ) as NodeListOf<HTMLDivElement>;
+
+              const currentDropSpace: HTMLDivElement =
+                currentCollectionDropSapces[i];
+              const nextDropSpaces = currentCollectionDropSapces[i + 1] as
+                | HTMLDivElement
+                | undefined;
+
+              const dropSpaces = Array.from(
+                feedCollectionList.querySelectorAll(".drop-space")
+              ) as HTMLDivElement[];
+
+              const filteredDropSapces = _.filter(dropSpaces, (d) => {
+                if (d !== currentDropSpace && d !== nextDropSpaces) return true;
+                return false;
+              });
+
+              for (const d of filteredDropSapces) {
+                d.style.display = "flex";
+              }
+            }}
+            onDragEnd={(e) => {
+              dispatch(globalActionCreators.clearDragData());
+              dispatch(globalActionCreators.clearDropData());
+
+              const dropSpaces = Array.from(
+                document.querySelectorAll(".drop-space")
+              ) as HTMLDivElement[];
+              for (const d of dropSpaces) {
+                d.style.display = "none";
+              }
+            }}
+            role="link"
           >
             <button
-              className="edit-btn"
-              onClick={() => {
-                setEditTarget(id);
+              className="toggle-visiblility-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleVisiblity(id, "feed");
+              }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
               }}
             >
-              <Fa icon={faPen} />
+              <div
+                className={`inner ${visibility ? "vislble" : "hidden"}`}
+              ></div>
             </button>
-            <button
-              className="delete-btn"
-              onClick={() => {
-                dispatch(feedsActionCreators.deleteFeed(id));
-                dispatch(feedsActionCreators.setIsChanged(true));
+
+            {editTarget === id ? (
+              <div className="title-input-wrap">
+                <input
+                  type="text"
+                  className="title-input"
+                  placeholder={title}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  onKeyDown={disableEditFromKey}
+                  onChange={(e) => {
+                    dispatch(
+                      feedsActionCreators.editFeedTitle(
+                        id,
+                        e.currentTarget.value
+                      )
+                    );
+                  }}
+                />
+              </div>
+            ) : (
+              <h3 className="title-text">{title}</h3>
+            )}
+
+            <div
+              className="btns-wrap"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
               }}
             >
-              <Fa icon={faTimes} />
-            </button>
-          </div>
-        </li>
+              <button
+                className="edit-btn"
+                onClick={() => {
+                  setEditTarget(id);
+                }}
+              >
+                <Fa icon={faPen} />
+              </button>
+              <button
+                className="delete-btn"
+                onClick={() => {
+                  dispatch(feedsActionCreators.deleteFeed(id));
+                  dispatch(feedsActionCreators.setIsChanged(true));
+                }}
+              >
+                <Fa icon={faTimes} />
+              </button>
+            </div>
+          </li>
+        </div>
       );
     });
+
+    const lastAddPinEl = (
+      <div className="feed-wrap last-add-pin-wrap" key={`last-add-pin`}>
+        {addPinEl}
+      </div>
+    );
+    mapFeedList.push(lastAddPinEl);
+
+    return mapFeedList;
   };
 
   // >collection
@@ -276,7 +399,8 @@ const FeedsSetting = () => {
     const { id, title, visibility } = c;
     const collectionId = id;
     const feedList = createFeedList(
-      _.filter(feeds, ["collectionId", collectionId])
+      _.filter(feeds, ["collectionId", collectionId]),
+      collectionId
     );
 
     return (
@@ -356,7 +480,32 @@ const FeedsSetting = () => {
             </div>
           </div>
         </div>
-        <ol className="feed-collection-content">{feedList}</ol>
+        <ol
+          className="feed-collection-content"
+          onDragEnter={(e) => {
+            const lastAddPin = e.currentTarget.querySelector(
+              ".last-add-pin-wrap>.add-pin"
+            ) as HTMLDivElement;
+            lastAddPin.style.opacity = "1";
+          }}
+          onDragLeave={(e) => {
+            const lastAddPin = e.currentTarget.querySelector(
+              ".last-add-pin-wrap>.add-pin"
+            ) as HTMLDivElement;
+            lastAddPin.style.opacity = "0";
+          }}
+          onDrop={(e) => {
+            const lastAddPin = e.currentTarget.querySelector(
+              ".last-add-pin-wrap>.add-pin"
+            ) as HTMLDivElement;
+            lastAddPin.style.opacity = "0";
+          }}
+          onDragOver={(e) => {
+            e.preventDefault();
+          }}
+        >
+          {feedList}
+        </ol>
       </li>
     );
   });

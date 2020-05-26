@@ -9,7 +9,11 @@ export const CLEAR_DROP_DATA = "global/CLEAR_DROP_DATA";
 
 export type WindowItem = "default" | "tabs-setting" | "feeds-setting";
 type DragDataFrom = "tabs-setting" | "feeds";
-type DragMoveDataFrom = "collection" | "tabs";
+type DragMoveDataFrom =
+  | "collection"
+  | "tabs"
+  | "feeds-setting-feed"
+  | "feeds-setting-collection";
 
 export interface DragData {
   from: DragDataFrom;
