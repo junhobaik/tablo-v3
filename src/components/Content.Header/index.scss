@@ -1,10 +1,10 @@
 .content-header {
-  z-index: 3;
+  display: flex;
   position: sticky;
   top: 0;
+  z-index: 3;
   min-height: 2rem;
   height: 2rem;
-  display: flex;
   justify-content: space-between;
   align-items: flex-start;
 
@@ -15,7 +15,6 @@
     cursor: pointer;
     color: rgba(0, 0, 0, 0.4);
     font-size: 0.9rem;
-    display: flex;
     align-items: center;
     border: 1.5px solid rgba(0, 0, 0, 0.1);
     border-top: 0;
@@ -38,8 +37,8 @@
   }
 
   .content-search {
-    flex-grow: 1;
     display: flex;
+    flex-grow: 1;
     align-items: center;
     height: 100%;
     border-top: 1.5px solid rgba(0, 0, 0, 0.1);

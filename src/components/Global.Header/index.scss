@@ -1,9 +1,9 @@
 @import "../../styles/variables.scss";
 
 #Header {
+  display: flex;
   height: $header-height;
   z-index: 2;
-  display: flex;
   overflow: hidden;
   align-items: center;
   justify-content: space-between;

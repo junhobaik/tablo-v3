@@ -4,47 +4,47 @@
     flex-direction: column;
 
     .collection-list {
-      flex-grow: 1;
       display: flex;
+      flex-grow: 1;
       flex-direction: column;
       list-style: none;
       margin: 0;
       padding: 0;
 
       .collection {
+        position: relative;
         padding: 1rem;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        position: relative;
 
         .collection-drop-space {
           display: none;
-          box-sizing: border-box;
-          z-index: 3;
           position: absolute;
           top: 0;
           left: 0;
+          box-sizing: border-box;
+          z-index: 3;
           width: 100%;
           height: 100%;
           // background-color: rgba(255, 0, 0, 0.1);
 
           .add-pin {
             display: flex;
+            position: absolute;
+            top: -1rem;
             pointer-events: none;
             font-size: 1.4rem;
             width: 100%;
-            position: absolute;
             height: 2rem;
             align-items: center;
             justify-content: center;
-            top: -1rem;
             color: #999;
             opacity: 0;
             transition: opacity 0.2s;
 
             .left-icon,
             .right-icon {
-              position: absolute;
               display: flex;
+              position: absolute;
               width: 1rem;
             }
             .left-icon {
@@ -114,13 +114,13 @@
             display: flex;
 
             .collection-setting {
+              display: flex;
+              position: relative;
+              align-items: center;
               button {
                 all: unset;
                 cursor: pointer;
               }
-              position: relative;
-              display: flex;
-              align-items: center;
 
               .circle-btn {
                 display: flex;
@@ -140,7 +140,23 @@
               }
 
               .setting-expend {
+                display: flex;
+                position: absolute;
+                top: -0.75rem;
                 pointer-events: none;
+
+                align-items: center;
+                width: 1.5rem;
+                z-index: 1;
+                margin-left: 0.25rem;
+                flex-direction: column;
+                font-size: 0.9rem;
+                transition: all 0.2s;
+                transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+                opacity: 0;
+                background-color: #e1e1e1;
+                border-radius: 0.75rem;
+                color: #9d9d9d;
 
                 .space-circle {
                   min-height: 1.5rem;
@@ -151,24 +167,9 @@
                   background-color: #fafafa;
                 }
 
-                align-items: center;
-                width: 1.5rem;
-                z-index: 1;
-                margin-left: 0.25rem;
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: -0.75rem;
-                font-size: 0.9rem;
-                transition: all 0.2s;
-                transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-                opacity: 0;
-                background-color: #e1e1e1;
-                border-radius: 0.75rem;
-                color: #9d9d9d;
-
                 button {
                   margin: 0.25rem 0;
+                  transition: color 0.2s;
 
                   &.edit-btn {
                     font-size: 0.7rem;
@@ -178,7 +179,6 @@
                   &.delete-btn {
                     margin-bottom: 0.5rem;
                   }
-                  transition: color 0.2s;
 
                   &:hover {
                     color: #474747;
@@ -189,10 +189,10 @@
           }
         }
         .collection-tab-list {
+          display: flex;
           border-radius: 3px;
           min-height: 4rem;
           padding: 0 0.5rem 1.5rem 0;
-          display: flex;
           flex-wrap: wrap;
           background-color: transparent;
 
@@ -206,21 +206,21 @@
 
             .drop-space {
               display: none;
-              z-index: 2;
               position: absolute;
               top: 0;
               left: 0;
+              z-index: 2;
               min-height: 100%;
               min-width: 100%;
               // background-color: rgba(253, 22, 52, 0.2);
             }
             .add-pin {
-              pointer-events: none;
               display: flex;
-              color: #9d9d9d;
               position: absolute;
-              z-index: 2;
               top: 0.25rem;
+              pointer-events: none;
+              color: #9d9d9d;
+              z-index: 2;
               opacity: 0;
               transition: 0.2s;
               height: 100%;
@@ -238,16 +238,17 @@
 
               .v-line {
                 position: absolute;
+                top: 1rem;
                 width: 2px;
                 background-color: #9d9d9d;
                 height: 4.5rem;
-                top: 1rem;
               }
             }
           }
 
           .tab-item {
             display: flex;
+            position: relative;
             flex-direction: column;
             // width: 9rem;
             // height: 4rem;
@@ -256,7 +257,6 @@
             border-radius: 3px;
             box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.1),
               2px 2px 4px 0px rgba(0, 0, 0, 0.1);
-            position: relative;
 
             &.edit-item {
               border: 2px solid rgba(253, 22, 52, 0.5);
@@ -303,8 +303,8 @@
                   }
 
                   .tab-title {
-                    user-select: none;
                     display: flex;
+                    user-select: none;
                     overflow: hidden;
                     height: 2.2rem;
                     width: 100%;
@@ -354,10 +354,10 @@
             }
 
             .tab-menu {
+              display: flex;
               position: absolute;
               top: 0.5rem;
               right: -0.5rem;
-              display: flex;
               flex-direction: column;
               height: 100%;
 
@@ -370,17 +370,17 @@
               }
 
               &.hide {
+                pointer-events: none;
                 button {
                   transform: scale(0);
                 }
-                pointer-events: none;
               }
 
               &.show {
+                pointer-events: all;
                 button {
                   transform: scale(1);
                 }
-                pointer-events: all;
               }
 
               button {
@@ -406,9 +406,9 @@
       }
 
       .tabs-add-collection {
+        display: flex;
         flex-grow: 1;
         min-height: 7rem;
-        display: flex;
         justify-content: center;
         align-items: center;
         border-bottom: none;

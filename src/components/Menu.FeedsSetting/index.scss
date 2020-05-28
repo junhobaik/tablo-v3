@@ -37,20 +37,20 @@ $success-2: #2c662d;
   }
 
   .add-feed {
+    display: flex;
     position: sticky;
     left: 0;
-    display: flex;
     flex-direction: column;
 
     .add-feed-header {
-      padding: 0.5rem;
       display: flex;
+      padding: 0.5rem;
 
       button {
+        display: flex;
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 100%;
-        display: flex;
         align-items: center;
         justify-content: center;
         background-color: #999;
@@ -101,11 +101,11 @@ $success-2: #2c662d;
             }
 
             .icon-wrap {
-              position: absolute;
               display: flex;
+              position: absolute;
+              top: 0;
               align-items: center;
               justify-content: center;
-              top: 0;
               background-color: rgba(0, 255, 0, 0.2);
               color: green;
               width: 100%;
@@ -124,8 +124,8 @@ $success-2: #2c662d;
           }
         }
         .add-feed-info {
-          border-top: 1px solid #d8d8da;
           display: flex;
+          border-top: 1px solid #d8d8da;
           flex-direction: column;
           padding: 1rem 0.5rem;
 
@@ -133,8 +133,8 @@ $success-2: #2c662d;
             display: flex;
 
             & > div {
-              flex-grow: 1;
               display: flex;
+              flex-grow: 1;
               flex-direction: column;
 
               h3 {
@@ -174,8 +174,8 @@ $success-2: #2c662d;
 
             button {
               all: unset;
-              cursor: pointer;
               display: flex;
+              cursor: pointer;
               align-items: center;
 
               background-color: #4284cb;
@@ -200,9 +200,9 @@ $success-2: #2c662d;
         color: $info-2;
 
         .icon-wrap {
+          display: flex;
           padding-left: 0.25rem;
           width: 1.5rem;
-          display: flex;
           align-items: center;
           justify-content: center;
         }
@@ -235,13 +235,13 @@ $success-2: #2c662d;
     flex-direction: column;
 
     .feed-collection-drop-space {
-      z-index: 3;
+      display: none;
       position: absolute;
       top: -2px;
       left: 0;
+      z-index: 3;
       height: 100%;
       width: 100%;
-      display: none;
       // background-color: rgba(255, 0, 0, 0.2);
       border-top: 3px solid transparent;
     }
@@ -249,10 +249,10 @@ $success-2: #2c662d;
     .feed-collection {
       all: unset;
       display: flex;
+      position: relative;
       flex-direction: column;
       padding: 1rem 0.5rem;
       border-bottom: 1px solid #e1e1e1;
-      position: relative;
 
       .toggle-visiblility-btn {
         border: 1px solid #aaa;
@@ -289,8 +289,8 @@ $success-2: #2c662d;
         height: 2rem;
 
         .left {
-          flex-grow: 1;
           display: flex;
+          flex-grow: 1;
           align-items: center;
 
           .toggle-visiblility-btn {
@@ -315,19 +315,19 @@ $success-2: #2c662d;
         }
 
         .right {
+          display: flex;
+          position: relative;
           color: white;
           font-size: 0.8rem;
-          display: flex;
           align-items: center;
-          position: relative;
 
           .expend {
-            z-index: 1;
             display: flex;
-            align-items: center;
-            background-color: #999;
             position: absolute;
             right: 0rem;
+            z-index: 1;
+            align-items: center;
+            background-color: #999;
             padding-right: 1.5rem;
             height: 1.5rem;
             border-radius: 1.5rem;
@@ -351,8 +351,8 @@ $success-2: #2c662d;
           }
 
           .cog {
-            z-index: 2;
             display: flex;
+            z-index: 2;
             align-items: center;
             justify-content: center;
             height: 1.5rem;
@@ -375,23 +375,23 @@ $success-2: #2c662d;
           .drop-space {
             display: none;
             position: absolute;
-            width: 100%;
-            height: 100%;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             background-color: rgba(255, 0, 0, 0.2);
             z-index: 2;
           }
         }
 
         .add-pin {
-          z-index: 2;
           display: flex;
-          pointer-events: none;
-          user-select: none;
           position: absolute;
           top: 0;
           left: -0.45rem;
+          z-index: 2;
+          pointer-events: none;
+          user-select: none;
           flex-direction: column;
           justify-content: center;
           align-items: center;
@@ -411,14 +411,14 @@ $success-2: #2c662d;
         }
 
         .feed-item {
+          display: flex;
+          position: relative;
           z-index: 1;
           cursor: grab;
-          display: flex;
           border-radius: 3px;
           border: 1px solid rgba(0, 0, 0, 0.1);
           margin: 0.25rem 0.5rem;
           background-color: #fafafa;
-          position: relative;
           align-items: center;
           width: 100%;
           height: 100%;
@@ -461,17 +461,17 @@ $success-2: #2c662d;
 
           .btns-wrap {
             display: flex;
-            flex-direction: column;
             position: absolute;
             right: -0.5rem;
+            flex-direction: column;
 
             .edit-btn,
             .delete-btn {
+              display: flex;
               width: 1rem;
               height: 1rem;
               border-radius: 100%;
               background-color: #999;
-              display: flex;
               align-items: center;
               justify-content: center;
               color: white;
@@ -506,11 +506,11 @@ $success-2: #2c662d;
     }
 
     .add-collection {
-      flex-grow: 1;
       display: flex;
+      position: relative;
+      flex-grow: 1;
       padding: 1.5rem 0;
       justify-content: center;
-      position: relative;
 
       button {
         color: rgba(0, 0, 0, 0.5);
