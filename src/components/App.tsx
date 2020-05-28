@@ -20,7 +20,6 @@ const App = () => {
   const dispatch = useDispatch();
   const [isLoadedState, setIsLoadedState] = useState(false);
   const windowStatus = useSelector((state: RootState) => state.global.window);
-
   const state = useSelector((state: RootState) => state); // dev
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const App = () => {
 
   // dev
   useEffect(() => {
-    document.addEventListener("keydown", (e) => {
+    const func = (e: KeyboardEvent) => {
       switch (e.keyCode) {
         case 192: // `
           console.log("- state");
@@ -49,8 +48,13 @@ const App = () => {
         default:
           break;
       }
-    });
-  }, []);
+    };
+    document.addEventListener("keydown", func);
+
+    return () => {
+      document.removeEventListener("keydown", func);
+    };
+  }, [state]);
 
   return (
     <div id="App">
