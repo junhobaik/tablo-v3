@@ -11,6 +11,8 @@ import {
   TOGGLE_VISIBILITY,
   EDIT_FEED_TITEL,
   DELETE_FEED,
+  MOVE_FEED_COLLECTION,
+  MOVE_FEED_ITEM,
 } from "./actions";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
@@ -20,21 +22,21 @@ const initialState: FeedsState = {
   loaded: false,
   isChanged: false,
   feeds: [
-    // {
-    //   id: "ff1",
-    //   title: "Dev.White",
-    //   siteUrl: "https://junhobaik.github.io",
-    //   feedUrl: "https://junhobaik.github.io/rss",
-    //   collectionId: "fc1",
-    //   faildCount: 0,
-    //   visibility: true,
-    // },
+    {
+      id: "ff1",
+      title: "Dev.White",
+      siteUrl: "https://junhobaik.github.io",
+      feedUrl: "https://junhobaik.github.io/rss",
+      collectionID: "fc1",
+      faildCount: 0,
+      visibility: true,
+    },
     {
       id: "ff2",
       title: "Kakao Tech",
       siteUrl: "https://tech.kakao.com",
       feedUrl: "https://tech.kakao.com/feed",
-      collectionId: "fc2",
+      collectionID: "fc2",
       faildCount: 0,
       visibility: true,
     },
@@ -45,19 +47,16 @@ const initialState: FeedsState = {
       title: "collection 1",
       visibility: true,
     },
-
     {
       id: "fc2",
       title: "collection 2",
       visibility: true,
     },
-
     {
       id: "fc3",
       title: "collection 3",
       visibility: false,
     },
-
     {
       id: "fc4",
       title: "collection 4",
@@ -95,11 +94,11 @@ const feedsReducer = (
     }
 
     case ADD_FEED: {
-      const { title, siteUrl, feedUrl, collectionId } = action.payload;
+      const { title, siteUrl, feedUrl, collectionID } = action.payload;
       const findedFeed = _.find(state.feeds, ["feedUrl", feedUrl]);
       if (findedFeed) return state;
 
-      if (collectionId) {
+      if (collectionID) {
         return {
           ...state,
           feeds: [
@@ -111,7 +110,7 @@ const feedsReducer = (
               feedUrl,
               faildCount: 0,
               visibility: true,
-              collectionId,
+              collectionID,
             },
           ],
           isChanged: true,
@@ -130,7 +129,7 @@ const feedsReducer = (
             feedUrl,
             faildCount: 0,
             visibility: true,
-            collectionId: newCollectionId,
+            collectionID: newCollectionId,
           },
         ],
         collections: [
@@ -174,7 +173,7 @@ const feedsReducer = (
       const newState = _.cloneDeep(state);
       const collectionID = action.id;
       _.remove(newState.feeds, (item) => {
-        if (item.collectionId === collectionID) return true;
+        if (item.collectionID === collectionID) return true;
         return false;
       });
       _.remove(newState.collections, (collection) => {
@@ -205,6 +204,35 @@ const feedsReducer = (
       }
 
       return newState;
+    }
+
+    case MOVE_FEED_ITEM: {
+      const newState = _.cloneDeep(state);
+      const { dropCollectionID, dragFeedID, index } = action;
+      const { feeds } = newState;
+
+      const item = _.find(feeds, ["id", dragFeedID]);
+      _.remove(feeds, ["id", dragFeedID]);
+
+      const filteredFeeds = _.filter(feeds, ["collectionID", dropCollectionID]);
+      _.remove(feeds, ["collectionID", dropCollectionID]);
+
+      console.log(dropCollectionID, dragFeedID, index, item, filteredFeeds);
+
+      if (item) {
+        item.collectionID = dropCollectionID;
+        newState.feeds = [
+          ...feeds,
+          ..._.slice(filteredFeeds, 0, index),
+          item,
+          ..._.slice(filteredFeeds, index, filteredFeeds.length),
+        ];
+      }
+      return newState;
+    }
+
+    case MOVE_FEED_COLLECTION: {
+      return state;
     }
 
     default:

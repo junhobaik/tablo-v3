@@ -75,7 +75,7 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
             title: feedData.feed.title ?? "Untitled",
             siteUrl: feedData.feed.link,
             feedUrl: feedData.feed.url,
-            collectionId: null,
+            collectionID: null,
           });
           setMessage({
             type: "success",
@@ -269,7 +269,7 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
                             title: title,
                             siteUrl: validationData.siteUrl,
                             feedUrl: validationData.feedUrl,
-                            collectionId:
+                            collectionID:
                               selectEl.value === "new" ? null : selectEl.value,
                           })
                         );

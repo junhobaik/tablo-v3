@@ -45,7 +45,7 @@ const FeedCollection = ({
   const mapCollections = collections.map((c) => {
     const { id, title, visibility } = c;
     const collectionId = id;
-    const feedList = _.filter(feeds, ["collectionId", collectionId]);
+    const feedList = _.filter(feeds, ["collectionID", collectionId]);
 
     const toggleAddPin = (e: React.DragEvent<HTMLElement>, isShow: boolean) => {
       const lastAddPin = e.currentTarget.querySelector(
@@ -153,7 +153,24 @@ const FeedCollection = ({
           onDrop={(e) => {
             toggleAddPin(e, false);
 
-            console.log(drag, drop);
+            const dragData = drag as DragMoveData | null;
+
+            if (drop && dragData?.type === "feeds-setting-feed") {
+              dispatch(
+                feedsActionCreators.moveFeedItem(
+                  drop.collection,
+                  dragData.id,
+                  drop.index
+                )
+              );
+            }
+
+            const dropSpaces = Array.from(
+              document.querySelectorAll(".drop-space")
+            ) as HTMLDivElement[];
+            for (const d of dropSpaces) {
+              d.style.display = "none";
+            }
           }}
           onDragOver={(e) => {
             e.preventDefault();

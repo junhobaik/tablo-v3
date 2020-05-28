@@ -6,17 +6,19 @@ export const ADD_FEED = "feeds/ADD_FEED";
 export const FAILD_LOAD_FEED = "feeds/FAILD_LOAD_FEED";
 export const EDIT_FEED_TITEL = "feeds/EDIT_FEED_TITEL";
 export const DELETE_FEED = "feeds/DELETE_FEED";
+export const MOVE_FEED_ITEM = "feeds/MOVE_FEED_ITEM";
 
 export const ADD_COLLECTION = "feeds/ADD_COLLECTION";
 export const DELETE_COLLECTION = "feeds/DELETE_COLLECTION";
 export const EDIT_COLLECTION_TITLE = "feeds/EDIT_COLLECTION_TITLE";
+export const MOVE_FEED_COLLECTION = "feeds/MOVE_FEED_COLLECTION";
 
 export type FeedTargetType = "feed" | "collection";
 export interface FeedForAdd {
   title: string;
   siteUrl: string;
   feedUrl: string;
-  collectionId: string | null | undefined;
+  collectionID: string | null | undefined;
 }
 
 export interface Feed extends FeedForAdd {
@@ -100,7 +102,22 @@ interface DeleteFeedAction {
   id: string;
 }
 
+interface MoveFeedITemAction {
+  type: typeof MOVE_FEED_ITEM;
+  dropCollectionID: string;
+  dragFeedID: string;
+  index: number;
+}
+
+interface MoveFeedCollectionAction {
+  type: typeof MOVE_FEED_COLLECTION;
+  dragCollectionID: string;
+  index: number;
+}
+
 export type FeedActionType =
+  | MoveFeedCollectionAction
+  | MoveFeedITemAction
   | DeleteFeedAction
   | EditFeedTitleAction
   | ToggleVisibilityAction
@@ -152,6 +169,14 @@ const deleteFeed = (id: string) => {
   return { type: DELETE_FEED, id };
 };
 
+const moveFeedItem = (dropCollectionID: string, dragFeedID: string, index: number) => {
+  return { type: MOVE_FEED_ITEM, dropCollectionID, dragFeedID, index };
+};
+
+const moveFeedCollection = (dragCollectionID: string, index: number) => {
+  return { type: MOVE_FEED_COLLECTION, dragCollectionID, index };
+};
+
 export const actionCreators = {
   addFeed,
   faildLoadFeed,
@@ -163,4 +188,6 @@ export const actionCreators = {
   addCollection,
   editFeedTitle,
   deleteFeed,
+  moveFeedItem,
+  moveFeedCollection,
 };

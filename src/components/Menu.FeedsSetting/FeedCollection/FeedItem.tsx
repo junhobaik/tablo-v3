@@ -110,6 +110,18 @@ const FeedItem = ({
           onDrop={(e) => {
             console.log(drag, drop);
             toggleAddPin(e, false);
+
+            const dragData = drag as DragMoveData | null;
+
+            if (drop && dragData?.type === "feeds-setting-feed") {
+              dispatch(
+                feedsActionCreators.moveFeedItem(
+                  drop.collection,
+                  dragData.id,
+                  drop.index
+                )
+              );
+            }
           }}
         ></div>
         {addPinEl}

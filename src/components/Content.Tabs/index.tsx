@@ -119,7 +119,7 @@ const Tabs = () => {
     }
   };
 
-  const createTabList = (tabList: TabItem[], collectionId: string) => {
+  const createTabList = (tabList: TabItem[], collectionID: string) => {
     const tabListLength = tabList.length;
 
     return tabList.map((v: TabItem, i: number) => {
@@ -159,7 +159,7 @@ const Tabs = () => {
 
                 dispatch(
                   globalActionCreators.setDropData({
-                    collection: collectionId,
+                    collection: collectionID,
                     index: i,
                   })
                 );
