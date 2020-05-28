@@ -15,6 +15,7 @@ import {
 } from "../../../modules/feeds/actions";
 import _ from "lodash";
 import { GlobalState } from "../../../modules/global/reducer";
+import { actionCreators as globalActionCreators } from "../../../modules/global/actions";
 import FeedItem from "./FeedItem";
 import { DragMoveData } from "../../../modules/global/actions";
 
@@ -45,6 +46,13 @@ const FeedCollection = ({
     const { id, title, visibility } = c;
     const collectionId = id;
     const feedList = _.filter(feeds, ["collectionId", collectionId]);
+
+    const toggleAddPin = (e: React.DragEvent<HTMLElement>, isShow: boolean) => {
+      const lastAddPin = e.currentTarget.querySelector(
+        ".last-add-pin-wrap>.add-pin"
+      ) as HTMLDivElement;
+      lastAddPin.style.opacity = isShow ? "1" : "0";
+    };
 
     return (
       <li className="feed-collection" key={collectionId}>
@@ -126,22 +134,26 @@ const FeedCollection = ({
         <ol
           className="feed-collection-content"
           onDragEnter={(e) => {
-            const lastAddPin = e.currentTarget.querySelector(
-              ".last-add-pin-wrap>.add-pin"
-            ) as HTMLDivElement;
-            lastAddPin.style.opacity = "1";
+            toggleAddPin(e, true);
+
+            const dragData = drag as DragMoveData | null;
+
+            if (dragData?.type === "feeds-setting-feed") {
+              dispatch(
+                globalActionCreators.setDropData({
+                  collection: collectionId,
+                  index: feedList.length,
+                })
+              );
+            }
           }}
           onDragLeave={(e) => {
-            const lastAddPin = e.currentTarget.querySelector(
-              ".last-add-pin-wrap>.add-pin"
-            ) as HTMLDivElement;
-            lastAddPin.style.opacity = "0";
+            toggleAddPin(e, false);
           }}
           onDrop={(e) => {
-            const lastAddPin = e.currentTarget.querySelector(
-              ".last-add-pin-wrap>.add-pin"
-            ) as HTMLDivElement;
-            lastAddPin.style.opacity = "0";
+            toggleAddPin(e, false);
+
+            console.log(drag, drop);
           }}
           onDragOver={(e) => {
             e.preventDefault();
