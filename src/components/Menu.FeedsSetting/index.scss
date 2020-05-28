@@ -19,10 +19,13 @@ $success-2: #2c662d;
   flex-direction: column;
 
   button,
-  h2,
   h3,
   input {
     all: unset;
+  }
+
+  h2 {
+    margin: 0;
   }
 
   button {
@@ -231,12 +234,25 @@ $success-2: #2c662d;
     display: flex;
     flex-direction: column;
 
+    .feed-collection-drop-space {
+      z-index: 3;
+      position: absolute;
+      top: -2px;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      display: none;
+      // background-color: rgba(255, 0, 0, 0.2);
+      border-top: 3px solid transparent;
+    }
+
     .feed-collection {
       all: unset;
       display: flex;
       flex-direction: column;
       padding: 1rem 0.5rem;
       border-bottom: 1px solid #e1e1e1;
+      position: relative;
 
       .toggle-visiblility-btn {
         border: 1px solid #aaa;
@@ -268,6 +284,7 @@ $success-2: #2c662d;
         height: 2rem;
 
         .left {
+          flex-grow: 1;
           display: flex;
           align-items: center;
 
@@ -276,12 +293,18 @@ $success-2: #2c662d;
             height: 0.75rem;
           }
 
-          // .collection-title-input {
-          // }
-
-          h2 {
+          .collection-title-input,
+          .collection-title-text {
+            height: 1.5rem;
             margin-top: 2px;
             font-size: 1.1rem;
+          }
+          .collection-title-input {
+            flex-grow: 1;
+          }
+          .collection-title-text {
+            cursor: grab;
+            user-select: none;
             font-weight: bold;
           }
         }
@@ -476,6 +499,7 @@ $success-2: #2c662d;
       display: flex;
       padding: 1.5rem 0;
       justify-content: center;
+      position: relative;
 
       button {
         color: rgba(0, 0, 0, 0.5);

@@ -106,13 +106,13 @@ interface MoveFeedITemAction {
   type: typeof MOVE_FEED_ITEM;
   dropCollectionID: string;
   dragFeedID: string;
-  index: number;
+  dropIndex: number;
 }
 
 interface MoveFeedCollectionAction {
   type: typeof MOVE_FEED_COLLECTION;
   dragCollectionID: string;
-  index: number;
+  dropIndex: number;
 }
 
 export type FeedActionType =
@@ -169,12 +169,12 @@ const deleteFeed = (id: string) => {
   return { type: DELETE_FEED, id };
 };
 
-const moveFeedItem = (dropCollectionID: string, dragFeedID: string, index: number) => {
-  return { type: MOVE_FEED_ITEM, dropCollectionID, dragFeedID, index };
+const moveFeedItem = (dropCollectionID: string, dragFeedID: string, dropIndex: number) => {
+  return { type: MOVE_FEED_ITEM, dropCollectionID, dragFeedID, dropIndex };
 };
 
-const moveFeedCollection = (dragCollectionID: string, index: number) => {
-  return { type: MOVE_FEED_COLLECTION, dragCollectionID, index };
+const moveFeedCollection = (dragCollectionID: string, dropIndex: number) => {
+  return { type: MOVE_FEED_COLLECTION, dragCollectionID, dropIndex };
 };
 
 export const actionCreators = {

@@ -208,7 +208,7 @@ const feedsReducer = (
 
     case MOVE_FEED_ITEM: {
       const newState = _.cloneDeep(state);
-      const { dropCollectionID, dragFeedID, index } = action;
+      const { dropCollectionID, dragFeedID, dropIndex } = action;
       const { feeds } = newState;
 
       const item = _.find(feeds, ["id", dragFeedID]);
@@ -217,22 +217,43 @@ const feedsReducer = (
       const filteredFeeds = _.filter(feeds, ["collectionID", dropCollectionID]);
       _.remove(feeds, ["collectionID", dropCollectionID]);
 
-      console.log(dropCollectionID, dragFeedID, index, item, filteredFeeds);
+      console.log(dropCollectionID, dragFeedID, dropIndex, item, filteredFeeds);
 
       if (item) {
         item.collectionID = dropCollectionID;
         newState.feeds = [
           ...feeds,
-          ..._.slice(filteredFeeds, 0, index),
+          ..._.slice(filteredFeeds, 0, dropIndex),
           item,
-          ..._.slice(filteredFeeds, index, filteredFeeds.length),
+          ..._.slice(filteredFeeds, dropIndex, filteredFeeds.length),
         ];
       }
       return newState;
     }
 
     case MOVE_FEED_COLLECTION: {
-      return state;
+      const newState = _.cloneDeep(state);
+      const { dragCollectionID, dropIndex } = action;
+
+      const findedIndex = _.findIndex(newState.collections, [
+        "id",
+        dragCollectionID,
+      ]);
+      const findedCollection = _.cloneDeep(newState.collections[findedIndex]);
+
+      _.remove(newState.collections, ["id", dragCollectionID]);
+      const targetIndex = dropIndex > findedIndex ? dropIndex - 1 : dropIndex;
+
+      newState.collections = [
+        ..._.slice(newState.collections, 0, targetIndex),
+        findedCollection,
+        ..._.slice(
+          newState.collections,
+          targetIndex,
+          newState.collections.length
+        ),
+      ];
+      return newState;
     }
 
     default:
