@@ -21,6 +21,8 @@ const App = () => {
   const [isLoadedState, setIsLoadedState] = useState(false);
   const windowStatus = useSelector((state: RootState) => state.global.window);
 
+  const state = useSelector((state: RootState) => state); // dev
+
   useEffect(() => {
     chrome.storage.sync.get("tablo3", (res) => {
       if (res.tablo3) {
@@ -30,6 +32,23 @@ const App = () => {
         dispatch(feedsActionCreators.resetFeeds(feeds));
       }
       setIsLoadedState(true);
+    });
+  }, []);
+
+  // dev
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      switch (e.keyCode) {
+        case 192: // `
+          console.log("- state");
+          console.log("  - global: ", state.global);
+          console.log("  - tabs  : ", state.tabs);
+          console.log("  - feeds : ", state.feeds);
+          break;
+
+        default:
+          break;
+      }
     });
   }, []);
 
