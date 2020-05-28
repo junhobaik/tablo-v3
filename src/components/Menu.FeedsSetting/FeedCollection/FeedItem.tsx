@@ -23,6 +23,7 @@ import {
 const FeedItem = ({
   feedList,
   collectionId,
+  collectionVisibility,
   toggleVisiblity,
   disableEditFromKey,
   drag,
@@ -32,6 +33,7 @@ const FeedItem = ({
 }: {
   feedList: Feed[];
   collectionId: string;
+  collectionVisibility: boolean;
   toggleVisiblity: Function;
   disableEditFromKey: Function;
   drag: DragMoveData | null;
@@ -128,7 +130,9 @@ const FeedItem = ({
         <li
           draggable
           key={id}
-          className="feed-item"
+          className={`feed-item ${
+            collectionVisibility ? "" : "collection-visibility-hide"
+          }`}
           onMouseEnter={(e) => {
             e.isPropagationStopped();
             setBtnsShow(e.currentTarget, true);
@@ -196,7 +200,9 @@ const FeedItem = ({
           role="link"
         >
           <button
-            className="toggle-visiblility-btn"
+            className={`toggle-visiblility-btn ${
+              collectionVisibility ? "" : "collection-visibility-hide"
+            }`}
             onClick={(e) => {
               e.stopPropagation();
               toggleVisiblity(id, "feed");

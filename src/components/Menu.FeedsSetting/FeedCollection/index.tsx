@@ -276,6 +276,7 @@ const FeedCollection = ({
           <FeedItem
             feedList={feedList}
             collectionId={collectionID}
+            collectionVisibility={visibility}
             toggleVisiblity={toggleVisiblity}
             disableEditFromKey={disableEditFromKey}
             drag={drag as DragMoveData | null}
