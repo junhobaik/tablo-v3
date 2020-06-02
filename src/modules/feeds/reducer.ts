@@ -263,7 +263,7 @@ const feedsReducer = (
       const { isRead, postUrl } = action;
       const { readPosts } = newState;
 
-      if (isRead) {
+      if (isRead && !_.find(readPosts, postUrl)) {
         readPosts.push(postUrl);
         if (readPosts.length >= 1000) readPosts.shift();
       } else {
