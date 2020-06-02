@@ -66,7 +66,6 @@ const FeedCollection = ({
           e.preventDefault();
         }}
         onDrop={(e) => {
-          console.log(drag, drop);
           e.currentTarget.style.borderTop = "3px solid transparent";
 
           const dragData = drag as DragMoveData | null;
