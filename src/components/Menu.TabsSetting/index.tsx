@@ -86,6 +86,7 @@ const Tabs = () => {
                   from: "tabs-setting",
                   title: v.title,
                   url: v.url,
+                  description: "",
                 })
               );
               toggleDropSapce(true);
