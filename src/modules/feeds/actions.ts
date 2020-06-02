@@ -7,6 +7,7 @@ export const FAILD_LOAD_FEED = "feeds/FAILD_LOAD_FEED";
 export const EDIT_FEED_TITEL = "feeds/EDIT_FEED_TITEL";
 export const DELETE_FEED = "feeds/DELETE_FEED";
 export const MOVE_FEED_ITEM = "feeds/MOVE_FEED_ITEM";
+export const READ_POST = "feeds/READ_POST";
 
 export const ADD_COLLECTION = "feeds/ADD_COLLECTION";
 export const DELETE_COLLECTION = "feeds/DELETE_COLLECTION";
@@ -46,6 +47,7 @@ export interface FeedsState {
   loaded: boolean;
   feeds: Feed[];
   collections: Collection[];
+  readPosts: string[];
   isChanged: boolean;
 }
 
@@ -116,7 +118,14 @@ interface MoveFeedCollectionAction {
   dropIndex: number;
 }
 
+interface ReadPostAction {
+  type: typeof READ_POST;
+  postUrl: string;
+  isRead: boolean;
+}
+
 export type FeedActionType =
+  | ReadPostAction
   | MoveFeedCollectionAction
   | MoveFeedITemAction
   | DeleteFeedAction
@@ -170,12 +179,20 @@ const deleteFeed = (id: string) => {
   return { type: DELETE_FEED, id };
 };
 
-const moveFeedItem = (dropCollectionID: string, dragFeedID: string, dropIndex: number) => {
+const moveFeedItem = (
+  dropCollectionID: string,
+  dragFeedID: string,
+  dropIndex: number
+) => {
   return { type: MOVE_FEED_ITEM, dropCollectionID, dragFeedID, dropIndex };
 };
 
 const moveFeedCollection = (dragCollectionID: string, dropIndex: number) => {
   return { type: MOVE_FEED_COLLECTION, dragCollectionID, dropIndex };
+};
+
+const readPost = (postUrl: string, isRead: boolean = true) => {
+  return { type: READ_POST, postUrl, isRead };
 };
 
 export const actionCreators = {
@@ -191,4 +208,5 @@ export const actionCreators = {
   deleteFeed,
   moveFeedItem,
   moveFeedCollection,
+  readPost,
 };

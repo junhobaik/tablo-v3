@@ -13,6 +13,7 @@ import {
   DELETE_FEED,
   MOVE_FEED_COLLECTION,
   MOVE_FEED_ITEM,
+  READ_POST,
 } from "./actions";
 import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
@@ -63,6 +64,7 @@ const initialState: FeedsState = {
       visibility: true,
     },
   ],
+  readPosts: [],
 };
 
 const feedsReducer = (
@@ -253,6 +255,21 @@ const feedsReducer = (
           newState.collections.length
         ),
       ];
+      return newState;
+    }
+
+    case READ_POST: {
+      const newState = _.cloneDeep(state);
+      const { isRead, postUrl } = action;
+      const { readPosts } = newState;
+
+      if (isRead) {
+        readPosts.push(postUrl);
+        if (readPosts.length >= 100) readPosts.shift();
+      } else {
+        _.remove(readPosts, postUrl);
+      }
+
       return newState;
     }
 
