@@ -79,6 +79,45 @@ const FeedItem = ({
       const addPin = parent.querySelector(".add-pin") as HTMLDivElement;
       addPin.style.opacity = isShow ? "1" : "0";
     };
+
+    const toggleDropSpaces = (
+      e: React.DragEvent<HTMLElement>,
+      isShow: boolean
+    ) => {
+      const feedWrapEl = e.currentTarget.parentNode as HTMLDivElement;
+      const feedCollectionContent = feedWrapEl.parentNode as HTMLOListElement;
+      const feedCollection = feedCollectionContent.parentNode as HTMLLIElement;
+      const feedCollectionList = feedCollection.parentNode as HTMLOListElement;
+
+      const currentCollectionDropSapces = feedCollectionContent.querySelectorAll(
+        ".drop-space"
+      ) as NodeListOf<HTMLDivElement>;
+
+      const currentDropSpace: HTMLDivElement = currentCollectionDropSapces[i];
+      const nextDropSpaces = currentCollectionDropSapces[i + 1] as
+        | HTMLDivElement
+        | undefined;
+
+      const dropSpaces = Array.from(
+        feedCollectionList.querySelectorAll(".drop-space")
+      ) as HTMLDivElement[];
+
+      const filteredDropSapces = _.filter(dropSpaces, (d) => {
+        if (d !== currentDropSpace && d !== nextDropSpaces) return true;
+        return false;
+      });
+
+      if (isShow) {
+        for (const d of filteredDropSapces) {
+          d.style.display = "flex";
+        }
+      } else {
+        for (const d of dropSpaces) {
+          d.style.display = "none";
+        }
+      }
+    };
+
     return (
       <div
         className="feed-wrap"
@@ -147,9 +186,6 @@ const FeedItem = ({
           onClick={() => {
             window.open(siteUrl, "_blank");
           }}
-          onDragOver={(e) => {
-            e.preventDefault();
-          }}
           onDragStart={(e) => {
             dispatch(
               globalActionCreators.setDragData({
@@ -158,44 +194,13 @@ const FeedItem = ({
               })
             );
 
-            const feedWrapEl = e.currentTarget.parentNode as HTMLDivElement;
-            const feedCollectionContent = feedWrapEl.parentNode as HTMLOListElement;
-            const feedCollection = feedCollectionContent.parentNode as HTMLLIElement;
-            const feedCollectionList = feedCollection.parentNode as HTMLOListElement;
-
-            const currentCollectionDropSapces = feedCollectionContent.querySelectorAll(
-              ".drop-space"
-            ) as NodeListOf<HTMLDivElement>;
-
-            const currentDropSpace: HTMLDivElement =
-              currentCollectionDropSapces[i];
-            const nextDropSpaces = currentCollectionDropSapces[i + 1] as
-              | HTMLDivElement
-              | undefined;
-
-            const dropSpaces = Array.from(
-              feedCollectionList.querySelectorAll(".drop-space")
-            ) as HTMLDivElement[];
-
-            const filteredDropSapces = _.filter(dropSpaces, (d) => {
-              if (d !== currentDropSpace && d !== nextDropSpaces) return true;
-              return false;
-            });
-
-            for (const d of filteredDropSapces) {
-              d.style.display = "flex";
-            }
+            toggleDropSpaces(e, true);
           }}
           onDragEnd={(e) => {
             dispatch(globalActionCreators.clearDragData());
             dispatch(globalActionCreators.clearDropData());
 
-            const dropSpaces = Array.from(
-              document.querySelectorAll(".drop-space")
-            ) as HTMLDivElement[];
-            for (const d of dropSpaces) {
-              d.style.display = "none";
-            }
+            toggleDropSpaces(e, false);
           }}
           role="link"
         >
