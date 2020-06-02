@@ -134,6 +134,7 @@ const Feeds = () => {
         role="link"
         onClick={() => {
           window.open(postUrl, "_blank");
+          dispatch(feedsActionCreators.readPost(postUrl));
         }}
         draggable
         onDragStart={() => {
@@ -177,7 +178,7 @@ const Feeds = () => {
             role="link"
             onClick={(e) => {
               e.stopPropagation();
-              window.open(siteUrl, "_blank");
+              dispatch(feedsActionCreators.readPost(postUrl));
             }}
           >
             {siteTitle}
