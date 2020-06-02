@@ -10,6 +10,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
+import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 
 import "./index.scss";
 import ContentHeader from "../Content.Header";
@@ -20,6 +21,7 @@ import {
   actionCreators as feedsActionCreators,
 } from "../../modules/feeds/actions";
 import _ from "lodash";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface LocalData {
   items: FeedItem[];
@@ -75,6 +77,7 @@ const Feeds = () => {
           description,
           pubDate: moment(pubDate).format("x"),
           siteUrl: feed.siteUrl,
+          siteTitle: feed.title,
           postUrl: link,
         });
       }
@@ -110,9 +113,36 @@ const Feeds = () => {
   };
 
   const mapToFeedItems = feedItems.map((item: FeedItem) => {
+    const { title, siteUrl, siteTitle, postUrl, pubDate, description } = item;
+
     return (
-      <li className="" key={item.postUrl}>
-        <span className="title">{item.title}</span>
+      <li
+        className="feed-post"
+        key={postUrl}
+        role="link"
+        onClick={() => {
+          window.open(postUrl, "_blank");
+        }}
+      >
+        <div className="feed-post-header">
+          <h2 className="title">{title}</h2>
+          <div className="btns-wrap"></div>
+        </div>
+        <div className="feed-post-info">
+          <span
+            className="site-title"
+            role="link"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(siteUrl, "_blank");
+            }}
+          >
+            {siteTitle}
+          </span>
+          <span className="line">|</span>
+          <span className="pub-date">{moment(Number(pubDate)).fromNow()}</span>
+        </div>
+        <span className="feed-post-description">{description}</span>
       </li>
     );
   });
@@ -142,7 +172,9 @@ const Feeds = () => {
     <div id="Feeds">
       <ContentHeader content="feeds" searchFunc={() => {}} reverse={true} />
       <div className="feeds-content">
-        {feeds.length ? <ol>{mapToFeedItems}</ol> : null}
+        {feeds.length ? (
+          <ol className="feed-post-list">{mapToFeedItems}</ol>
+        ) : null}
       </div>
     </div>
   );

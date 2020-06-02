@@ -32,6 +32,7 @@ export interface FeedItem {
   description: string;
   pubDate: string;
   siteUrl: string;
+  siteTitle: string;
   postUrl: string;
 }
 
