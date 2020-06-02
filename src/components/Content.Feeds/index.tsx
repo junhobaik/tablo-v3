@@ -10,7 +10,8 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
-import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
+import { faBook, faBookOpen } from "@fortawesome/free-solid-svg-icons";
+import _ from "lodash";
 
 import "./index.scss";
 import ContentHeader from "../Content.Header";
@@ -20,8 +21,8 @@ import {
   FeedItem,
   actionCreators as feedsActionCreators,
 } from "../../modules/feeds/actions";
-import _ from "lodash";
 import { actionCreators as globalActionCreators } from "../../modules/global/actions";
+import ExpendButton from "../utils/ExpendButton";
 
 interface LocalData {
   items: FeedItem[];
@@ -31,7 +32,7 @@ interface LocalData {
 const Feeds = () => {
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
-  const { feeds, isChanged, loaded } = feedsState;
+  const { feeds, isChanged, loaded, readPosts } = feedsState;
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
 
   const delay = (s: number) => {
@@ -114,6 +115,8 @@ const Feeds = () => {
 
   const mapToFeedItems = feedItems.map((item: FeedItem) => {
     const { title, siteUrl, siteTitle, postUrl, pubDate, description } = item;
+    const isRead = readPosts.indexOf(postUrl) > -1 ? true : false;
+    console.log(readPosts);
 
     const toggleDropSpaces = (isShow: boolean) => {
       const dropSpaces = Array.from(
@@ -152,7 +155,22 @@ const Feeds = () => {
       >
         <div className="feed-post-header">
           <h2 className="title">{title}</h2>
-          <div className="btns-wrap"></div>
+          <div
+            className="btns-wrap"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <ExpendButton
+              icon={isRead ? faBookOpen : faBook}
+              size={5}
+              text={isRead ? "Read" : "Unread"}
+              clickEvent={() => {
+                console.log(isRead);
+                dispatch(feedsActionCreators.readPost(postUrl, !isRead));
+              }}
+            />
+          </div>
         </div>
         <div className="feed-post-info">
           <span
