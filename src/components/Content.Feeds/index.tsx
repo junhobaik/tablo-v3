@@ -116,7 +116,6 @@ const Feeds = () => {
   const mapToFeedItems = feedItems.map((item: FeedItem) => {
     const { title, siteUrl, siteTitle, postUrl, pubDate, description } = item;
     const isRead = readPosts.indexOf(postUrl) > -1 ? true : false;
-    console.log(readPosts);
 
     const toggleDropSpaces = (isShow: boolean) => {
       const dropSpaces = Array.from(
@@ -130,7 +129,7 @@ const Feeds = () => {
 
     return (
       <li
-        className="feed-post"
+        className={`feed-post ${isRead ? "readed" : "unreaded"}`}
         key={postUrl}
         role="link"
         onClick={() => {
