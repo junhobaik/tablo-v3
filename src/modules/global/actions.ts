@@ -8,7 +8,7 @@ export const SET_DROP_DATA = "global/SET_DROP_DATA";
 export const CLEAR_DROP_DATA = "global/CLEAR_DROP_DATA";
 
 export type WindowItem = "default" | "tabs-setting" | "feeds-setting";
-type DragDataFrom = "tabs-setting" | "feeds";
+type DragDataFrom = "tabs-setting" | "feeds" | "feed-post";
 type DragMoveDataFrom =
   | "collection"
   | "tabs"
@@ -19,6 +19,7 @@ export interface DragData {
   from: DragDataFrom;
   title: string;
   url: string;
+  description: string;
 }
 
 export interface DragMoveData {
