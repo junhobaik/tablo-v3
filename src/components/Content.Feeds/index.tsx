@@ -21,7 +21,7 @@ import {
   actionCreators as feedsActionCreators,
 } from "../../modules/feeds/actions";
 import _ from "lodash";
-import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { actionCreators as globalActionCreators } from "../../modules/global/actions";
 
 interface LocalData {
   items: FeedItem[];
@@ -115,6 +115,16 @@ const Feeds = () => {
   const mapToFeedItems = feedItems.map((item: FeedItem) => {
     const { title, siteUrl, siteTitle, postUrl, pubDate, description } = item;
 
+    const toggleDropSpaces = (isShow: boolean) => {
+      const dropSpaces = Array.from(
+        document.querySelectorAll(".tab-item-wrap>.drop-space")
+      ) as HTMLDivElement[];
+
+      for (const d of dropSpaces) {
+        d.style.display = isShow ? "flex" : "none";
+      }
+    };
+
     return (
       <li
         className="feed-post"
@@ -122,6 +132,22 @@ const Feeds = () => {
         role="link"
         onClick={() => {
           window.open(postUrl, "_blank");
+        }}
+        draggable
+        onDragStart={() => {
+          dispatch(
+            globalActionCreators.setDragData({
+              from: "feed-post",
+              title,
+              url: postUrl,
+              description,
+            })
+          );
+
+          toggleDropSpaces(true);
+        }}
+        onDragEnd={() => {
+          toggleDropSpaces(false);
         }}
       >
         <div className="feed-post-header">

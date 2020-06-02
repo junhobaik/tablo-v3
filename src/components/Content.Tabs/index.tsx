@@ -50,7 +50,11 @@ const Tabs = () => {
     const dragFrom = (drag as DragData)?.from;
     const dragFromMove = (drag as DragMoveData)?.type;
 
-    if (dragFrom === "tabs-setting" || dragFromMove === "tabs") {
+    if (
+      dragFrom === "tabs-setting" ||
+      dragFrom === "feed-post" ||
+      dragFromMove === "tabs"
+    ) {
       const lastPin = e.currentTarget.querySelector(".add-pin.last") as
         | HTMLDivElement
         | undefined;
@@ -153,6 +157,7 @@ const Tabs = () => {
             onDragEnter={(e) => {
               if (
                 (drag as DragData)?.from === "tabs-setting" ||
+                (drag as DragData)?.from === "feed-post" ||
                 (drag as DragMoveData)?.type === "tabs"
               ) {
                 toggleAddPin(e, true);
@@ -172,28 +177,30 @@ const Tabs = () => {
               toggleAddPin(e, false);
               toggleDropSapce(false);
 
-              if (drag && drop && (drag as DragData).from) {
-                const dragData = drag as DragData;
-                dispatch(
-                  actionCreators.addTabItem({
-                    index: drop.index,
-                    title: dragData.title,
-                    description: "",
-                    url: dragData.url,
-                    collection: drop.collection,
-                  })
-                );
-              }
+              if (drag && drop) {
+                if ((drag as DragData).from) {
+                  const dragData = drag as DragData;
+                  dispatch(
+                    actionCreators.addTabItem({
+                      index: drop.index,
+                      title: dragData.title,
+                      description: "",
+                      url: dragData.url,
+                      collection: drop.collection,
+                    })
+                  );
+                }
 
-              if (drag && drop && (drag as DragMoveData).type === "tabs") {
-                const dragData = drag as DragMoveData;
-                dispatch(
-                  actionCreators.moveTabItem(
-                    drop.collection,
-                    dragData.id,
-                    drop.index
-                  )
-                );
+                if ((drag as DragMoveData).type === "tabs") {
+                  const dragMoveData = drag as DragMoveData;
+                  dispatch(
+                    actionCreators.moveTabItem(
+                      drop.collection,
+                      dragMoveData.id,
+                      drop.index
+                    )
+                  );
+                }
               }
             }}
           ></div>
@@ -629,17 +636,19 @@ const Tabs = () => {
                 dragLeaveCollectionTabList(e);
               }}
               onDrop={(e) => {
-                e.currentTarget.style.backgroundColor = "transparent";
                 const dragData = drag as DragData;
                 const dragDataMove = drag as DragMoveData;
 
                 if (drop && e.currentTarget === e.target) {
-                  if (dragData?.from === "tabs-setting") {
+                  if (
+                    dragData?.from === "tabs-setting" ||
+                    dragData?.from === "feed-post"
+                  ) {
                     dispatch(
                       actionCreators.addTabItem({
                         index: null,
                         title: dragData.title,
-                        description: "",
+                        description: dragData.description,
                         url: dragData.url,
                         collection: drop.collection,
                       })
