@@ -265,9 +265,9 @@ const feedsReducer = (
 
       if (isRead) {
         readPosts.push(postUrl);
-        if (readPosts.length >= 100) readPosts.shift();
+        if (readPosts.length >= 1000) readPosts.shift();
       } else {
-        _.remove(readPosts, postUrl);
+        _.remove(readPosts, (url) => url === postUrl);
       }
 
       return newState;
