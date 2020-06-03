@@ -29,11 +29,22 @@ interface LocalData {
   lastLoadDate: string;
 }
 
+interface LoadProgress {
+  totalProgress: number;
+  succeedFeeds: Feed[];
+  failedFeeds: Feed[];
+}
+
 const Feeds = () => {
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
   const { feeds, isChanged, loaded, readPosts } = feedsState;
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
+  const [loadProgress, setLoadProgress] = useState<LoadProgress>({
+    totalProgress: 0,
+    succeedFeeds: [],
+    failedFeeds: [],
+  });
 
   const delay = (s: number) => {
     return new Promise((resolve) =>
@@ -48,14 +59,20 @@ const Feeds = () => {
     try {
       const fetchURL = `https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`;
       const response = await fetch(fetchURL);
-      // if (!response.ok) throw { status: response.status };
+
+      if (!response.ok)
+        throw { feedTitle: feed.title, statusCode: response.status };
 
       const feedData = await response.json();
       const { items } = feedData;
 
       return items;
     } catch (err) {
-      dispatch(feedsActionCreators.faildLoadFeed(id));
+      console.error("ERROR: loadFeedItem", err);
+
+      if (err.statusCode === 422)
+        dispatch(feedsActionCreators.faildLoadFeed(id));
+
       return null;
     }
   }
@@ -66,7 +83,18 @@ const Feeds = () => {
 
     for (const feed of feeds) {
       const items = await loadFeedItem(feed);
-      await delay(200);
+      i++;
+      setLoadProgress((prev: LoadProgress) => {
+        return {
+          totalProgress: (i / feeds.length) * 100,
+          succeedFeeds: items
+            ? [...prev.succeedFeeds, feed]
+            : prev.succeedFeeds,
+          failedFeeds: items ? prev.failedFeeds : [...prev.failedFeeds, feed],
+        };
+      });
+
+      await delay(500);
 
       if (!items) continue;
 
@@ -83,6 +111,15 @@ const Feeds = () => {
         });
       }
     }
+
+    setTimeout(() => {
+      setLoadProgress((prev: LoadProgress) => {
+        return {
+          ...prev,
+          totalProgress: 101,
+        };
+      });
+    }, 1000);
 
     resultItems.sort((a, b) => {
       return Number(b.pubDate) - Number(a.pubDate);
@@ -194,7 +231,7 @@ const Feeds = () => {
   useEffect(() => {
     if (!isChanged && feeds.length) {
       const localData: LocalData | null = getLocalData();
-      const reloadInterval = 60000; // TODO: 차후 설정과 연동 3600000 1hour
+      const reloadInterval = 0; // TODO: 차후 설정과 연동 3600000 1hour
 
       console.log(Date.now() - Number(localData?.lastLoadDate ?? 0), "지남");
 
@@ -214,7 +251,12 @@ const Feeds = () => {
 
   return (
     <div id="Feeds">
-      <ContentHeader content="feeds" searchFunc={() => {}} reverse={true} />
+      <ContentHeader
+        content="feeds"
+        searchFunc={() => {}}
+        reverse={true}
+        loadProgress={loadProgress.totalProgress}
+      />
       <div className="feeds-content">
         {feeds.length ? (
           <ol className="feed-post-list">{mapToFeedItems}</ol>

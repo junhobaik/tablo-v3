@@ -16,6 +16,7 @@ interface ContentHeaderProps {
   content: Content;
   searchFunc: Function;
   reverse: boolean;
+  loadProgress?: number;
 }
 
 const ContentHeader = (props: ContentHeaderProps) => {
@@ -65,7 +66,18 @@ const ContentHeader = (props: ContentHeaderProps) => {
             }}
           />
         </div>
-        <div className="status"></div>
+        <div className="status">
+          {content === "feeds" &&
+          props.loadProgress &&
+          props.loadProgress <= 100 ? (
+            <div className="load-progress">
+              <div
+                className="progress"
+                style={{ width: `${props.loadProgress}%` }}
+              ></div>
+            </div>
+          ) : null}
+        </div>
       </div>
       <button onClick={openSetting}>
         {windowStatus === "default" ? (
