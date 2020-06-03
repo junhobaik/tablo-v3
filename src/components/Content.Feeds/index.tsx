@@ -164,7 +164,7 @@ const Feeds = () => {
             <ExpendButton
               icon={isRead ? faBookOpen : faBook}
               size={5}
-              text={isRead ? "Read" : "Unread"}
+              text={isRead ? "Unread" : "Read"}
               clickEvent={() => {
                 console.log(isRead);
                 dispatch(feedsActionCreators.readPost(postUrl, !isRead));
