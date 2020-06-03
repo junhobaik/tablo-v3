@@ -56,7 +56,13 @@ const options = {
       },
       {
         test: /\.scss/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [
+          process.env.NODE_ENV !== "production"
+            ? "style-loader"
+            : MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader",
+        ],
       },
       {
         test: /\.css$/,
