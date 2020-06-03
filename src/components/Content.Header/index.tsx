@@ -38,9 +38,34 @@ const ContentHeader = (props: ContentHeaderProps) => {
     <div
       className={`${content}-header content-header ${reverse ? "reverse" : ""}`}
     >
-      <div className="content-search">
-        <Fa icon={faSearch} />
-        {/* <input type="text" name="" id={`${content}-search-input`} /> */}
+      <div className="content-header-inner-wrap">
+        <div className="content-search">
+          <button
+            className="search-active-btn"
+            onClick={(e) => {
+              const contentSearch = e.currentTarget
+                .parentNode as HTMLDivElement;
+
+              if (contentSearch.classList.contains("active")) {
+                contentSearch.classList.remove("active");
+              } else {
+                contentSearch.classList.add("active");
+                const searchInput = contentSearch.lastChild as HTMLInputElement;
+                searchInput.focus();
+              }
+            }}
+          >
+            <Fa icon={faSearch} />
+          </button>
+          <input
+            className={`search-input ${content}-search-input`}
+            type="text"
+            onChange={() => {
+              //
+            }}
+          />
+        </div>
+        <div className="status"></div>
       </div>
       <button onClick={openSetting}>
         {windowStatus === "default" ? (
