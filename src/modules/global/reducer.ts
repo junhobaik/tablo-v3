@@ -21,6 +21,7 @@ export interface GlobalState {
     tab: LinkMethod;
     collection: LinkMethod;
     post: LinkMethod;
+    feed: LinkMethod;
   };
 }
 
@@ -31,6 +32,7 @@ const initialState: GlobalState = {
   linkMethod: {
     tab: "current",
     collection: "new",
+    feed: "new",
     post: "new",
   },
 };
