@@ -10,9 +10,9 @@ const Header = () => {
       <h1>Tablo</h1>
       <button
         onClick={() => {
-          chrome.storage.sync.clear();
-          localStorage.clear();
+          window.open('options.html', '_blank');
         }}
+        role="link"
       >
         <Fa icon={faCog} />
       </button>
