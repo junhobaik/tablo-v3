@@ -1,5 +1,6 @@
 import {
   WindowItem,
+  LinkMethod,
   DragData,
   DragMoveData,
   DropData,
@@ -16,12 +17,22 @@ export interface GlobalState {
   window: WindowItem;
   drag: DragData | DragMoveData | null;
   drop: DropData | null;
+  linkMethod: {
+    tab: LinkMethod;
+    collection: LinkMethod;
+    post: LinkMethod;
+  };
 }
 
 const initialState: GlobalState = {
   window: "default",
   drag: null,
   drop: null,
+  linkMethod: {
+    tab: "current",
+    collection: "new",
+    post: "new",
+  },
 };
 
 function globalReducer(

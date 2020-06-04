@@ -14,6 +14,7 @@ type DragMoveDataFrom =
   | "tabs"
   | "feeds-setting-feed"
   | "feeds-setting-collection";
+export type LinkMethod = "new" | "current" | null | undefined;
 
 export interface DragData {
   from: DragDataFrom;
