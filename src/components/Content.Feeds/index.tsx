@@ -60,17 +60,18 @@ const Feeds = () => {
       const fetchURL = `https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`;
       const response = await fetch(fetchURL);
 
-      if (!response.ok)
+      if (!response.ok) {
         throw {
           feedTitle: feed.title,
           statusCode: response.status,
           failedCount: feed.faildCount,
         };
-
-      const feedData = await response.json();
-      const { items } = feedData;
-
-      return items;
+      } else {
+        dispatch(feedsActionCreators.faildLoadFeed(id, 0));
+        const feedData = await response.json();
+        const { items } = feedData;
+        return items;
+      }
     } catch (err) {
       console.error("ERROR: loadFeedItem", err);
 

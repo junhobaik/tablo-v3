@@ -61,6 +61,7 @@ interface AddFeedAction {
 interface FaildLoadFeedAction {
   type: typeof FAILD_LOAD_FEED;
   id: string;
+  count?: number;
 }
 
 interface ResetFeedsAction {
@@ -151,8 +152,8 @@ const addCollection = () => {
   return { type: ADD_COLLECTION };
 };
 
-const faildLoadFeed = (id: string) => {
-  return { type: FAILD_LOAD_FEED, id };
+const faildLoadFeed = (id: string, count?: number) => {
+  return { type: FAILD_LOAD_FEED, id, count };
 };
 
 const setIsChanged = (isChanged: boolean) => {

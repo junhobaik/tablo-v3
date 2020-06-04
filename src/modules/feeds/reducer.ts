@@ -193,7 +193,12 @@ const feedsReducer = (
     case FAILD_LOAD_FEED: {
       const newState = _.cloneDeep(state);
       const findedIndex = _.findIndex(newState.feeds, ["id", action.id]);
-      newState.feeds[findedIndex].faildCount += 1;
+
+      if (action.count) {
+        newState.feeds[findedIndex].faildCount = action.count;
+      } else {
+        newState.feeds[findedIndex].faildCount += 1;
+      }
 
       return newState;
     }
