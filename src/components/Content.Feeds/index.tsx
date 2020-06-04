@@ -182,7 +182,6 @@ const Feeds = () => {
   });
 
   const mapToFeedItems = filteredFeedItems.map((item: FeedItem) => {
-    // console.log(item);
     const { title, siteUrl, siteTitle, postUrl, pubDate, description } = item;
     const isRead = readPosts.indexOf(postUrl) > -1 ? true : false;
 
