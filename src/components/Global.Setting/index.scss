@@ -1,0 +1,64 @@
+#Setting {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    padding: 0;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+  h4 {
+    font-size: 1rem;
+  }
+
+  & > div {
+    border-bottom: 1px solid gray;
+    padding: 0.5rem;
+  }
+
+  .radio-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  .open-link {
+    display: flex;
+    & > div {
+      padding: 0 0.5rem;
+
+      & > div {
+        padding: 0 0.5rem;
+      }
+    }
+
+    .tabs {
+      .tabs-inner-wrap {
+        .tabs-link {
+          margin-bottom: 0.5rem;
+        }
+        .tabs-window {
+        }
+      }
+    }
+  }
+
+  .posts {
+    & > div {
+      display: flex;
+      align-items: center;
+      h3 {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
