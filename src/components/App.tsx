@@ -29,6 +29,8 @@ const App = () => {
         dispatch(globalActionCreators.resetGlobal(global));
         dispatch(tabsActionCreators.resetTabs(tabs));
         dispatch(feedsActionCreators.resetFeeds(feeds));
+      } else {
+        dispatch(feedsActionCreators.setIsChanged(true));
       }
       setIsLoadedState(true);
     });
