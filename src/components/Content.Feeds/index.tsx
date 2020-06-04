@@ -38,6 +38,7 @@ interface LoadProgress {
 const Feeds = () => {
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
+  const linkMethod = useSelector((state: RootState) => state.global.linkMethod);
   const { feeds, collections, isChanged, loaded, readPosts } = feedsState;
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
   const [loadProgress, setLoadProgress] = useState<LoadProgress>({
@@ -46,6 +47,7 @@ const Feeds = () => {
     failedFeeds: [],
   });
   const [errorFeeds, setErrorFeeds] = useState<string[]>([]);
+  const postLinkMethod = linkMethod.post === "new" ? "_blank" : "_self";
 
   const delay = (s: number = 500) => {
     return new Promise((resolve) =>
@@ -208,7 +210,7 @@ const Feeds = () => {
         key={postUrl}
         role="link"
         onClick={() => {
-          window.open(postUrl, "_blank");
+          window.open(postUrl, postLinkMethod);
           dispatch(feedsActionCreators.readPost(postUrl));
         }}
         draggable

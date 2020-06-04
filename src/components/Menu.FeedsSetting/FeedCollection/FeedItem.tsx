@@ -1,7 +1,7 @@
 /* eslint no-unused-vars: 0 */
 
 import * as React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import {
   faTimes,
@@ -20,6 +20,7 @@ import {
   DragMoveData,
   DropData,
 } from "../../../modules/global/actions";
+import { RootState } from "../../../modules";
 
 const FeedItem = ({
   feedList,
@@ -43,6 +44,8 @@ const FeedItem = ({
   setEditTarget: Function;
 }) => {
   const dispatch = useDispatch();
+  const linkMethod = useSelector((state: RootState) => state.global.linkMethod);
+  const feedLinkMethod = linkMethod.feed === "new" ? "_blank" : "_self";
 
   // >feed
   const addPinEl = (
@@ -187,9 +190,9 @@ const FeedItem = ({
           }}
           onClick={() => {
             if (isErrorFeed) {
-              window.open(feedUrl, "_blank");
+              window.open(feedUrl, feedLinkMethod);
             } else {
-              window.open(siteUrl, "_blank");
+              window.open(siteUrl, feedLinkMethod);
             }
           }}
           onDragStart={(e) => {

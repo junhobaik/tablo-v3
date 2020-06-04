@@ -34,7 +34,10 @@ const Tabs = () => {
   const dispatch = useDispatch();
   const tabsState = useSelector((state: RootState) => state.tabs);
   const globalState = useSelector((state: RootState) => state.global);
-  const { drag, drop } = globalState;
+  const { drag, drop, linkMethod } = globalState;
+  const tabLinkMethod = linkMethod.tab === "new" ? "_blank" : "_self";
+  const collectionLinkMethod =
+    linkMethod.collection === "new" ? "_blank" : "_self";
 
   const [editTarget, setEditTarget] = useState<string | undefined>();
 
@@ -284,7 +287,7 @@ const Tabs = () => {
                     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
                   ) => {
                     e.preventDefault();
-                    if (!getIsEdit()) window.open(v.url, "_self");
+                    if (!getIsEdit()) window.open(v.url, tabLinkMethod);
                   }}
                 >
                   <div className="tab-header">
@@ -548,23 +551,18 @@ const Tabs = () => {
                     size={7.75}
                     clickEvent={() => {
                       const links: string[] = [];
-                      // TODO: 향후 설정의 모든 탭 열기 방식과 연동
-                      // const openMethod: "self" | "blank" = "blank";
-
                       for (const tab of filteredTabs) {
                         links.push(tab.url);
                       }
 
                       if (links.length) {
-                        chrome.windows.create({ url: links, type: "normal" });
-
-                        // if (openMethod === "self") {
-                        //   for (const link of links) {
-                        //     chrome.tabs.create({ url: link });
-                        //   }
-                        // } else {
-                        //   chrome.windows.create({ url: links, type: "normal" });
-                        // }
+                        if (collectionLinkMethod === "_self") {
+                          for (const link of links) {
+                            chrome.tabs.create({ url: link });
+                          }
+                        } else {
+                          chrome.windows.create({ url: links, type: "normal" });
+                        }
                       }
                     }}
                   />
