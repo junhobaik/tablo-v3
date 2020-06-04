@@ -24,7 +24,7 @@ const Setting = () => {
           tablo3: state,
         },
         () => {
-          localStorage.setItem('tablo3_changed', 'true');
+          localStorage.setItem("tablo3_changed", "true");
         }
       );
     }
@@ -52,7 +52,7 @@ const Setting = () => {
     };
 
     const createRadioButton = (
-      type: "tab" | "collection" | "post",
+      type: "tab" | "collection" | "post" | "feed",
       method: LinkMethod,
       labelText: string
     ) => {
@@ -99,8 +99,15 @@ const Setting = () => {
             <h3>Feeds</h3>
             <div className="feeds-inner-wrap">
               <h4>Post</h4>
-              {createRadioButton("post", "new", "New tab")}
-              {createRadioButton("post", "current", "Current tab")}
+              <div className="feeds-post">
+                {createRadioButton("post", "new", "New tab")}
+                {createRadioButton("post", "current", "Current tab")}
+              </div>
+              <h4>Feed</h4>
+              <div className="feeds-feed">
+                {createRadioButton("feed", "new", "New tab")}
+                {createRadioButton("feed", "current", "Current tab")}
+              </div>
             </div>
           </div>
         </div>
