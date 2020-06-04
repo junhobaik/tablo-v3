@@ -79,4 +79,34 @@
       }
     }
   }
+  .feeds-error-list {
+    z-index: 9;
+    display: flex;
+    position: fixed;
+    right: -1px;
+    bottom: 0;
+    min-height: 1rem;
+    width: 50%;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    flex-wrap: wrap;
+    transition: 0.3s;
+
+    span {
+      cursor: default;
+      opacity: 0.7;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+      span {
+        opacity: 1;
+      }
+    }
+  }
 }

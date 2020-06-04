@@ -45,6 +45,7 @@ const Feeds = () => {
     succeedFeeds: [],
     failedFeeds: [],
   });
+  const [errorFeeds, setErrorFeeds] = useState<string[]>([]);
 
   const delay = (s: number = 500) => {
     return new Promise((resolve) =>
@@ -91,6 +92,7 @@ const Feeds = () => {
   async function loadFeedItemAll(feeds: Feed[]) {
     let i = 0;
     const resultItems: FeedItem[] = [];
+    setErrorFeeds([]);
 
     for (const feed of feeds) {
       let items = await loadFeedItem(feed);
@@ -113,7 +115,12 @@ const Feeds = () => {
       });
 
       await delay();
-      if (isError || !items) continue;
+      if (isError || !items) {
+        setErrorFeeds((prev: string[]) => {
+          return [...prev, feed.title];
+        });
+        continue;
+      }
 
       for (const item of items) {
         const { title, description, pubDate, link } = item;
@@ -292,6 +299,11 @@ const Feeds = () => {
           <ol className="feed-post-list">{mapToFeedItems}</ol>
         ) : null}
       </div>
+      {errorFeeds.length ? (
+        <div className="feeds-error-list">
+          <span>Failed to load: {errorFeeds.join(", ")}</span>
+        </div>
+      ) : null}
     </div>
   );
 };
