@@ -194,7 +194,7 @@ const feedsReducer = (
       const newState = _.cloneDeep(state);
       const findedIndex = _.findIndex(newState.feeds, ["id", action.id]);
 
-      if (action.count) {
+      if (action.count !== undefined) {
         newState.feeds[findedIndex].faildCount = action.count;
       } else {
         newState.feeds[findedIndex].faildCount += 1;
