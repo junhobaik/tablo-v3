@@ -38,7 +38,7 @@ interface LoadProgress {
 const Feeds = () => {
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
-  const { feeds, isChanged, loaded, readPosts } = feedsState;
+  const { feeds, collections, isChanged, loaded, readPosts } = feedsState;
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
   const [loadProgress, setLoadProgress] = useState<LoadProgress>({
     totalProgress: 0,
@@ -125,6 +125,8 @@ const Feeds = () => {
           siteUrl: feed.siteUrl,
           siteTitle: feed.title,
           postUrl: link,
+          feedID: feed.id,
+          collectionID: feed.collectionID ?? "",
         });
       }
 
@@ -167,7 +169,20 @@ const Feeds = () => {
     });
   };
 
-  const mapToFeedItems = feedItems.map((item: FeedItem) => {
+  const filteredFeedItems = _.filter(feedItems, (item) => {
+    const collectionVisibility =
+      _.find(collections, ["id", item.collectionID])?.visibility ?? true;
+    if (!collectionVisibility) return false;
+
+    const feedVisibility =
+      _.find(feeds, ["id", item.feedID])?.visibility ?? true;
+    if (!feedVisibility) return false;
+
+    return true;
+  });
+
+  const mapToFeedItems = filteredFeedItems.map((item: FeedItem) => {
+    // console.log(item);
     const { title, siteUrl, siteTitle, postUrl, pubDate, description } = item;
     const isRead = readPosts.indexOf(postUrl) > -1 ? true : false;
 
@@ -220,7 +235,6 @@ const Feeds = () => {
               size={5}
               text={isRead ? "Unread" : "Read"}
               clickEvent={() => {
-                console.log(isRead);
                 dispatch(feedsActionCreators.readPost(postUrl, !isRead));
               }}
             />

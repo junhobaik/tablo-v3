@@ -35,6 +35,8 @@ export interface FeedItem {
   siteUrl: string;
   siteTitle: string;
   postUrl: string;
+  feedID: string;
+  collectionID: string;
 }
 
 export interface Collection {
