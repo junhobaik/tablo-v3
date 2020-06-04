@@ -7,6 +7,7 @@ import {
   faTimes,
   faPen,
   faPlusCircle,
+  faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
 
@@ -52,7 +53,8 @@ const FeedItem = ({
   );
 
   const mapFeedList = feedList.map((f, i) => {
-    const { id, title, visibility, siteUrl } = f;
+    const { id, title, visibility, siteUrl, feedUrl, faildCount } = f;
+    const isErrorFeed = faildCount >= 10;
 
     const setBtnsShow = (
       feedItemEl: HTMLLIElement,
@@ -169,9 +171,9 @@ const FeedItem = ({
         <li
           draggable
           key={id}
-          className={`feed-item ${
-            collectionVisibility ? "" : "collection-visibility-hide"
-          }`}
+          className={`feed-item${
+            collectionVisibility ? "" : " collection-visibility-hide"
+          }${isErrorFeed ? " over-failed" : ""}`}
           onMouseEnter={(e) => {
             e.isPropagationStopped();
             setBtnsShow(e.currentTarget, true);
@@ -184,7 +186,11 @@ const FeedItem = ({
             setBtnsShow(e.currentTarget, false, true);
           }}
           onClick={() => {
-            window.open(siteUrl, "_blank");
+            if (isErrorFeed) {
+              window.open(feedUrl, "_blank");
+            } else {
+              window.open(siteUrl, "_blank");
+            }
           }}
           onDragStart={(e) => {
             dispatch(
@@ -204,20 +210,28 @@ const FeedItem = ({
           }}
           role="link"
         >
-          <button
-            className={`toggle-visiblility-btn ${
-              collectionVisibility ? "" : "collection-visibility-hide"
-            }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleVisiblity(id, "feed");
-            }}
-            onMouseDown={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            <div className={`inner ${visibility ? "vislble" : "hidden"}`}></div>
-          </button>
+          {isErrorFeed ? (
+            <div className="error-feed-icon-wrap">
+              <Fa icon={faExclamationCircle} />
+            </div>
+          ) : (
+            <button
+              className={`toggle-visiblility-btn ${
+                collectionVisibility ? "" : "collection-visibility-hide"
+              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleVisiblity(id, "feed");
+              }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <div
+                className={`inner ${visibility ? "vislble" : "hidden"}`}
+              ></div>
+            </button>
+          )}
 
           {editTarget === id ? (
             <div className="title-input-wrap">

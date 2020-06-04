@@ -446,11 +446,6 @@ $success-2: #2c662d;
             margin-top: 1px;
           }
 
-          // div.title-input-wrap {
-          //   input.title-input {
-          //   }
-          // }
-
           a.title-text-link,
           div.title-input-wrap {
             flex-grow: 1;
@@ -499,6 +494,19 @@ $success-2: #2c662d;
               .delete-btn {
                 transition: 0.15s;
               }
+            }
+          }
+
+          &.over-failed {
+            background-color: #fcf7f6;
+            border: 1px solid #d3b7b6;
+
+            .error-feed-icon-wrap {
+              display: flex;
+              font-size: 0.9rem;
+              margin-right: 0.25rem;
+              align-items: center;
+              color: #86342f;
             }
           }
         }
