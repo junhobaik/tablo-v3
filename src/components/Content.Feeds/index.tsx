@@ -46,7 +46,7 @@ const Feeds = () => {
     failedFeeds: [],
   });
 
-  const delay = (s: number) => {
+  const delay = (s: number = 500) => {
     return new Promise((resolve) =>
       setTimeout(() => {
         resolve();
@@ -54,14 +54,18 @@ const Feeds = () => {
     );
   };
 
-  async function loadFeedItem(feed: Feed) {
+  async function loadFeedItem(feed: Feed, retry: boolean = false) {
     const { feedUrl, id } = feed;
     try {
       const fetchURL = `https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`;
       const response = await fetch(fetchURL);
 
       if (!response.ok)
-        throw { feedTitle: feed.title, statusCode: response.status };
+        throw {
+          feedTitle: feed.title,
+          statusCode: response.status,
+          failedCount: feed.faildCount,
+        };
 
       const feedData = await response.json();
       const { items } = feedData;
@@ -70,10 +74,16 @@ const Feeds = () => {
     } catch (err) {
       console.error("ERROR: loadFeedItem", err);
 
-      if (err.statusCode === 422)
+      if (retry) return null;
+      if (err.statusCode === 422) {
         dispatch(feedsActionCreators.faildLoadFeed(id));
-
-      return null;
+        const error = new Error("url error");
+        error.name = "URL-ERROR";
+        return error;
+      }
+      const error = new Error("unknown error");
+      error.name = "UNKNOWN-ERROR";
+      return error;
     }
   }
 
@@ -82,8 +92,15 @@ const Feeds = () => {
     const resultItems: FeedItem[] = [];
 
     for (const feed of feeds) {
-      const items = await loadFeedItem(feed);
-      i++;
+      let items = await loadFeedItem(feed);
+      const isError = items instanceof Error;
+
+      if (isError && (items as Error).name === "UNKNOWN-ERROR") {
+        await delay();
+        items = await loadFeedItem(feed);
+      }
+
+      i += 1;
       setLoadProgress((prev: LoadProgress) => {
         return {
           totalProgress: (i / feeds.length) * 100,
@@ -94,9 +111,8 @@ const Feeds = () => {
         };
       });
 
-      await delay(500);
-
-      if (!items) continue;
+      await delay();
+      if (isError || !items) continue;
 
       for (const item of items) {
         const { title, description, pubDate, link } = item;
@@ -110,6 +126,12 @@ const Feeds = () => {
           postUrl: link,
         });
       }
+
+      resultItems.sort((a, b) => {
+        return Number(b.pubDate) - Number(a.pubDate);
+      });
+
+      setFeedItems(resultItems);
     }
 
     setTimeout(() => {
@@ -120,10 +142,6 @@ const Feeds = () => {
         };
       });
     }, 1000);
-
-    resultItems.sort((a, b) => {
-      return Number(b.pubDate) - Number(a.pubDate);
-    });
 
     const now = Date.now().toString();
     const localData: LocalData = {
@@ -144,9 +162,7 @@ const Feeds = () => {
 
   const loadAndSetFeedItems = () => {
     loadFeedItemAll(feeds).then(() => {
-      const localData: LocalData | null = getLocalData();
       dispatch(feedsActionCreators.setIsChanged(false));
-      setFeedItems(localData?.items ?? []);
     });
   };
 
@@ -229,7 +245,7 @@ const Feeds = () => {
   });
 
   useEffect(() => {
-    if (!isChanged && feeds.length) {
+    if (loaded && !isChanged && feeds.length) {
       const localData: LocalData | null = getLocalData();
       const reloadInterval = 0; // TODO: 차후 설정과 연동 3600000 1hour
 
