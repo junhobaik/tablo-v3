@@ -38,15 +38,18 @@ interface LoadProgress {
 const Feeds = () => {
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
-  const linkMethod = useSelector((state: RootState) => state.global.linkMethod);
+  const globalState = useSelector((state: RootState) => state.global);
+  const { linkMethod, reloadPosts, hidePosts } = globalState;
   const { feeds, collections, isChanged, loaded, readPosts } = feedsState;
+
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
+  const [errorFeeds, setErrorFeeds] = useState<string[]>([]);
   const [loadProgress, setLoadProgress] = useState<LoadProgress>({
     totalProgress: 0,
     succeedFeeds: [],
     failedFeeds: [],
   });
-  const [errorFeeds, setErrorFeeds] = useState<string[]>([]);
+
   const postLinkMethod = linkMethod.post === "new" ? "_blank" : "_self";
   const feedLinkMethod = linkMethod.feed === "new" ? "_blank" : "_self";
 
@@ -188,6 +191,12 @@ const Feeds = () => {
       _.find(feeds, ["id", item.feedID])?.visibility ?? true;
     if (!feedVisibility) return false;
 
+    if (hidePosts === 0) return true;
+
+    const isOldPost =
+      Date.now() - Number(item.pubDate) > 3600000 * 24 * hidePosts;
+    if (isOldPost) return false;
+
     return true;
   });
 
@@ -278,10 +287,8 @@ const Feeds = () => {
   useEffect(() => {
     if (loaded && !isChanged && feeds.length) {
       const localData: LocalData | null = getLocalData();
-      const reloadInterval = 0; // TODO: 차후 설정과 연동 3600000 1hour
-
-      console.log(Date.now() - Number(localData?.lastLoadDate ?? 0), "지남");
-
+      const reloadInterval = 3600000 * reloadPosts;
+      // console.log(Date.now() - Number(localData?.lastLoadDate ?? 0), "지남");
       if (!localData) {
         loadAndSetFeedItems();
       } else if (Date.now() - Number(localData.lastLoadDate) > reloadInterval) {
