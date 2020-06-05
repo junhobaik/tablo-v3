@@ -24,7 +24,7 @@ import {
 import { actionCreators as globalActionCreators } from "../../modules/global/actions";
 import ExpendButton from "../utils/ExpendButton";
 
-interface LocalData {
+export interface LocalData {
   items: FeedItem[];
   lastLoadDate: string;
 }
