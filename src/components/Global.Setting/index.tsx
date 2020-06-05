@@ -38,7 +38,8 @@ const Setting = () => {
 
     const setStateLinkMethod = (e: React.ChangeEvent<HTMLInputElement>) => {
       const v = e.currentTarget.value.split(".");
-      console.log(state.global.linkMethod);
+      console.log(v);
+
       setState({
         ...state,
         global: {
@@ -63,7 +64,7 @@ const Setting = () => {
             name={`${type}-radio`}
             id={`${type}-${method}`}
             value={`${type}.${method}`}
-            checked={linkMethod[type] === "new"}
+            checked={linkMethod[type] === method}
             onChange={(e) => {
               setStateLinkMethod(e);
             }}
