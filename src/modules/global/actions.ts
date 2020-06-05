@@ -15,7 +15,7 @@ type DragMoveDataFrom =
   | "feeds-setting-feed"
   | "feeds-setting-collection";
 export type LinkMethod = "new" | "current" | null | undefined;
-export type ReloadPostsHour = 3 | 6 | 9 | 12 | 24;
+export type ReloadPostsHour = 0 | 3 | 6 | 9 | 12 | 24; // 0 = dev only
 export type HidePostsDay = 0 | 7 | 14 | 30 | 60 | 90;
 
 export interface DragData {

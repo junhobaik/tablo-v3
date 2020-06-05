@@ -149,6 +149,9 @@ const Setting = () => {
               }}
               defaultValue={reloadPosts}
             >
+              {process.env.NODE_ENV === "development" ? (
+                <option value="0">0</option>
+              ) : null}
               <option value="3">3H</option>
               <option value="6">6H</option>
               <option value="9">9H</option>
