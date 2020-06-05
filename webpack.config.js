@@ -102,7 +102,7 @@ const options = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new webpack.EnvironmentPlugin(["NODE_ENV"]),
     new CopyWebpackPlugin([
       {
