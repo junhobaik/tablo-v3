@@ -22,17 +22,7 @@ const App = () => {
   const windowStatus = useSelector((state: RootState) => state.global.window);
   const state = useSelector((state: RootState) => state); // dev
 
-  useEffect(() => {
-    const detectChange = setInterval(() => {
-      const isChanged = JSON.parse(
-        localStorage.getItem("tablo3_changed") ?? "false"
-      );
-      if (isChanged) {
-        localStorage.setItem("tablo3_changed", "false");
-        location.reload();
-      }
-    }, 10000);
-
+  const loadAndSetStates = () => {
     chrome.storage.sync.get("tablo3", (res) => {
       if (res.tablo3) {
         const { tabs, global, feeds } = res.tablo3;
@@ -44,6 +34,20 @@ const App = () => {
       }
       setIsLoadedState(true);
     });
+  };
+
+  useEffect(() => {
+    const detectChange = setInterval(() => {
+      const isChanged = JSON.parse(
+        localStorage.getItem("tablo3_changed") ?? "false"
+      );
+      if (isChanged) {
+        localStorage.setItem("tablo3_changed", "false");
+        loadAndSetStates();
+      }
+    }, 10000);
+
+    loadAndSetStates();
 
     return () => {
       clearInterval(detectChange);
