@@ -37,7 +37,7 @@ const Popup = () => {
   const [containFeeds, setContainFeeds] = useState<boolean>(false);
   const [requestError, setRequestError] = useState<boolean>(false);
 
-  const delay = (s: number = 2500) => {
+  const delay = (s: number = 1000) => {
     return new Promise((resolve) =>
       setTimeout(() => {
         resolve();
@@ -75,7 +75,7 @@ const Popup = () => {
             console.log("요청 과다");
             return "error";
           }
-          await delay(3000);
+          await delay(2000);
           await request(c, count + 1);
         } else {
           return null;
@@ -89,7 +89,7 @@ const Popup = () => {
         setRequestError(true);
         break;
       }
-      await delay(3000);
+      await delay();
     }
 
     return false;
@@ -97,11 +97,11 @@ const Popup = () => {
 
   useEffect(() => {
     if (firstLoadDone) {
-      // chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-      chrome.tabs.query({ currentWindow: false, active: true }, function (
-        tabs
-      ) {
-        const { title, url, favIconUrl } = tabs[0];
+      chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+        // const { title, url, favIconUrl } = tabs[0];
+        const title = "My Blog";
+        const url = "https://junhobaik.github.io/";
+        const favIconUrl = "https://junhobaik.github.io/favicon.ico";
 
         setSite({
           title: title ?? "Untitled",
