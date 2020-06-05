@@ -2,7 +2,11 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import "./index.scss";
 import { RootState } from "../../modules";
-import { LinkMethod } from "../../modules/global/actions";
+import {
+  LinkMethod,
+  ReloadPostsHour,
+  HidePostsDay,
+} from "../../modules/global/actions";
 
 const Setting = () => {
   const [state, setState] = useState<RootState>();
@@ -34,7 +38,27 @@ const Setting = () => {
     return <div>loading...</div>;
   } else {
     const { global } = state;
-    const { linkMethod } = global;
+    const { linkMethod, reloadPosts, hidePosts } = global;
+
+    const setStateHidePosts = (day: HidePostsDay) => {
+      setState({
+        ...state,
+        global: {
+          ...state.global,
+          hidePosts: day,
+        },
+      });
+    };
+
+    const setStateReloadPosts = (hour: ReloadPostsHour) => {
+      setState({
+        ...state,
+        global: {
+          ...state.global,
+          reloadPosts: hour,
+        },
+      });
+    };
 
     const setStateLinkMethod = (e: React.ChangeEvent<HTMLInputElement>) => {
       const v = e.currentTarget.value.split(".");
@@ -117,7 +141,14 @@ const Setting = () => {
         <div className="posts">
           <div className="reload-post">
             <h3> Reload cycle of feed posts</h3>
-            <select name="" id="">
+            <select
+              onChange={(e) => {
+                setStateReloadPosts(
+                  Number(e.currentTarget.value) as ReloadPostsHour
+                );
+              }}
+              defaultValue={reloadPosts}
+            >
               <option value="3">3H</option>
               <option value="6">6H</option>
               <option value="9">9H</option>
@@ -128,8 +159,21 @@ const Setting = () => {
 
           <div className="hide-post">
             <h3>Hide old posts</h3>
-            <input type="number" id="hidePostDays" />
-            <label htmlFor="hidePostDays">Days</label>
+            <select
+              onChange={(e) => {
+                setStateHidePosts(
+                  Number(e.currentTarget.value) as HidePostsDay
+                );
+              }}
+              defaultValue={hidePosts}
+            >
+              <option value="0">No Hide</option>
+              <option value="7">7D</option>
+              <option value="14">14D</option>
+              <option value="30">30D</option>
+              <option value="60">60D</option>
+              <option value="90">90D</option>
+            </select>
           </div>
         </div>
       </div>

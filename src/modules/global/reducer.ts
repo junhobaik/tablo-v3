@@ -1,6 +1,7 @@
 import {
   WindowItem,
   LinkMethod,
+  ReloadPostsHour,
   DragData,
   DragMoveData,
   DropData,
@@ -11,6 +12,7 @@ import {
   CLEAR_DRAG_DATA,
   SET_DROP_DATA,
   CLEAR_DROP_DATA,
+  HidePostsDay,
 } from "./actions";
 
 export interface GlobalState {
@@ -23,6 +25,8 @@ export interface GlobalState {
     post: LinkMethod;
     feed: LinkMethod;
   };
+  reloadPosts: ReloadPostsHour;
+  hidePosts: HidePostsDay;
 }
 
 const initialState: GlobalState = {
@@ -35,6 +39,8 @@ const initialState: GlobalState = {
     feed: "new",
     post: "new",
   },
+  reloadPosts: 6,
+  hidePosts: 0,
 };
 
 function globalReducer(
