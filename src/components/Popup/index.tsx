@@ -35,8 +35,9 @@ const Popup = () => {
   const [state, setState] = useState<RootState>();
   const [firstLoadDone, setFirstLoadDone] = useState<boolean>(false);
   const [containFeeds, setContainFeeds] = useState<boolean>(false);
+  const [requestError, setRequestError] = useState<boolean>(false);
 
-  const delay = (s: number = 2000) => {
+  const delay = (s: number = 2500) => {
     return new Promise((resolve) =>
       setTimeout(() => {
         resolve();
@@ -48,7 +49,7 @@ const Popup = () => {
     const url = siteUrl.split("/").splice(0, 3).join("/");
     const urlCheck = ["feed", "rss", "feed.xml", "rss.xml", "d2.atom"];
 
-    const request = async (c: string) => {
+    const request = async (c: string, count: number = 0) => {
       try {
         const requestUrl = `https://api.rss2json.com/v1/api.json?rss_url=${url}/${c}`;
         const response = await fetch(requestUrl);
@@ -70,15 +71,25 @@ const Popup = () => {
         }
       } catch (status) {
         if (typeof status !== "number") {
-          await delay();
-          await request(c);
+          if (count > 5) {
+            console.log("요청 과다");
+            return "error";
+          }
+          await delay(3000);
+          await request(c, count + 1);
+        } else {
+          return null;
         }
       }
     };
 
     for (const c of urlCheck) {
-      await request(c);
-      await delay();
+      const result = await request(c);
+      if (result === "error") {
+        setRequestError(true);
+        break;
+      }
+      await delay(3000);
     }
 
     return false;
@@ -98,7 +109,10 @@ const Popup = () => {
           favIconUrl,
         });
         setSiteTitle(title ?? "Untitled");
-        const findedFeeds = _.find(state?.feeds.feeds, ["siteUrl", url?.split("/").splice(0, 3).join("/")]);
+        const findedFeeds = _.find(state?.feeds.feeds, [
+          "siteUrl",
+          url?.split("/").splice(0, 3).join("/"),
+        ]);
         console.log(findedFeeds);
         setContainFeeds(findedFeeds ? true : false);
 
@@ -206,6 +220,10 @@ const Popup = () => {
           ) : containFeeds ? (
             <div className="contain-feed">
               <span>이미 존재하는 FEED.</span>
+            </div>
+          ) : requestError ? (
+            <div className="request-error">
+              <span>죄송합니다, 요청 오류 발생.</span>
             </div>
           ) : (
             <div className="search-feed">
