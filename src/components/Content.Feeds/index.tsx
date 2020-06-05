@@ -48,6 +48,7 @@ const Feeds = () => {
   });
   const [errorFeeds, setErrorFeeds] = useState<string[]>([]);
   const postLinkMethod = linkMethod.post === "new" ? "_blank" : "_self";
+  const feedLinkMethod = linkMethod.feed === "new" ? "_blank" : "_self";
 
   const delay = (s: number = 500) => {
     return new Promise((resolve) =>
@@ -194,6 +195,13 @@ const Feeds = () => {
     const { title, siteUrl, siteTitle, postUrl, pubDate, description } = item;
     const isRead = readPosts.indexOf(postUrl) > -1 ? true : false;
 
+    let pDescription = description;
+    if (description.includes("</")) {
+      const descriptionDiv = document.createElement("div");
+      descriptionDiv.innerHTML = description;
+      pDescription = descriptionDiv.innerText;
+    }
+
     const toggleDropSpaces = (isShow: boolean) => {
       const dropSpaces = Array.from(
         document.querySelectorAll(".tab-item-wrap>.drop-space")
@@ -220,7 +228,7 @@ const Feeds = () => {
               from: "feed-post",
               title,
               url: postUrl,
-              description,
+              description: pDescription,
             })
           );
 
@@ -254,7 +262,7 @@ const Feeds = () => {
             role="link"
             onClick={(e) => {
               e.stopPropagation();
-              dispatch(feedsActionCreators.readPost(postUrl));
+              window.open(siteUrl, feedLinkMethod);
             }}
           >
             {siteTitle}
@@ -262,7 +270,7 @@ const Feeds = () => {
           <span className="line">|</span>
           <span className="pub-date">{moment(Number(pubDate)).fromNow()}</span>
         </div>
-        <span className="feed-post-description">{description}</span>
+        <span className="feed-post-description">{pDescription}</span>
       </li>
     );
   });
