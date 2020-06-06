@@ -13,6 +13,8 @@ import "./index.scss";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "../../modules";
 import _ from "lodash";
+import { CollectionItem } from "../../modules/tabs/actions";
+import { Collection } from "../../modules/feeds/actions";
 
 interface Site {
   title: string;
@@ -32,10 +34,12 @@ const Popup = () => {
   const [isFeedSearchDone, setIsFeedSearchDone] = useState(false);
   const [siteTitle, setSiteTitle] = useState<string>("");
   const [feedTitle, setFeedTitle] = useState<string>("");
-  const [state, setState] = useState<RootState>();
   const [firstLoadDone, setFirstLoadDone] = useState<boolean>(false);
   const [containFeeds, setContainFeeds] = useState<boolean>(false);
   const [requestError, setRequestError] = useState<boolean>(false);
+  const [state, setState] = useState<RootState>();
+  const tabsCollections = state?.tabs.collections ?? [];
+  const feedsCollections = state?.feeds.collections ?? [];
 
   const delay = (s: number = 1000) => {
     return new Promise((resolve) =>
@@ -94,6 +98,23 @@ const Popup = () => {
 
     return false;
   };
+
+  const createSelectOptions = (list: any[]) => {
+    if (list.length) {
+      return list.map((c: CollectionItem | Collection) => {
+        return (
+          <option value={c.id} key={`link-option-${c.id}`}>
+            {c.title}
+          </option>
+        );
+      });
+    } else {
+      return <option value="new">New Collection</option>;
+    }
+  };
+
+  const tabsCollectionOptions = createSelectOptions(tabsCollections);
+  const feedsCollectionOptions = createSelectOptions(feedsCollections);
 
   useEffect(() => {
     if (firstLoadDone) {
@@ -164,10 +185,17 @@ const Popup = () => {
             />
 
             <div className="add-submit submit">
-              <select>
+              <select id="tabsCollectionSelect" defaultValue="cart">
                 <option value="cart">Cart</option>
+                {tabsCollectionOptions}
               </select>
-              <button>
+              <button
+                onClick={(e) => {
+                  const submit = e.currentTarget.parentNode as HTMLDivElement;
+                  const select = submit.firstChild as HTMLSelectElement;
+                  console.log(siteTitle, select.value, site.url);
+                }}
+              >
                 <Fa icon={faPlus} />
               </button>
             </div>
@@ -203,10 +231,22 @@ const Popup = () => {
                     }}
                   />
                   <div className="submit">
-                    <select>
-                      <option value="collection">collection</option>
+                    <select id="feedsCollectionSelect">
+                      {feedsCollectionOptions}
                     </select>
-                    <button>
+                    <button
+                      onClick={(e) => {
+                        const submit = e.currentTarget
+                          .parentNode as HTMLDivElement;
+                        const select = submit.firstChild as HTMLSelectElement;
+                        console.log(
+                          feedTitle,
+                          select.value,
+                          feed.siteUrl,
+                          feed.feedUrl
+                        );
+                      }}
+                    >
                       <Fa icon={faPlus} />
                     </button>
                   </div>
