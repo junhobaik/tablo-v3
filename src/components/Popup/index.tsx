@@ -5,16 +5,22 @@
 
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { hot } from "react-hot-loader";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
 import { faFile } from "@fortawesome/free-regular-svg-icons";
-
-import { hot } from "react-hot-loader";
-import "./index.scss";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { RootState } from "../../modules";
+import { faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
-import { CollectionItem } from "../../modules/tabs/actions";
-import { Collection } from "../../modules/feeds/actions";
+import moment from "moment";
+
+import "./index.scss";
+import { RootState } from "../../modules";
+import { Collection, FeedForAdd } from "../../modules/feeds/actions";
+import {
+  CollectionItem,
+  SimpleItem,
+  AddTabItem,
+} from "../../modules/tabs/actions";
 
 interface Site {
   title: string;
@@ -30,14 +36,19 @@ interface Feed {
 
 const Popup = () => {
   const [site, setSite] = useState<Site>();
-  const [feed, setFeed] = useState<Feed>();
-  const [isFeedSearchDone, setIsFeedSearchDone] = useState(false);
   const [siteTitle, setSiteTitle] = useState<string>("");
+  const [isTabSubmitDone, setIsTabSubmitDone] = useState(false);
+
+  const [feed, setFeed] = useState<Feed>();
   const [feedTitle, setFeedTitle] = useState<string>("");
-  const [firstLoadDone, setFirstLoadDone] = useState<boolean>(false);
   const [containFeeds, setContainFeeds] = useState<boolean>(false);
   const [requestError, setRequestError] = useState<boolean>(false);
+  const [isFeedSearchDone, setIsFeedSearchDone] = useState(false);
+  const [isFeedSubmitDone, setIsFeedSubmitDone] = useState(false);
+
+  const [firstLoadDone, setFirstLoadDone] = useState<boolean>(false);
   const [state, setState] = useState<RootState>();
+
   const tabsCollections = state?.tabs.collections ?? [];
   const feedsCollections = state?.feeds.collections ?? [];
 
@@ -99,6 +110,146 @@ const Popup = () => {
     return false;
   };
 
+  const addToState = (
+    type: "feeds" | "tabs",
+    collectionID: string,
+    data: SimpleItem | AddTabItem | FeedForAdd
+  ) => {
+    setState((prev: RootState | undefined) => {
+      if (prev) {
+        if (type === "tabs") {
+          switch (collectionID) {
+            case "cart": {
+              const cartData = data as SimpleItem;
+              return {
+                ...prev,
+                tabs: {
+                  ...prev.tabs,
+                  cart: [...prev.tabs.cart, cartData],
+                },
+              };
+            }
+
+            case "new": {
+              const tabData = data as AddTabItem;
+              const newCollectionID = uuidv4();
+              return {
+                ...prev,
+                tabs: {
+                  ...prev.tabs,
+                  tabs: [
+                    ...prev.tabs.tabs,
+                    {
+                      id: uuidv4(),
+                      title: tabData.title,
+                      description: "",
+                      url: tabData.url,
+                      collection: newCollectionID,
+                    },
+                  ],
+                  collections: [
+                    ...prev.tabs.collections,
+                    {
+                      id: newCollectionID,
+                      title: `Collection [${moment().format(
+                        "YYMMDD HH:mm:ss"
+                      )}]`,
+                      folded: false,
+                    },
+                  ],
+                },
+              };
+            }
+
+            default: {
+              const tabData = data as AddTabItem;
+              return {
+                ...prev,
+                tabs: {
+                  ...prev.tabs,
+                  tabs: [
+                    ...prev.tabs.tabs,
+                    {
+                      id: uuidv4(),
+                      title: tabData.title,
+                      description: tabData.description,
+                      url: tabData.url,
+                      collection: collectionID,
+                    },
+                  ],
+                },
+              };
+            }
+          }
+        }
+
+        if (type === "feeds") {
+          switch (collectionID) {
+            case "new": {
+              const feedData = data as FeedForAdd;
+              const newCollectionID = uuidv4();
+
+              return {
+                ...prev,
+                feeds: {
+                  ...prev.feeds,
+                  feeds: [
+                    ...prev.feeds.feeds,
+                    {
+                      id: uuidv4(),
+                      title: feedData.title,
+                      feedUrl: feedData.feedUrl,
+                      siteUrl: feedData.siteUrl,
+                      collectionID: newCollectionID,
+                      visibility: true,
+                      faildCount: 0,
+                    },
+                  ],
+                  collections: [
+                    ...prev.feeds.collections,
+                    {
+                      id: newCollectionID,
+                      title: `Collection [${moment().format(
+                        "YYMMDD HH:mm:ss"
+                      )}]`,
+                      visibility: true,
+                    },
+                  ],
+                },
+              };
+            }
+
+            default: {
+              const feedData = data as FeedForAdd;
+              return {
+                ...prev,
+                feeds: {
+                  ...prev.feeds,
+                  feeds: [
+                    ...prev.feeds.feeds,
+                    {
+                      id: uuidv4(),
+                      title: feedData.title,
+                      feedUrl: feedData.feedUrl,
+                      siteUrl: feedData.siteUrl,
+                      collectionID,
+                      visibility: true,
+                      faildCount: 0,
+                    },
+                  ],
+                },
+              };
+            }
+          }
+        }
+
+        return prev;
+      }
+
+      return;
+    });
+  };
+
   const createSelectOptions = (list: any[]) => {
     if (list.length) {
       return list.map((c: CollectionItem | Collection) => {
@@ -153,6 +304,19 @@ const Popup = () => {
     }
   }, [firstLoadDone]);
 
+  useEffect(() => {
+    if (firstLoadDone) {
+      chrome.storage.sync.set(
+        {
+          tablo3: state,
+        },
+        () => {
+          localStorage.setItem("tablo3_changed", "true");
+        }
+      );
+    }
+  }, [firstLoadDone, state]);
+
   return (
     <div id="Popup">
       <h1>Tablo</h1>
@@ -190,13 +354,27 @@ const Popup = () => {
                 {tabsCollectionOptions}
               </select>
               <button
+                className={`submit-btn${
+                  isTabSubmitDone ? " submit-done" : ""
+                }`}
                 onClick={(e) => {
                   const submit = e.currentTarget.parentNode as HTMLDivElement;
                   const select = submit.firstChild as HTMLSelectElement;
-                  console.log(siteTitle, select.value, site.url);
+                  const collectionID = select.value;
+                  const data =
+                    collectionID === "cart"
+                      ? { url: site.url, title: siteTitle }
+                      : {
+                          title: siteTitle,
+                          description: "",
+                          url: site.url,
+                          collection: collectionID,
+                        };
+                  addToState("tabs", select.value, data);
+                  setIsTabSubmitDone(true);
                 }}
               >
-                <Fa icon={faPlus} />
+                <Fa icon={isTabSubmitDone ? faCheck : faPlus} />
               </button>
             </div>
           </div>
@@ -235,19 +413,25 @@ const Popup = () => {
                       {feedsCollectionOptions}
                     </select>
                     <button
+                      className={`submit-btn${
+                        isFeedSubmitDone ? " submit-done" : ""
+                      }`}
                       onClick={(e) => {
                         const submit = e.currentTarget
                           .parentNode as HTMLDivElement;
                         const select = submit.firstChild as HTMLSelectElement;
-                        console.log(
-                          feedTitle,
-                          select.value,
-                          feed.siteUrl,
-                          feed.feedUrl
-                        );
+                        const collectionID = select.value;
+                        const data: FeedForAdd = {
+                          title: feedTitle,
+                          siteUrl: feed.siteUrl,
+                          feedUrl: feed.feedUrl,
+                          collectionID,
+                        };
+                        addToState("feeds", select.value, data);
+                        setIsFeedSubmitDone(true);
                       }}
                     >
-                      <Fa icon={faPlus} />
+                      <Fa icon={isFeedSubmitDone ? faCheck : faPlus} />
                     </button>
                   </div>
                 </div>

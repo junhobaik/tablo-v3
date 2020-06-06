@@ -65,13 +65,14 @@ body {
         padding-left: 0.5rem;
         margin-right: 0.5rem;
         border: none;
+        max-width: 6rem;
 
         &:focus {
           outline: none;
         }
       }
 
-      button {
+      .submit-btn {
         all: unset;
         cursor: pointer;
         border: 1px solid gray;
@@ -80,6 +81,10 @@ body {
         border-right: 0;
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
+
+        &.submit-done {
+          pointer-events: none;
+        }
       }
     }
   }
