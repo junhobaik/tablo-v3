@@ -16,10 +16,13 @@ import { actionCreators as feedsActionCreators } from "../modules/feeds/actions"
 import "./app.scss";
 import "../styles/content.scss";
 import utils from "./utils";
+import Modal from "./utils/Modal";
+import Setting from "./Global.Setting";
 
 const App = () => {
   const dispatch = useDispatch();
   const [isLoadedState, setIsLoadedState] = useState(false);
+  const [isSettingModal, setIsSettingModal] = useState(false);
   const windowStatus = useSelector((state: RootState) => state.global.window);
   const state = useSelector((state: RootState) => state); // dev
 
@@ -89,7 +92,7 @@ const App = () => {
 
   return (
     <div id="App">
-      <Header />
+      <Header setIsSettingModal={setIsSettingModal} />
 
       <div
         className="app-bottom"
@@ -102,6 +105,12 @@ const App = () => {
           {windowStatus === "tabs-setting" ? <TabsSetting /> : <Feeds />}
         </div>
       </div>
+
+      {isSettingModal ? (
+        <Modal toggleVisibility={setIsSettingModal}>
+          <Setting />
+        </Modal>
+      ) : null}
     </div>
   );
 };

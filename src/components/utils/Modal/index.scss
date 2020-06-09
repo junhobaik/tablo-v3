@@ -1,0 +1,33 @@
+.modal-component {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9;
+  opacity: 0;
+  transition: 0.3s;
+
+  .modal-background {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-content {
+    position: absolute;
+    z-index: 2;
+    background-color: #fff;
+    width: 30rem;
+    height: 30rem;
+    top: calc(50% - 15rem - 2rem);
+    left: calc(50% - 15rem);
+    border-radius: 5px;
+    overflow: hidden;
+    overflow-y: scroll;
+    box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1),
+      3px 3px 10px 1px rgba(0, 0, 0, 0.2);
+  }
+}

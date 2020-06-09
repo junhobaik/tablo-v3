@@ -4,13 +4,14 @@ import { faCog } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
 
-const Header = () => {
+const Header = (props: { setIsSettingModal: Function }) => {
   return (
     <div id="Header">
       <h1>Tablo</h1>
       <button
         onClick={() => {
-          window.open('options.html', '_blank');
+          props.setIsSettingModal(true);
+          // window.open("options.html", "_blank");
         }}
         role="link"
       >
