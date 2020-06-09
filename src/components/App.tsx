@@ -23,13 +23,14 @@ const App = () => {
   const windowStatus = useSelector((state: RootState) => state.global.window);
   const state = useSelector((state: RootState) => state); // dev
 
-  const loadAndSetStates = () => {
+  const loadAndSetStates = (reloadPosts: boolean = false) => {
     chrome.storage.sync.get("tablo3", (res) => {
       if (res.tablo3) {
         const { tabs, global, feeds } = res.tablo3;
         dispatch(globalActionCreators.resetGlobal(global));
         dispatch(tabsActionCreators.resetTabs(tabs));
         dispatch(feedsActionCreators.resetFeeds(feeds));
+        if (reloadPosts) dispatch(feedsActionCreators.setIsChanged(true));
       } else {
         dispatch(feedsActionCreators.setIsChanged(true));
       }
@@ -38,22 +39,24 @@ const App = () => {
   };
 
   useEffect(() => {
+    const { getLoaclStorage, setLocalStorage } = utils;
+
     const detectChange = setInterval(() => {
       const isChanged = JSON.parse(
-        utils.getLoaclStorage("tablo3_changed") ?? "false"
+        getLoaclStorage("tablo3_changed") ?? "false"
       );
-      const isNeedReloadPosts =
-        utils.getLoaclStorage("tablo3_reload-posts") ?? "false";
+      const isNeedReloadPosts = JSON.parse(
+        getLoaclStorage("tablo3_reload-posts") ?? "false"
+      );
 
       if (isChanged) {
-        utils.setLocalStorage("tablo3_changed", "false");
-        loadAndSetStates();
-
-        if (isNeedReloadPosts) {
-          dispatch(feedsActionCreators.setIsChanged(true));
-        }
+        setLocalStorage("tablo3_changed", "false");
+        loadAndSetStates(isNeedReloadPosts);
+        if (isNeedReloadPosts) setLocalStorage("tablo3_reload-posts", false);
+      } else {
+        console.log(isChanged);
       }
-    }, 10000);
+    }, 2000);
 
     loadAndSetStates();
 

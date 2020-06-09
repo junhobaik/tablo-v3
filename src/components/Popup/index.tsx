@@ -196,12 +196,13 @@ const Popup = () => {
         }
 
         if (type === "feeds") {
+          let result;
+
           switch (collectionID) {
             case "new": {
               const feedData = data as FeedForAdd;
               const newCollectionID = uuidv4();
-
-              return {
+              result = {
                 ...prev,
                 feeds: {
                   ...prev.feeds,
@@ -229,11 +230,11 @@ const Popup = () => {
                   ],
                 },
               };
+              break;
             }
-
             default: {
               const feedData = data as FeedForAdd;
-              return {
+              result = {
                 ...prev,
                 feeds: {
                   ...prev.feeds,
@@ -251,8 +252,11 @@ const Popup = () => {
                   ],
                 },
               };
+              break;
             }
           }
+          utils.setLocalStorage("tablo3_reload-posts", true);
+          return result;
         }
 
         return prev;
@@ -328,7 +332,7 @@ const Popup = () => {
         }
       );
     }
-  }, [firstLoadDone, state]);
+  }, [state]);
 
   return (
     <div id="Popup">
