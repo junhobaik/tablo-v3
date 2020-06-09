@@ -23,6 +23,7 @@ import {
 } from "../../modules/feeds/actions";
 import { actionCreators as globalActionCreators } from "../../modules/global/actions";
 import ExpendButton from "../utils/ExpendButton";
+import utils from "../utils";
 
 export interface LocalData {
   items: FeedItem[];
@@ -165,13 +166,13 @@ const Feeds = () => {
       lastLoadDate: now,
     };
 
-    localStorage.setItem("tablo3_local", JSON.stringify(localData));
+    utils.setLocalStorage("tablo3_local", localData);
 
     return;
   }
 
   const getLocalData = () => {
-    const local = localStorage.getItem("tablo3_local");
+    const local = utils.getLoaclStorage("tablo3_local");
     const localData: LocalData | null = local ? JSON.parse(local) : null;
     return localData;
   };

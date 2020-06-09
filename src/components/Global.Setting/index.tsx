@@ -8,6 +8,7 @@ import {
   HidePostsDay,
 } from "../../modules/global/actions";
 import { LocalData } from "../Content.Feeds";
+import utils from "../utils";
 
 const Setting = () => {
   const [state, setState] = useState<RootState>();
@@ -29,7 +30,7 @@ const Setting = () => {
           tablo3: state,
         },
         () => {
-          localStorage.setItem("tablo3_changed", "true");
+          utils.setLocalStorage("tablo3_changed", "true");
         }
       );
     }
@@ -181,7 +182,7 @@ const Setting = () => {
             <button
               className="force-reload"
               onClick={() => {
-                const local = localStorage.getItem("tablo3_local");
+                const local = utils.getLoaclStorage("tablo3_local");
                 const originLocalData: LocalData = local
                   ? JSON.parse(local)
                   : { items: [], lastLoadDate: 0 };
@@ -191,7 +192,7 @@ const Setting = () => {
                   lastLoadDate: "0",
                 };
 
-                localStorage.setItem("tablo3_local", JSON.stringify(localData));
+                utils.setLocalStorage("tablo3_local", localData);
               }}
             >
               Force Reload

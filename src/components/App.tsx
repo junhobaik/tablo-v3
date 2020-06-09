@@ -15,6 +15,7 @@ import { actionCreators as feedsActionCreators } from "../modules/feeds/actions"
 
 import "./app.scss";
 import "../styles/content.scss";
+import utils from "./utils";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,11 +40,18 @@ const App = () => {
   useEffect(() => {
     const detectChange = setInterval(() => {
       const isChanged = JSON.parse(
-        localStorage.getItem("tablo3_changed") ?? "false"
+        utils.getLoaclStorage("tablo3_changed") ?? "false"
       );
+      const isNeedReloadPosts =
+        utils.getLoaclStorage("tablo3_reload-posts") ?? "false";
+
       if (isChanged) {
-        localStorage.setItem("tablo3_changed", "false");
+        utils.setLocalStorage("tablo3_changed", "false");
         loadAndSetStates();
+
+        if (isNeedReloadPosts) {
+          dispatch(feedsActionCreators.setIsChanged(true));
+        }
       }
     }, 10000);
 

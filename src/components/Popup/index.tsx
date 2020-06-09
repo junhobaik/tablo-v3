@@ -21,6 +21,7 @@ import {
   SimpleItem,
   AddTabItem,
 } from "../../modules/tabs/actions";
+import utils from "../utils";
 
 interface Site {
   title: string;
@@ -323,7 +324,7 @@ const Popup = () => {
           tablo3: state,
         },
         () => {
-          localStorage.setItem("tablo3_changed", "true");
+          utils.setLocalStorage("tablo3_changed", "true");
         }
       );
     }

@@ -7,6 +7,7 @@ export const CLEAR_DRAG_DATA = "global/CLEAR_DRAG_DATA";
 export const SET_DROP_DATA = "global/SET_DROP_DATA";
 export const CLEAR_DROP_DATA = "global/CLEAR_DROP_DATA";
 
+export type LocalStorageName = "tablo3_changed" | "tablo3_reload-posts" | "tablo3_local";
 export type WindowItem = "default" | "tabs-setting" | "feeds-setting";
 type DragDataFrom = "tabs-setting" | "feeds" | "feed-post";
 type DragMoveDataFrom =
