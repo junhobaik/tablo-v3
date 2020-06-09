@@ -56,7 +56,7 @@ const App = () => {
       } else {
         console.log(isChanged);
       }
-    }, 2000);
+    }, 5000);
 
     loadAndSetStates();
 
