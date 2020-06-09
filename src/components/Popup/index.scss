@@ -88,4 +88,34 @@ body {
       }
     }
   }
+
+  .search-feed {
+    .progress-wrap {
+      position: relative;
+      height: 1.5rem;
+      border: 1px solid #999;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      width: 100%;
+
+      .progress {
+        height: 1.5rem;
+        width: 0%;
+        background-color: #999;
+        transition: 0.1s;
+      }
+
+      span {
+        display: flex;
+        position: absolute;
+        left: calc(50% - 5rem);
+        align-items: center;
+        justify-content: center;
+        height: 1.5rem;
+        width: 10rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+      }
+    }
+  }
 }

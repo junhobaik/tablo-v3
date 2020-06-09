@@ -37,14 +37,15 @@ interface Feed {
 const Popup = () => {
   const [site, setSite] = useState<Site>();
   const [siteTitle, setSiteTitle] = useState<string>("");
-  const [isTabSubmitDone, setIsTabSubmitDone] = useState(false);
+  const [isTabSubmitDone, setIsTabSubmitDone] = useState<boolean>(false);
 
   const [feed, setFeed] = useState<Feed>();
   const [feedTitle, setFeedTitle] = useState<string>("");
   const [containFeeds, setContainFeeds] = useState<boolean>(false);
   const [requestError, setRequestError] = useState<boolean>(false);
-  const [isFeedSearchDone, setIsFeedSearchDone] = useState(false);
-  const [isFeedSubmitDone, setIsFeedSubmitDone] = useState(false);
+  const [isFeedSearchDone, setIsFeedSearchDone] = useState<boolean>(false);
+  const [isFeedSubmitDone, setIsFeedSubmitDone] = useState<boolean>(false);
+  const [urlCheckProgress, setUrlCheckProgress] = useState<number>(0);
 
   const [firstLoadDone, setFirstLoadDone] = useState<boolean>(false);
   const [state, setState] = useState<RootState>();
@@ -63,6 +64,8 @@ const Popup = () => {
   const feedCheck = async (siteUrl: string) => {
     const url = siteUrl.split("/").splice(0, 3).join("/");
     const urlCheck = ["feed", "rss", "feed.xml", "rss.xml", "d2.atom"];
+    let i = 0;
+    let urlCheckLength = urlCheck.length;
 
     const request = async (c: string, count: number = 0) => {
       try {
@@ -79,6 +82,9 @@ const Popup = () => {
             feedUrl: `${url}/${c}`,
           });
           setFeedTitle(title ?? "Untitled");
+
+          await delay(500);
+          setUrlCheckProgress(100);
 
           return response.status;
         } else {
@@ -100,10 +106,15 @@ const Popup = () => {
 
     for (const c of urlCheck) {
       const result = await request(c);
+
       if (result === "error") {
         setRequestError(true);
+        setUrlCheckProgress(0);
         break;
       }
+
+      i += 1;
+      setUrlCheckProgress((i / urlCheckLength) * 100);
       await delay();
     }
 
@@ -270,10 +281,11 @@ const Popup = () => {
   useEffect(() => {
     if (firstLoadDone) {
       chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-        // const { title, url, favIconUrl } = tabs[0];
-        const title = "My Blog";
-        const url = "https://junhobaik.github.io/";
-        const favIconUrl = "https://junhobaik.github.io/favicon.ico";
+        const { title, url, favIconUrl } = tabs[0];
+        // dev
+        // const title = "My Blog";
+        // const url = "https://junhobaik.github.io/";
+        // const favIconUrl = "https://junhobaik.github.io/favicon.ico";
 
         setSite({
           title: title ?? "Untitled",
@@ -354,9 +366,7 @@ const Popup = () => {
                 {tabsCollectionOptions}
               </select>
               <button
-                className={`submit-btn${
-                  isTabSubmitDone ? " submit-done" : ""
-                }`}
+                className={`submit-btn${isTabSubmitDone ? " submit-done" : ""}`}
                 onClick={(e) => {
                   const submit = e.currentTarget.parentNode as HTMLDivElement;
                   const select = submit.firstChild as HTMLSelectElement;
@@ -451,7 +461,13 @@ const Popup = () => {
             </div>
           ) : (
             <div className="search-feed">
-              <span>FEED 주소 검색 중...</span>
+              <div className="progress-wrap">
+                <span>FEED 주소 검색 중...</span>
+                <div
+                  className="progress"
+                  style={{ width: `${urlCheckProgress}%` }}
+                ></div>
+              </div>
             </div>
           )}
         </>
