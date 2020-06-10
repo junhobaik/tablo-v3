@@ -193,6 +193,7 @@ const Setting = () => {
                 };
 
                 utils.setLocalStorage("tablo3_local", localData);
+                utils.setLocalStorage("tablo3_reload-posts", true);
               }}
             >
               Force Reload
