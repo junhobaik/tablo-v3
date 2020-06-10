@@ -56,8 +56,6 @@ const App = () => {
         setLocalStorage("tablo3_changed", "false");
         loadAndSetStates(isNeedReloadPosts);
         if (isNeedReloadPosts) setLocalStorage("tablo3_reload-posts", false);
-      } else {
-        console.log(isChanged);
       }
     }, 5000);
 
