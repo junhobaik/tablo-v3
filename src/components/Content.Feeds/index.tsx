@@ -211,6 +211,7 @@ const Feeds = () => {
       descriptionDiv.innerHTML = description;
       pDescription = descriptionDiv.innerText;
     }
+    pDescription = pDescription.substr(0, 300);
 
     const toggleDropSpaces = (isShow: boolean) => {
       const dropSpaces = Array.from(
