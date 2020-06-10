@@ -335,32 +335,38 @@
                     }
                   }
                 }
-              }
-            }
-            .tab-description {
-              display: flex;
-              height: 1rem;
-              margin-left: 0.25rem;
 
-              input {
-                all: unset;
-                cursor: text;
-                width: 100%;
-              }
+                .tab-description {
+                  display: flex;
+                  position: relative;
+                  height: 1rem;
+                  margin-left: 0.25rem;
+                  overflow: hidden;
 
-              p {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                user-select: none;
-              }
+                  input {
+                    all: unset;
+                    cursor: text;
+                    width: 100%;
+                  }
 
-              p,
-              input {
-                font-size: 0.9rem;
-                color: rgba(0, 0, 0, 0.6);
-                font-weight: 300;
-                margin: 0;
-                white-space: nowrap;
+                  p {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    text-overflow: ellipsis;
+                    user-select: none;
+                    transition: left 0.1s;
+                  }
+
+                  p,
+                  input {
+                    font-size: 0.9rem;
+                    color: rgba(0, 0, 0, 0.6);
+                    font-weight: 300;
+                    margin: 0;
+                    white-space: nowrap;
+                  }
+                }
               }
             }
 

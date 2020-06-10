@@ -130,6 +130,7 @@ const Tabs = () => {
     const tabListLength = tabList.length;
 
     return tabList.map((v: TabItem, i: number) => {
+      let textMove: NodeJS.Timeout;
       const getIsEdit = () => v.id === editTarget;
       const isEdit = getIsEdit();
       const toggleTabItemMenu = (tabItemEl: HTMLElement, isShow: boolean) => {
@@ -355,7 +356,52 @@ const Tabs = () => {
                         }}
                       />
                     ) : (
-                      <p className="dexcription-text">{v.description}</p>
+                      <p
+                        className="dexcription-text"
+                        id={`description-${v.id}`}
+                        onMouseEnter={(e) => {
+                          const parentWidth = (e.currentTarget
+                            .parentElement as HTMLDivElement).getBoundingClientRect()
+                            .width;
+                          const {
+                            left,
+                            right,
+                          } = e.currentTarget.getBoundingClientRect();
+                          const width = right - left - parentWidth + 10;
+
+                          if (width > 10) {
+                            textMove = setInterval(() => {
+                              const el = document.getElementById(
+                                `description-${v.id}`
+                              ) as HTMLElement;
+
+                              const originLeft = Number(
+                                getComputedStyle(el, null)
+                                  .getPropertyValue("left")
+                                  .split("px")[0]
+                              );
+
+                              if (-width > originLeft - 10) {
+                                // el.style.left = "0px";
+                              } else {
+                                el.style.left = `${originLeft - 10}px`;
+                              }
+                            }, 100);
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          if (textMove) {
+                            const el = document.getElementById(
+                              `description-${v.id}`
+                            ) as HTMLElement;
+                            el.style.left = "0px";
+
+                            clearInterval(textMove);
+                          }
+                        }}
+                      >
+                        {v.description}
+                      </p>
                     )}
                   </div>
                 </a>
