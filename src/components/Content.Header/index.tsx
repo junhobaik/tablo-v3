@@ -1,11 +1,7 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
-import {
-  faAngleRight,
-  faAngleLeft,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { actionCreators, WindowItem } from "../../modules/global/actions";
 import { RootState } from "../../modules";
 import "./index.scss";
