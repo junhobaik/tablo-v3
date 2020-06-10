@@ -75,6 +75,19 @@ const App = () => {
           console.log("  - global: ", state.global);
           console.log("  - tabs  : ", state.tabs);
           console.log("  - feeds : ", state.feeds);
+          console.log("- localStorage");
+          console.log(
+            "  - tablo3_changed     : ",
+            JSON.parse(utils.getLoaclStorage("tablo3_changed") ?? "null")
+          );
+          console.log(
+            "  - tablo3_reload-posts: ",
+            JSON.parse(utils.getLoaclStorage("tablo3_reload-posts") ?? "null")
+          );
+          console.log(
+            "  - tablo3_local       : ",
+            JSON.parse(utils.getLoaclStorage("tablo3_local") ?? "null")
+          );
           break;
 
         default:
