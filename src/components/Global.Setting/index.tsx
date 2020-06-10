@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+
 import "./index.scss";
 import { RootState } from "../../modules";
 import {
@@ -102,103 +103,110 @@ const Setting = () => {
 
     return (
       <div id="Setting">
-        <h1>Setting</h1>
-
-        <h2>How to Open Link</h2>
         <div className="open-link">
-          <div className="tabs">
-            <h3>Tabs</h3>
-            <div className="tabs-inner-wrap">
-              <h4>Link</h4>
-              <div className="tabs-link">
-                {createRadioButton("tab", "new", "New tab")}
-                {createRadioButton("tab", "current", "Current Tab")}
-              </div>
-              <h4>Collection</h4>
-              <div className="tabs-window">
-                {createRadioButton("collection", "new", "New Window")}
-                {createRadioButton("collection", "current", "Current Window")}
+          <h2>How to Open Link</h2>
+          <div className="open-link-inner-wrap">
+            <div className="tabs">
+              <h3>Tabs</h3>
+              <div className="tabs-inner-wrap">
+                <h4>Link</h4>
+                <div className="tabs-link">
+                  {createRadioButton("tab", "new", "New tab")}
+                  {createRadioButton("tab", "current", "Current Tab")}
+                </div>
+                <h4>Collection</h4>
+                <div className="tabs-window">
+                  {createRadioButton("collection", "new", "New Window")}
+                  {createRadioButton("collection", "current", "Current Window")}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="feeds">
-            <h3>Feeds</h3>
-            <div className="feeds-inner-wrap">
-              <h4>Post</h4>
-              <div className="feeds-post">
-                {createRadioButton("post", "new", "New tab")}
-                {createRadioButton("post", "current", "Current tab")}
-              </div>
-              <h4>Feed</h4>
-              <div className="feeds-feed">
-                {createRadioButton("feed", "new", "New tab")}
-                {createRadioButton("feed", "current", "Current tab")}
+            <div className="feeds">
+              <h3>Feeds</h3>
+              <div className="feeds-inner-wrap">
+                <h4>Post</h4>
+                <div className="feeds-post">
+                  {createRadioButton("post", "new", "New tab")}
+                  {createRadioButton("post", "current", "Current tab")}
+                </div>
+                <h4>Feed</h4>
+                <div className="feeds-feed">
+                  {createRadioButton("feed", "new", "New tab")}
+                  {createRadioButton("feed", "current", "Current tab")}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <h2>Posts</h2>
         <div className="posts">
-          <div className="hide-post">
-            <h3>Hide old posts</h3>
-            <select
-              onChange={(e) => {
-                setStateHidePosts(
-                  Number(e.currentTarget.value) as HidePostsDay
-                );
-              }}
-              defaultValue={hidePosts}
-            >
-              <option value="0">No Hide</option>
-              <option value="7">7D</option>
-              <option value="14">14D</option>
-              <option value="30">30D</option>
-              <option value="60">60D</option>
-              <option value="90">90D</option>
-            </select>
+          <h2>Posts</h2>
+
+          <div className="posts-inner-wrap">
+            <div className="hide-post">
+              <h3>Hide old posts</h3>
+              <select
+                onChange={(e) => {
+                  setStateHidePosts(
+                    Number(e.currentTarget.value) as HidePostsDay
+                  );
+                }}
+                defaultValue={hidePosts}
+              >
+                <option value="0">No Hide</option>
+                <option value="7">7D</option>
+                <option value="14">14D</option>
+                <option value="30">30D</option>
+                <option value="60">60D</option>
+                <option value="90">90D</option>
+              </select>
+            </div>
+
+            <div className="reload-post">
+              <h3> Reload cycle of feed posts</h3>
+              <select
+                onChange={(e) => {
+                  setStateReloadPosts(
+                    Number(e.currentTarget.value) as ReloadPostsHour
+                  );
+                }}
+                defaultValue={reloadPosts}
+              >
+                {process.env.NODE_ENV === "development" ? (
+                  <option value="0">0</option>
+                ) : null}
+                <option value="3">3H</option>
+                <option value="6">6H</option>
+                <option value="9">9H</option>
+                <option value="12">12H</option>
+                <option value="24">24H</option>
+              </select>
+              <button
+                className="force-reload"
+                onClick={() => {
+                  const local = utils.getLoaclStorage("tablo3_local");
+                  const originLocalData: LocalData = local
+                    ? JSON.parse(local)
+                    : { items: [], lastLoadDate: 0 };
+
+                  const localData: LocalData = {
+                    ...originLocalData,
+                    lastLoadDate: "0",
+                  };
+
+                  utils.setLocalStorage("tablo3_local", localData);
+                  location.reload();
+                }}
+              >
+                Force Reload
+              </button>
+            </div>
           </div>
+        </div>
 
-          <div className="reload-post">
-            <h3> Reload cycle of feed posts</h3>
-            <select
-              onChange={(e) => {
-                setStateReloadPosts(
-                  Number(e.currentTarget.value) as ReloadPostsHour
-                );
-              }}
-              defaultValue={reloadPosts}
-            >
-              {process.env.NODE_ENV === "development" ? (
-                <option value="0">0</option>
-              ) : null}
-              <option value="3">3H</option>
-              <option value="6">6H</option>
-              <option value="9">9H</option>
-              <option value="12">12H</option>
-              <option value="24">24H</option>
-            </select>
-            <button
-              className="force-reload"
-              onClick={() => {
-                const local = utils.getLoaclStorage("tablo3_local");
-                const originLocalData: LocalData = local
-                  ? JSON.parse(local)
-                  : { items: [], lastLoadDate: 0 };
-
-                const localData: LocalData = {
-                  ...originLocalData,
-                  lastLoadDate: "0",
-                };
-
-                utils.setLocalStorage("tablo3_local", localData);
-                utils.setLocalStorage("tablo3_reload-posts", true);
-              }}
-            >
-              Force Reload
-            </button>
-          </div>
+        <div className="last">
+          <span>변경 사항은 최대 5초 후 적용됩니다.</span>
         </div>
       </div>
     );

@@ -107,7 +107,7 @@ const App = () => {
       </div>
 
       {isSettingModal ? (
-        <Modal toggleVisibility={setIsSettingModal}>
+        <Modal title="Settings" toggleVisibility={setIsSettingModal}>
           <Setting />
         </Modal>
       ) : null}

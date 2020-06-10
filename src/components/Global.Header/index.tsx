@@ -11,7 +11,6 @@ const Header = (props: { setIsSettingModal: Function }) => {
       <button
         onClick={() => {
           props.setIsSettingModal(true);
-          // window.open("options.html", "_blank");
         }}
         role="link"
       >

@@ -13,4 +13,15 @@
     font-size: 1rem;
     user-select: none;
   }
+
+  button {
+    all: unset;
+    cursor: pointer;
+    color: #aaa;
+    transition: 0.2s;
+
+    &:hover {
+      color: #666;
+    }
+  }
 }

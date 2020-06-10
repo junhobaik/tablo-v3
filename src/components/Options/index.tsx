@@ -5,7 +5,8 @@ import Setting from "../Global.Setting";
 
 const Options = () => {
   return (
-    <div id="options">
+    <div id="Options">
+      <h1>Options</h1>
       <Setting />
     </div>
   );
