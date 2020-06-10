@@ -40,7 +40,7 @@ const ContentHeader = (props: ContentHeaderProps) => {
       className={`${content}-header content-header ${reverse ? "reverse" : ""}`}
     >
       <div className="content-header-inner-wrap">
-        <div className="content-search">
+        {/* <div className="content-search">
           <button
             className="search-active-btn"
             onClick={(e) => {
@@ -65,7 +65,7 @@ const ContentHeader = (props: ContentHeaderProps) => {
               //
             }}
           />
-        </div>
+        </div> */}
         <div className="status">
           {content === "feeds" &&
           props.loadProgress &&
