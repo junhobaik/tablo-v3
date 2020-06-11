@@ -142,6 +142,18 @@ const Tabs = () => {
         }
       };
 
+      const toggleDescrpitionScroll = (
+        e: React.DragEvent<HTMLElement>,
+        isActive: boolean
+      ) => {
+        const descriptionText = e.currentTarget.querySelector(
+          ".tab-description>p"
+        ) as HTMLParagraphElement;
+        descriptionText.style.position = isActive ? "absolute" : "static";
+        descriptionText.style.overflow = isActive ? "auto" : "hidden";
+        if (!isActive && textMove) clearInterval(textMove);
+      };
+
       return (
         <div
           className="tab-item-wrap"
@@ -231,6 +243,8 @@ const Tabs = () => {
                 className="tab-link-wrap"
                 draggable
                 onDragStart={(e) => {
+                  toggleDescrpitionScroll(e, false);
+
                   const currentDropSpace = e.currentTarget.parentNode?.parentNode?.parentNode?.querySelector(
                     ".drop-space"
                   ) as HTMLDivElement | undefined;
@@ -263,8 +277,9 @@ const Tabs = () => {
                     })
                   );
                 }}
-                onDragEnd={() => {
+                onDragEnd={(e) => {
                   toggleDropSapce(false);
+                  toggleDescrpitionScroll(e, true);
                 }}
                 onMouseDown={(e) => {
                   const menu = e.currentTarget.parentNode?.querySelector(
