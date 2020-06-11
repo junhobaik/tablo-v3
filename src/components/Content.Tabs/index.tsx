@@ -149,6 +149,7 @@ const Tabs = () => {
         const descriptionText = e.currentTarget.querySelector(
           ".tab-description>p"
         ) as HTMLParagraphElement;
+        descriptionText.style.left = "0px";
         descriptionText.style.position = isActive ? "absolute" : "static";
         descriptionText.style.overflow = isActive ? "auto" : "hidden";
         if (!isActive && textMove) clearInterval(textMove);
