@@ -55,7 +55,7 @@ const Feeds = () => {
   const postLinkMethod = linkMethod.post === "new" ? "_blank" : "_self";
   const feedLinkMethod = linkMethod.feed === "new" ? "_blank" : "_self";
 
-  const delay = (s: number = 500) => {
+  const delay = (s: number = 1000) => {
     return new Promise((resolve) =>
       setTimeout(() => {
         resolve();
@@ -107,8 +107,8 @@ const Feeds = () => {
       const isError = items instanceof Error;
 
       if (isError && (items as Error).name === "UNKNOWN-ERROR") {
-        await delay();
-        items = await loadFeedItem(feed);
+        await delay(2000);
+        items = await loadFeedItem(feed, true);
       }
 
       i += 1;
