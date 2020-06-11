@@ -27,6 +27,7 @@ import utils from "../utils";
 
 export interface LocalData {
   items: FeedItem[];
+  errorFeeds: string[];
   lastLoadDate: string;
 }
 
@@ -44,7 +45,7 @@ const Feeds = () => {
   const { feeds, collections, isChanged, loaded, readPosts } = feedsState;
 
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
-  const [errorFeeds, setErrorFeeds] = useState<string[]>([]);
+  const [errorFeedTitleList, setErrorFeedTitleList] = useState<string[]>([]);
   const [loadProgress, setLoadProgress] = useState<LoadProgress>({
     totalProgress: 0,
     succeedFeeds: [],
@@ -99,7 +100,7 @@ const Feeds = () => {
   async function loadFeedItemAll(feeds: Feed[]) {
     let i = 0;
     const resultItems: FeedItem[] = [];
-    setErrorFeeds([]);
+    const errorFeeds: string[] = [];
 
     for (const feed of feeds) {
       let items = await loadFeedItem(feed);
@@ -123,9 +124,7 @@ const Feeds = () => {
 
       await delay();
       if (isError || !items) {
-        setErrorFeeds((prev: string[]) => {
-          return [...prev, feed.title];
-        });
+        errorFeeds.push(feed.title);
         continue;
       }
 
@@ -161,12 +160,15 @@ const Feeds = () => {
     }, 1000);
 
     const now = Date.now().toString();
+
     const localData: LocalData = {
       items: resultItems,
+      errorFeeds: errorFeeds,
       lastLoadDate: now,
     };
 
     utils.setLocalStorage("tablo3_local", localData);
+    setErrorFeedTitleList(errorFeeds);
 
     return;
   }
@@ -297,6 +299,7 @@ const Feeds = () => {
         loadAndSetFeedItems();
       } else {
         setFeedItems(localData?.items ?? []);
+        setErrorFeedTitleList(localData?.errorFeeds ?? []);
       }
     }
   }, [loaded]);
@@ -318,9 +321,9 @@ const Feeds = () => {
           <ol className="feed-post-list">{mapToFeedItems}</ol>
         ) : null}
       </div>
-      {errorFeeds.length ? (
+      {errorFeedTitleList.length ? (
         <div className="feeds-error-list">
-          <span>Failed to load: {errorFeeds.join(", ")}</span>
+          <span>Failed to load: {errorFeedTitleList.join(", ")}</span>
         </div>
       ) : null}
     </div>
