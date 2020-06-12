@@ -230,7 +230,12 @@ $success-2: #2c662d;
     all: unset;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+
+    margin: 0.5rem 1rem;
+    border-radius: 5px;
+    border-bottom: 1.5px solid $line-color-light;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.1), 1px 3px 5px 0 rgba(0, 0, 0, 0.1);
+    background-color: $item-background-color-dark;
 
     .feed-collection-drop-space {
       display: none;
@@ -248,8 +253,8 @@ $success-2: #2c662d;
       display: flex;
       position: relative;
       flex-direction: column;
-      padding: 1rem;
-      border-bottom: 1px solid #e1e1e1;
+      padding: 0.5rem;
+      border-bottom: 1px solid $line-color-light;
 
       .toggle-visiblility-btn {
         border: 1px solid $button-color-dark;
@@ -415,7 +420,7 @@ $success-2: #2c662d;
           border-radius: 3px;
           border: 1px solid rgba(0, 0, 0, 0.1);
           margin: 0.25rem 0.5rem;
-          background-color: $item-background-color-dark;
+          background-color: $item-background-color-light;
           align-items: center;
           width: 100%;
           height: 100%;
