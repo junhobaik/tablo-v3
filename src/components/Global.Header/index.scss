@@ -1,4 +1,4 @@
-@import "../../styles/variables.scss";
+@import '../../styles/variables.scss';
 
 #Header {
   display: flex;
@@ -12,16 +12,17 @@
   h1 {
     font-size: 1rem;
     user-select: none;
+    font-weight: 900;
   }
 
   button {
     all: unset;
     cursor: pointer;
-    color: #aaa;
+    color: $button-color-dark;
     transition: 0.2s;
 
     &:hover {
-      color: #666;
+      color: $button-color-emphasis;
     }
   }
 }

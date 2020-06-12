@@ -1,8 +1,11 @@
+@import '../../styles/variables.scss';
+
 #Setting {
   display: flex;
   flex-direction: column;
   max-width: 50rem;
-  background-color: #fafafa;
+  background-color: $app-background-color;
+
   height: 100%;
   h1,
   h2,
@@ -27,7 +30,7 @@
   }
 
   & > div {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid $line-color-light;
     padding: 0.5rem 1rem;
   }
 
@@ -67,7 +70,7 @@
           all: unset;
           cursor: pointer;
           margin-left: 0.25rem;
-          border: 1px solid #999;
+          border: 1px solid $button-color-dark;
           border-radius: 3px;
           padding: 0 0.25rem;
           font-size: 0.8rem;
@@ -76,7 +79,7 @@
           transition: 0.2s;
 
           &:hover {
-            background-color: #ddd;
+            background-color: $button-color-light;
           }
         }
       }
