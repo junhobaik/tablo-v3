@@ -230,6 +230,7 @@ $success-2: #2c662d;
     all: unset;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 
     .feed-collection-drop-space {
       display: none;
@@ -514,6 +515,7 @@ $success-2: #2c662d;
       flex-grow: 1;
       padding: 1.5rem 0;
       justify-content: center;
+      align-items: flex-start;
 
       button {
         color: $button-color-light;
