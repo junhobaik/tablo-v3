@@ -6,24 +6,20 @@
 /* eslint no-sparse-arrays: 0 */
 // TODO: ESLint에서 async/await를 사용할때 나타나는 오류 해결하기, 임시로 위에서 disable 해둠
 
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import moment from "moment";
-import { faBook, faBookOpen } from "@fortawesome/free-solid-svg-icons";
-import _ from "lodash";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
+import { faBook, faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import _ from 'lodash';
 
-import "./index.scss";
-import ContentHeader from "../Content.Header";
-import { RootState } from "../../modules";
-import {
-  Feed,
-  FeedItem,
-  actionCreators as feedsActionCreators,
-} from "../../modules/feeds/actions";
-import { actionCreators as globalActionCreators } from "../../modules/global/actions";
-import ExpendButton from "../utils/ExpendButton";
-import utils from "../utils";
+import './index.scss';
+import ContentHeader from '../Content.Header';
+import { RootState } from '../../modules';
+import { Feed, FeedItem, actionCreators as feedsActionCreators } from '../../modules/feeds/actions';
+import { actionCreators as globalActionCreators } from '../../modules/global/actions';
+import ExpendButton from '../utils/ExpendButton';
+import utils from '../utils';
 
 export interface LocalData {
   items: FeedItem[];
@@ -52,8 +48,8 @@ const Feeds = () => {
     failedFeeds: [],
   });
 
-  const postLinkMethod = linkMethod.post === "new" ? "_blank" : "_self";
-  const feedLinkMethod = linkMethod.feed === "new" ? "_blank" : "_self";
+  const postLinkMethod = linkMethod.post === 'new' ? '_blank' : '_self';
+  const feedLinkMethod = linkMethod.feed === 'new' ? '_blank' : '_self';
 
   const delay = (s: number = 1000) => {
     return new Promise((resolve) =>
@@ -82,17 +78,17 @@ const Feeds = () => {
         return items;
       }
     } catch (err) {
-      console.error("ERROR: loadFeedItem", err);
+      console.error('ERROR: loadFeedItem', err);
 
       if (retry) return null;
       if (err.statusCode === 422) {
         dispatch(feedsActionCreators.faildLoadFeed(id));
-        const error = new Error("url error");
-        error.name = "URL-ERROR";
+        const error = new Error('url error');
+        error.name = 'URL-ERROR';
         return error;
       }
-      const error = new Error("unknown error");
-      error.name = "UNKNOWN-ERROR";
+      const error = new Error('unknown error');
+      error.name = 'UNKNOWN-ERROR';
       return error;
     }
   }
@@ -106,7 +102,7 @@ const Feeds = () => {
       let items = await loadFeedItem(feed);
       const isError = items instanceof Error;
 
-      if (isError && (items as Error).name === "UNKNOWN-ERROR") {
+      if (isError && (items as Error).name === 'UNKNOWN-ERROR') {
         await delay(2000);
         items = await loadFeedItem(feed, true);
       }
@@ -115,9 +111,7 @@ const Feeds = () => {
       setLoadProgress((prev: LoadProgress) => {
         return {
           totalProgress: (i / feeds.length) * 100,
-          succeedFeeds: items
-            ? [...prev.succeedFeeds, feed]
-            : prev.succeedFeeds,
+          succeedFeeds: items ? [...prev.succeedFeeds, feed] : prev.succeedFeeds,
           failedFeeds: items ? prev.failedFeeds : [...prev.failedFeeds, feed],
         };
       });
@@ -134,12 +128,12 @@ const Feeds = () => {
         resultItems.push({
           title,
           description,
-          pubDate: moment(pubDate).format("x"),
+          pubDate: moment(pubDate).format('x'),
           siteUrl: feed.siteUrl,
           siteTitle: feed.title,
           postUrl: link,
           feedID: feed.id,
-          collectionID: feed.collectionID ?? "",
+          collectionID: feed.collectionID ?? '',
         });
       }
 
@@ -167,14 +161,14 @@ const Feeds = () => {
       lastLoadDate: now,
     };
 
-    utils.setLocalStorage("tablo3_local", localData);
+    utils.setLocalStorage('tablo3_local', localData);
     setErrorFeedTitleList(errorFeeds);
 
     return;
   }
 
   const getLocalData = () => {
-    const local = utils.getLoaclStorage("tablo3_local");
+    const local = utils.getLoaclStorage('tablo3_local');
     const localData: LocalData | null = local ? JSON.parse(local) : null;
     return localData;
   };
@@ -186,18 +180,15 @@ const Feeds = () => {
   };
 
   const filteredFeedItems = _.filter(feedItems, (item) => {
-    const collectionVisibility =
-      _.find(collections, ["id", item.collectionID])?.visibility ?? true;
+    const collectionVisibility = _.find(collections, ['id', item.collectionID])?.visibility ?? true;
     if (!collectionVisibility) return false;
 
-    const feedVisibility =
-      _.find(feeds, ["id", item.feedID])?.visibility ?? true;
+    const feedVisibility = _.find(feeds, ['id', item.feedID])?.visibility ?? true;
     if (!feedVisibility) return false;
 
     if (hidePosts === 0) return true;
 
-    const isOldPost =
-      Date.now() - Number(item.pubDate) > 3600000 * 24 * hidePosts;
+    const isOldPost = Date.now() - Number(item.pubDate) > 3600000 * 24 * hidePosts;
     if (isOldPost) return false;
 
     return true;
@@ -208,26 +199,24 @@ const Feeds = () => {
     const isRead = readPosts.indexOf(postUrl) > -1 ? true : false;
 
     let pDescription = description;
-    if (description.includes("</")) {
-      const descriptionDiv = document.createElement("div");
+    if (description.includes('</')) {
+      const descriptionDiv = document.createElement('div');
       descriptionDiv.innerHTML = description;
       pDescription = descriptionDiv.innerText;
     }
     pDescription = pDescription.substr(0, 300);
 
     const toggleDropSpaces = (isShow: boolean) => {
-      const dropSpaces = Array.from(
-        document.querySelectorAll(".tab-item-wrap>.drop-space")
-      ) as HTMLDivElement[];
+      const dropSpaces = Array.from(document.querySelectorAll('.tab-item-wrap>.drop-space')) as HTMLDivElement[];
 
       for (const d of dropSpaces) {
-        d.style.display = isShow ? "flex" : "none";
+        d.style.display = isShow ? 'flex' : 'none';
       }
     };
 
     return (
       <li
-        className={`feed-post ${isRead ? "readed" : "unreaded"}`}
+        className={`feed-post ${isRead ? 'readed' : 'unreaded'}`}
         key={postUrl}
         role="link"
         onClick={() => {
@@ -238,7 +227,7 @@ const Feeds = () => {
         onDragStart={() => {
           dispatch(
             globalActionCreators.setDragData({
-              from: "feed-post",
+              from: 'feed-post',
               title,
               url: postUrl,
               description: pDescription,
@@ -261,8 +250,8 @@ const Feeds = () => {
           >
             <ExpendButton
               icon={isRead ? faBookOpen : faBook}
-              size={5}
-              text={isRead ? "Unread" : "Read"}
+              size={6}
+              text={isRead ? 'Unread' : 'Read'}
               clickEvent={() => {
                 dispatch(feedsActionCreators.readPost(postUrl, !isRead));
               }}
@@ -280,7 +269,7 @@ const Feeds = () => {
           >
             {siteTitle}
           </span>
-          <span className="line">|</span>
+          <span className="line">·</span>
           <span className="pub-date">{moment(Number(pubDate)).fromNow()}</span>
         </div>
         <span className="feed-post-description">{pDescription}</span>
@@ -310,20 +299,11 @@ const Feeds = () => {
 
   return (
     <div id="Feeds">
-      <ContentHeader
-        content="feeds"
-        searchFunc={() => {}}
-        reverse={true}
-        loadProgress={loadProgress.totalProgress}
-      />
-      <div className="feeds-content">
-        {feeds.length ? (
-          <ol className="feed-post-list">{mapToFeedItems}</ol>
-        ) : null}
-      </div>
+      <ContentHeader content="feeds" searchFunc={() => {}} reverse={true} loadProgress={loadProgress.totalProgress} />
+      <div className="feeds-content">{feeds.length ? <ol className="feed-post-list">{mapToFeedItems}</ol> : null}</div>
       {errorFeedTitleList.length ? (
         <div className="feeds-error-list">
-          <span>Failed to load: {errorFeedTitleList.join(", ")}</span>
+          <span>Failed to load: {errorFeedTitleList.join(', ')}</span>
         </div>
       ) : null}
     </div>
