@@ -545,7 +545,7 @@ const Tabs = () => {
                 <ExpendButton
                   icon={faWindowRestore}
                   text="Open all links"
-                  size={7.75}
+                  size={8}
                   clickEvent={() => {
                     const links: string[] = [];
                     for (const tab of filteredTabs) {
