@@ -1,9 +1,11 @@
+@import '../styles//variables.scss';
+
 #Feeds,
 #Tabs {
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #fafafa;
+  background-color: $app-background-color;
 
   .feeds-content,
   .tabs-content {
