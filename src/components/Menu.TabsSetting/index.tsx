@@ -146,7 +146,7 @@ const Tabs = () => {
               <ExpendButton
                 icon={faArchive}
                 text="Save all Tabs"
-                size={7.5}
+                size={8.5}
                 clickEvent={() => {
                   const items = currentTabList as SimpleItem[];
                   dispatch(tabsActionCreators.tabsArchive(items));
@@ -164,7 +164,7 @@ const Tabs = () => {
               <ExpendButton
                 icon={faTrashAlt}
                 text="Empty Cart"
-                size={7}
+                size={8}
                 clickEvent={() => {
                   dispatch(actionCreators.emptyCart());
                 }}
