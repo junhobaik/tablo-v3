@@ -1,6 +1,7 @@
 export const RESET_FEED = 'feeds/RESET_FEED';
 export const SET_ISCHANGED = 'feeds/SET_ISCHANGED';
 export const TOGGLE_VISIBILITY = 'feeds/TOGGLE_VISIBILITY';
+export const TOGGLE_ADD_FEED = 'feeds/TOGGLE_ADD_FEED';
 
 export const ADD_FEED = 'feeds/ADD_FEED';
 export const FAILD_LOAD_FEED = 'feeds/FAILD_LOAD_FEED';
@@ -51,6 +52,7 @@ export interface FeedsState {
   collections: Collection[];
   readPosts: string[];
   isChanged: boolean;
+  foldAddFeed: boolean;
 }
 
 // action types
@@ -127,7 +129,13 @@ interface ReadPostAction {
   isRead: boolean;
 }
 
+interface ToggleAddFeedAction {
+  type: typeof TOGGLE_ADD_FEED;
+  isFold: boolean;
+}
+
 export type FeedActionType =
+  | ToggleAddFeedAction
   | ReadPostAction
   | MoveFeedCollectionAction
   | MoveFeedItemAction
@@ -194,6 +202,10 @@ const readPost = (postUrl: string, isRead: boolean = true) => {
   return { type: READ_POST, postUrl, isRead };
 };
 
+const toggeleAddFeed = (isFold: boolean) => {
+  return { type: TOGGLE_ADD_FEED, isFold };
+};
+
 export const actionCreators = {
   addFeed,
   faildLoadFeed,
@@ -208,4 +220,5 @@ export const actionCreators = {
   moveFeedItem,
   moveFeedCollection,
   readPost,
+  toggeleAddFeed,
 };

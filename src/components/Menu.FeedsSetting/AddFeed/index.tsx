@@ -38,12 +38,11 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
   const [addUrlValue, setAddUrlValue] = useState<string>('');
   const [addTitleValue, setTitleValue] = useState<string>('');
   const [validationData, setValidationData] = useState<FeedForAdd | null>(null);
-  const [isActiveAddFeed, setIsActiveAddFeed] = useState<boolean>(true);
   const [message, setMessage] = useState<Message>({
     type: 'info',
     msg: messages.first,
   });
-  const { feeds, collections } = feedsState;
+  const { feeds, collections, foldAddFeed } = feedsState;
 
   const addFeedReset = () => {
     setAddUrlValue('');
@@ -142,17 +141,15 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
       <div className={`add-feed-header`}>
         <button
           onClick={() => {
-            setIsActiveAddFeed((prev: boolean) => {
-              return !prev;
-            });
+            dispatch(feedsActionCreators.toggeleAddFeed(!foldAddFeed));
           }}
         >
-          <Fa icon={isActiveAddFeed ? faAngleUp : faAngleDown} />
+          <Fa icon={foldAddFeed ? faAngleUp : faAngleDown} />
         </button>
         <h2>Add Feed</h2>
       </div>
 
-      {isActiveAddFeed ? (
+      {foldAddFeed ? (
         <div className="add-feed-content">
           <div className="add-feed-form">
             <div className={`add-feed-url-check ${validationData ? 'validation' : 'invalidation'}`}>

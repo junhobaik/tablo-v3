@@ -14,6 +14,7 @@ import {
   MOVE_FEED_COLLECTION,
   MOVE_FEED_ITEM,
   READ_POST,
+  TOGGLE_ADD_FEED,
 } from './actions';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
@@ -50,6 +51,7 @@ const initialState: FeedsState = {
     },
   ],
   readPosts: [],
+  foldAddFeed: false,
 };
 
 const feedsReducer = (state = initialState, action: FeedActionType): FeedsState => {
@@ -253,6 +255,10 @@ const feedsReducer = (state = initialState, action: FeedActionType): FeedsState 
       }
 
       return newState;
+    }
+
+    case TOGGLE_ADD_FEED: {
+      return { ...state, foldAddFeed: action.isFold };
     }
 
     default:
