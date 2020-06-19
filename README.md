@@ -24,3 +24,4 @@
 - prettier
 - fontawesome
 - Chrome API
+- ...
