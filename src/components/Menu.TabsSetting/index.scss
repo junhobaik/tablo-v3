@@ -92,6 +92,11 @@
 
           .link-title {
             user-select: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 10rem;
+            white-space: nowrap;
+            margin-top: 2px;
           }
 
           .delete-btn {

@@ -1,19 +1,15 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
-import { faFile, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { faArchive, faTimes } from "@fortawesome/free-solid-svg-icons";
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';
+import { faFile, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { faArchive, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import { actionCreators as globalActionCreators } from "../../modules/global/actions";
-import "./index.scss";
-import ExpendButton from "../utils/ExpendButton";
-import {
-  actionCreators as tabsActionCreators,
-  SimpleItem,
-  actionCreators,
-} from "../../modules/tabs/actions";
-import { RootState } from "../../modules";
+import { actionCreators as globalActionCreators } from '../../modules/global/actions';
+import './index.scss';
+import ExpendButton from '../utils/ExpendButton';
+import { actionCreators as tabsActionCreators, SimpleItem, actionCreators } from '../../modules/tabs/actions';
+import { RootState } from '../../modules';
 
 const Tabs = () => {
   const dispatch = useDispatch();
@@ -27,8 +23,7 @@ const Tabs = () => {
         if (window?.tabs) {
           for (const tab of window.tabs) {
             const { title, url } = tab;
-            if (url && url !== "chrome://newtab/")
-              list.push({ title: title ?? "Untitled", url });
+            if (url && url !== 'chrome://newtab/') list.push({ title: title ?? 'Untitled', url });
           }
         }
       }
@@ -39,7 +34,7 @@ const Tabs = () => {
   useEffect(() => {
     getAllTabs();
     chrome.tabs.onUpdated.addListener((_, changeInfo) => {
-      if (changeInfo.status === "complete") getAllTabs();
+      if (changeInfo.status === 'complete') getAllTabs();
     });
 
     chrome.tabs.onRemoved.addListener(() => {
@@ -48,11 +43,9 @@ const Tabs = () => {
   }, []);
 
   const toggleDropSapce = (isShow: boolean) => {
-    const dropSpace: HTMLDivElement[] = Array.from(
-      document.querySelectorAll(".drop-space")
-    );
+    const dropSpace: HTMLDivElement[] = Array.from(document.querySelectorAll('.drop-space'));
     for (const d of dropSpace) {
-      d.style.display = isShow ? "block" : "none";
+      d.style.display = isShow ? 'block' : 'none';
     }
   };
 
@@ -61,8 +54,8 @@ const Tabs = () => {
       const toggleDeleteButton = deletable
         ? (e: React.MouseEvent<HTMLLIElement>, isShow: boolean) => {
             const deleteBtn = e.currentTarget.lastChild as HTMLButtonElement;
-            deleteBtn.classList.remove(isShow ? "hide" : "show");
-            deleteBtn.classList.add(isShow ? "show" : "hide");
+            deleteBtn.classList.remove(isShow ? 'hide' : 'show');
+            deleteBtn.classList.add(isShow ? 'show' : 'hide');
           }
         : (e: React.MouseEvent<HTMLLIElement>) => {
             e.preventDefault();
@@ -83,10 +76,10 @@ const Tabs = () => {
             if (v.title && v.url) {
               dispatch(
                 globalActionCreators.setDragData({
-                  from: "tabs-setting",
+                  from: 'tabs-setting',
                   title: v.title,
                   url: v.url,
-                  description: "",
+                  description: '',
                 })
               );
               toggleDropSapce(true);
@@ -105,14 +98,10 @@ const Tabs = () => {
 
             <div className="favicon">
               <img
-                src={`${(v.url ?? "")
-                  .split("/")
-                  .splice(0, 3)
-                  .join("/")}/favicon.ico`}
+                src={`${(v.url ?? '').split('/').splice(0, 3).join('/')}/favicon.ico`}
                 onError={(e: any) => {
-                  e.currentTarget.style.display = "none";
-                  e.currentTarget.parentNode.parentNode.firstChild.style.display =
-                    "inline-block";
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentNode.parentNode.firstChild.style.display = 'inline-block';
                 }}
               />
             </div>
