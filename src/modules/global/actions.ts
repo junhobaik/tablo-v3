@@ -1,21 +1,17 @@
-import { GlobalState } from "./reducer";
+import { GlobalState } from './reducer';
 
-export const SET_WINDOW = "global/SET_WINDOW";
-export const RESET_GLOBAL = "global/RESET_GLOBAL";
-export const SET_DRAG_DATA = "global/SET_DRAG_DATA";
-export const CLEAR_DRAG_DATA = "global/CLEAR_DRAG_DATA";
-export const SET_DROP_DATA = "global/SET_DROP_DATA";
-export const CLEAR_DROP_DATA = "global/CLEAR_DROP_DATA";
+export const SET_WINDOW = 'global/SET_WINDOW';
+export const RESET_GLOBAL = 'global/RESET_GLOBAL';
+export const SET_DRAG_DATA = 'global/SET_DRAG_DATA';
+export const CLEAR_DRAG_DATA = 'global/CLEAR_DRAG_DATA';
+export const SET_DROP_DATA = 'global/SET_DROP_DATA';
+export const CLEAR_DROP_DATA = 'global/CLEAR_DROP_DATA';
 
-export type LocalStorageName = "tablo3_changed" | "tablo3_reload-posts" | "tablo3_local";
-export type WindowItem = "default" | "tabs-setting" | "feeds-setting";
-type DragDataFrom = "tabs-setting" | "feeds" | "feed-post";
-type DragMoveDataFrom =
-  | "collection"
-  | "tabs"
-  | "feeds-setting-feed"
-  | "feeds-setting-collection";
-export type LinkMethod = "new" | "current" | null | undefined;
+export type LocalStorageName = 'tablo3_changed' | 'tablo3_reload-posts' | 'tablo3_local' | 'tablo3_theme';
+export type WindowItem = 'default' | 'tabs-setting' | 'feeds-setting';
+type DragDataFrom = 'tabs-setting' | 'feeds' | 'feed-post';
+type DragMoveDataFrom = 'collection' | 'tabs' | 'feeds-setting-feed' | 'feeds-setting-collection';
+export type LinkMethod = 'new' | 'current' | null | undefined;
 export type ReloadPostsHour = 0 | 3 | 6 | 9 | 12 | 24; // 0 = dev only
 export type HidePostsDay = 0 | 7 | 14 | 30 | 60 | 90;
 

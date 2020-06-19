@@ -23,8 +23,13 @@ const App = () => {
   const dispatch = useDispatch();
   const [isLoadedState, setIsLoadedState] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
+  const [theme, setTheme] = useState<string>();
   const windowStatus = useSelector((state: RootState) => state.global.window);
   const state = useSelector((state: RootState) => state); // dev
+
+  const getLocalTheme = () => {
+    setTheme(utils.getLoaclStorage('tablo3_theme') ?? 'light');
+  };
 
   const loadAndSetStates = (reloadPosts: boolean = false) => {
     chrome.storage.sync.get('tablo3', (res) => {
@@ -37,6 +42,8 @@ const App = () => {
       } else {
         dispatch(feedsActionCreators.setIsChanged(true));
       }
+
+      getLocalTheme();
       setIsLoadedState(true);
     });
   };
@@ -88,8 +95,11 @@ const App = () => {
     };
   }, [state]);
 
+  if (!isLoadedState) {
+    return <div></div>;
+  }
   return (
-    <div id="theme" className="theme-light">
+    <div id="theme" className={`theme-${theme}`}>
       <div id="App">
         <Header setIsSettingModal={setIsSettingModal} />
 
