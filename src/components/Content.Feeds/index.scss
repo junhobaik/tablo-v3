@@ -9,7 +9,7 @@
         padding: 0;
 
         .feed-post {
-          background-color: t('item-background-color-light');
+          background-color: t('background-color-0');
           margin: 1rem;
           padding: 0.75rem 1rem;
           border-radius: 3px;
@@ -49,14 +49,14 @@
           .feed-post-info {
             display: flex;
             font-size: 0.9rem;
-            color: t('text-color-super-light');
+            color: t('text-color-3');
 
             .site-title {
               cursor: pointer;
               transition: 0.2s;
 
               &:hover {
-                color: t('text-color-normal');
+                color: t('text-color-1');
               }
             }
 
@@ -74,7 +74,7 @@
             overflow: hidden;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
-            color: t('text-color-light');
+            color: t('text-color-2');
             font-weight: 300;
             font-size: 0.85rem;
           }

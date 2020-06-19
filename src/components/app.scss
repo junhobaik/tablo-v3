@@ -14,7 +14,7 @@ body {
   @include themify($themes) {
     display: flex;
     flex-direction: column;
-    color: t('text-color-normal');
+    color: t('text-color-0');
   }
   .app-bottom {
     display: flex;

@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     max-width: 50rem;
-    background-color: t('app-background-color');
+    background-color: t('background-color-1');
 
     height: 100%;
     h1,
@@ -32,7 +32,7 @@
     }
 
     & > div {
-      border-bottom: 1px solid t('line-color-light');
+      border-bottom: 1px solid t('line-color-0');
       padding: 0.5rem 1rem;
     }
 
@@ -72,7 +72,7 @@
             all: unset;
             cursor: pointer;
             margin-left: 0.25rem;
-            border: 1px solid t('button-color-dark');
+            border: 1px solid t('button-color-1');
             border-radius: 3px;
             padding: 0 0.25rem;
             font-size: 0.8rem;
@@ -81,7 +81,7 @@
             transition: 0.2s;
 
             &:hover {
-              background-color: t('button-color-light');
+              background-color: t('button-color-0');
             }
           }
         }

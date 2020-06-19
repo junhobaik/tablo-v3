@@ -17,14 +17,14 @@
       display: flex;
       height: 100%;
       cursor: pointer;
-      color: t('button-color-dark');
+      color: t('button-color-1');
       font-size: 0.9rem;
       align-items: center;
-      border: 1.5px solid t('line-color-light');
+      border: 1.5px solid t('line-color-0');
       border-top: 0;
       border-right-width: 0;
       border-bottom-left-radius: 10px;
-      background-color: t('header-background-color');
+      background-color: t('background-color-0');
       transition: 0.2s all;
 
       span {
@@ -36,7 +36,7 @@
       }
 
       &:hover {
-        color: t('button-color-emphasis');
+        color: t('button-color-2');
       }
     }
 
@@ -45,7 +45,7 @@
       flex-grow: 1;
       align-items: center;
       height: 100%;
-      border-top: 1.5px solid t('line-color-light');
+      border-top: 1.5px solid t('line-color-0');
       box-shadow: inset 0 7px 9px -7px rgba(0, 0, 0, 0.1);
 
       .content-search {
@@ -72,7 +72,7 @@
           }
 
           &:hover {
-            background-color: t('button-color-light');
+            background-color: t('button-color-0');
           }
         }
 
@@ -90,10 +90,10 @@
 
         &.active {
           .search-active-btn {
-            background-color: t('button-color-light');
+            background-color: t('button-color-0');
           }
           .search-input {
-            background-color: t('button-color-light');
+            background-color: t('button-color-0');
             pointer-events: all;
             width: 5rem;
             padding: 0 0.75rem;
@@ -113,14 +113,14 @@
         flex-grow: 1;
 
         .load-progress {
-          border: 1px solid t('button-color-light');
+          border: 1px solid t('button-color-0');
           margin: 0 1rem 0 0.75rem;
           height: 1rem;
           border-radius: 1rem;
 
           .progress {
             border-radius: inherit;
-            background-color: t('button-color-dark');
+            background-color: t('button-color-0');
             width: 0%;
             height: 100%;
             transition: width 0.1s;

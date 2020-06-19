@@ -18,7 +18,7 @@
         .collection {
           position: relative;
           padding: 1rem;
-          border-bottom: 1px solid t('line-color-light');
+          border-bottom: 1px solid t('line-color-0');
 
           .collection-drop-space {
             display: none;
@@ -97,7 +97,7 @@
                 .title-text {
                   user-select: none;
                   cursor: grab;
-                  background-color: t('app-background-color');
+                  background-color: t('background-color-1');
                   border-radius: 3px;
                   border-bottom: 2px solid transparent;
 
@@ -135,9 +135,9 @@
                   height: 1.5rem;
                   margin-left: 0.25rem;
                   font-size: 0.9rem;
-                  background-color: t('button-color-light');
+                  background-color: t('button-color-0');
                   border-radius: 100%;
-                  color: t('button-color-dark');
+                  color: t('button-color-1');
                 }
 
                 .setting-btn {
@@ -159,9 +159,9 @@
                   transition: all 0.2s;
                   transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
                   opacity: 0;
-                  background-color: t('button-color-light');
+                  background-color: t('button-color-0');
                   border-radius: 0.75rem;
-                  color: t('button-color-dark');
+                  color: t('button-color-1');
 
                   .space-circle {
                     min-height: 1.5rem;
@@ -169,7 +169,7 @@
                     border-radius: 100%;
                     border-top-left-radius: 0;
                     border-top-right-radius: 0;
-                    background-color: t('app-background-color');
+                    background-color: t('background-color-1');
                   }
 
                   button {
@@ -186,7 +186,7 @@
                     }
 
                     &:hover {
-                      color: t('button-color-emphasis');
+                      color: t('button-color-2');
                     }
                   }
                 }
@@ -257,7 +257,7 @@
               display: flex;
               position: relative;
               flex-direction: column;
-              background-color: t('item-background-color-light');
+              background-color: t('background-color-0');
               box-sizing: content-box;
               border: 2px solid transparent;
               border-radius: 3px;
@@ -364,7 +364,7 @@
                     p,
                     input {
                       font-size: 0.9rem;
-                      color: t('text-color-light');
+                      color: t('text-color-2');
                       font-weight: 300;
                       margin: 0;
                       white-space: nowrap;
@@ -404,13 +404,13 @@
 
                 button {
                   display: flex;
-                  background-color: t('button-color-dark');
+                  background-color: t('button-color-1');
                   border-radius: 100%;
                   width: 1rem;
                   height: 1rem;
                   align-items: center;
                   justify-content: center;
-                  color: t('item-background-color-light');
+                  color: t('button-color-3');
                 }
                 .edit-btn {
                   font-size: 0.5rem;
@@ -434,14 +434,15 @@
 
           button {
             all: unset;
-            color: t('button-color-light');
+            color: t('button-color-1');
             font-size: 1.5rem;
             margin: 0.5rem;
             cursor: pointer;
             transition: 0.2s;
+            opacity: 0.5;
 
             &:hover {
-              color: t('button-color-dark');
+              color: t('button-color-2');
             }
           }
         }

@@ -24,7 +24,7 @@
       flex-direction: column;
       position: absolute;
       z-index: 2;
-      background-color: t('app-background-color');
+      background-color: t('background-color-1');
       width: 30rem;
       height: 30rem;
       top: calc(50% - 15rem - 2rem);
@@ -38,8 +38,8 @@
         display: flex;
         justify-content: space-between;
         padding: 1rem 1rem 0.5rem 1rem;
-        border-bottom: 1px solid t('line-color-light');
-        background-color: t('basic-color');
+        border-bottom: 1px solid t('line-color-0');
+        background-color: t('background-color-0');
 
         h1 {
           font-size: 1.5rem;
@@ -59,7 +59,6 @@
         }
       }
       .modal-children {
-        background-color: red;
         flex-grow: 1;
       }
     }

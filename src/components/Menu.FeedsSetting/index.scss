@@ -21,7 +21,7 @@ $success-2: #2c662d;
   @include themify($themes) {
     display: flex;
     flex-direction: column;
-    background-color: t('header-background-color');
+    background-color: t('background-color-0');
 
     button,
     h3,
@@ -48,8 +48,8 @@ $success-2: #2c662d;
       flex-direction: column;
       margin: 0.5rem 1rem;
       border-radius: 3px;
-      box-shadow: t('setting-card-shadow');
-      background-color: t('item-background-color-dark');
+      box-shadow: t('shadow-0');
+      background-color: t('background-color-1');
 
       .add-feed-header {
         display: flex;
@@ -76,7 +76,7 @@ $success-2: #2c662d;
         padding-bottom: 1rem;
 
         .add-feed-form {
-          border: 1px solid t('button-color-light');
+          border: 1px solid t('button-color-0');
           border-radius: 3px;
 
           .add-feed-url-check {
@@ -114,9 +114,9 @@ $success-2: #2c662d;
             button.url-check-btn {
               all: unset;
               cursor: pointer;
-              background-color: t('button-color-light');
+              background-color: t('button-color-0');
               padding: 0.25rem;
-              color: t('button-color-dark');
+              color: t('button-color-1');
               width: 5rem;
               text-align: center;
             }
@@ -124,7 +124,7 @@ $success-2: #2c662d;
 
           .add-feed-info {
             display: flex;
-            border-top: 1px solid t('button-color-light');
+            border-top: 1px solid t('button-color-0');
             flex-direction: column;
             padding: 1rem 0.5rem;
 
@@ -147,7 +147,8 @@ $success-2: #2c662d;
                 input {
                   all: unset;
                   cursor: text;
-                  border: 1px solid t('button-color-light');
+                  border: 1px solid t('button-color-0');
+                  background-color: t('background-color-0');
                   border-radius: 5px;
                   padding: 0.25rem 0.5rem;
                   height: 1.5rem;
@@ -159,8 +160,9 @@ $success-2: #2c662d;
                 select {
                   height: 2.2rem;
                   max-width: 12rem;
-                  background-color: t('basic-color');
-                  border: 1px solid t('button-color-light');
+                  background-color: t('background-color-0');
+                  border: 1px solid t('button-color-0');
+                  border-radius: 5px;
 
                   &:focus {
                     outline: none;
@@ -197,6 +199,7 @@ $success-2: #2c662d;
           border: 1px solid $info-1;
           background-color: $info-0;
           color: $info-2;
+          opacity: 0.8;
 
           .icon-wrap {
             display: flex;
@@ -234,8 +237,8 @@ $success-2: #2c662d;
       flex-direction: column;
       margin: 0.5rem 1rem;
       border-radius: 3px;
-      box-shadow: t('setting-card-shadow');
-      background-color: t('item-background-color-dark');
+      box-shadow: t('shadow-0');
+      background-color: t('background-color-1');
 
       .feed-collection-drop-space {
         display: none;
@@ -254,13 +257,13 @@ $success-2: #2c662d;
         position: relative;
         flex-direction: column;
         padding: 0.5rem;
-        border-bottom: 1px solid t('line-color-light');
+        border-bottom: 1px solid t('line-color-0');
 
         .toggle-visiblility-btn {
           display: flex;
           align-items: center;
           justify-content: center;
-          border: 1px solid t('button-color-dark');
+          border: 1px solid t('button-color-1');
           border-radius: 100%;
           overflow: hidden;
           padding: 1px;
@@ -273,7 +276,7 @@ $success-2: #2c662d;
             width: $inner-size;
             height: $inner-size;
             &.vislble {
-              background-color: t('button-color-emphasis');
+              background-color: t('button-color-1');
             }
             &.hidden {
               background-color: transparent;
@@ -326,7 +329,7 @@ $success-2: #2c662d;
           .right {
             display: flex;
             position: relative;
-            color: t('basic-color');
+            color: t('button-color-1');
             font-size: 0.8rem;
             align-items: center;
 
@@ -336,7 +339,7 @@ $success-2: #2c662d;
               right: 0rem;
               z-index: 1;
               align-items: center;
-              background-color: t('button-color-dark');
+              background-color: t('button-color-0');
               padding-right: 1.5rem;
               height: 1.5rem;
               border-radius: 1.5rem;
@@ -348,6 +351,10 @@ $success-2: #2c662d;
               button {
                 display: flex;
                 align-items: center;
+
+                &:hover {
+                  color: t('button-color-2');
+                }
               }
               .edit-btn {
                 font-size: 0.7rem;
@@ -367,7 +374,7 @@ $success-2: #2c662d;
               height: 1.5rem;
               width: 1.5rem;
               border-radius: 100%;
-              background-color: t('button-color-dark');
+              background-color: t('button-color-0');
             }
           }
         }
@@ -424,9 +431,9 @@ $success-2: #2c662d;
             z-index: 1;
             cursor: grab;
             border-radius: 3px;
-            border: 1px solid t('line-color-light');
+            border: 1px solid t('line-color-1');
             margin: 0.25rem 0.5rem;
-            background-color: t('item-background-color-light');
+            background-color: t('background-color-0');
             align-items: center;
             width: 100%;
             height: 100%;
@@ -445,7 +452,6 @@ $success-2: #2c662d;
               width: 0.8rem;
               min-width: 0.8rem;
               min-height: 0.8rem;
-              // margin-bottom: 1px;
             }
 
             h3.title-text {
@@ -454,6 +460,7 @@ $success-2: #2c662d;
               text-overflow: ellipsis;
               overflow: hidden;
               margin-top: 1px;
+              color: t('text-color-1');
             }
 
             a.title-text-link,
@@ -476,10 +483,10 @@ $success-2: #2c662d;
                 width: 1rem;
                 height: 1rem;
                 border-radius: 100%;
-                background-color: t('button-color-dark');
+                background-color: t('button-color-1');
                 align-items: center;
                 justify-content: center;
-                color: t('basic-color');
+                color: t('button-color-3');
                 transform: scale(0);
                 transition: 0;
               }
@@ -531,7 +538,7 @@ $success-2: #2c662d;
         align-items: flex-start;
 
         button {
-          color: t('button-color-light');
+          color: t('button-color-0');
           transition: 0.2s;
 
           svg {
@@ -539,7 +546,7 @@ $success-2: #2c662d;
           }
 
           &:hover {
-            color: t('button-color-dark');
+            color: t('button-color-1');
           }
         }
       }

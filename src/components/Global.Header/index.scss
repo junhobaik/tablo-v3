@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 0.5rem;
-    background-color: t('header-background-color');
+    background-color: t('background-color-0');
 
     .title-wrap {
       display: flex;
@@ -34,11 +34,11 @@
     button {
       all: unset;
       cursor: pointer;
-      color: t('button-color-dark');
+      color: t('button-color-1');
       transition: 0.2s;
 
       &:hover {
-        color: t('button-color-emphasis');
+        color: t('button-color-2');
       }
     }
   }

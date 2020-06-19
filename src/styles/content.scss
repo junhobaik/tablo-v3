@@ -7,17 +7,17 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: t('app-background-color');
+    background-color: t('background-color-1');
 
     .feeds-content,
     .tabs-content {
       flex-grow: 1;
     }
     .feeds-content {
-      border-left: 1px solid t('line-color-light');
+      border-left: 1px solid t('line-color-0');
     }
     .tabs-content {
-      border-right: 1px solid t('line-color-light');
+      border-right: 1px solid t('line-color-0');
     }
   }
 }
