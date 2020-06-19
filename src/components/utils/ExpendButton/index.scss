@@ -1,55 +1,58 @@
 @import '../../../styles/variables.scss';
+@import '../../../styles/themes.scss';
 
 .expend-button-wrap {
-  display: flex;
-  position: relative;
-  align-items: center;
-
-  .expend-button {
-    all: unset;
+  @include themify($themes) {
     display: flex;
-    cursor: pointer;
-    z-index: 2;
+    position: relative;
     align-items: center;
-    justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-left: 0.25rem;
-    font-size: 0.9rem;
-    background-color: $button-color-light;
-    border-radius: 100%;
-    color: $button-color-dark;
-    transition: color 0.2s;
 
-    &:hover {
-      color: $button-color-emphasis;
+    .expend-button {
+      all: unset;
+      display: flex;
+      cursor: pointer;
+      z-index: 2;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-left: 0.25rem;
+      font-size: 0.9rem;
+      background-color: t('button-color-light');
+      border-radius: 100%;
+      color: t('button-color-dark');
+      transition: color 0.2s;
+
+      &:hover {
+        color: t('button-color-emphasis');
+      }
     }
-  }
 
-  .expend-area {
-    display: flex;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    align-items: center;
-    height: 1.5rem;
-    border-radius: 1.5rem;
-    background-color: $button-color-light;
-    transition: all 0.2s;
-    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-    width: 1.5rem;
-    overflow: hidden;
-    justify-content: center;
+    .expend-area {
+      display: flex;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+      align-items: center;
+      height: 1.5rem;
+      border-radius: 1.5rem;
+      background-color: t('button-color-light');
+      transition: all 0.2s;
+      transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+      width: 1.5rem;
+      overflow: hidden;
+      justify-content: center;
 
-    p {
-      user-select: none;
-      color: $button-color-emphasis;
-      margin: 0;
-      margin-left: 0.5rem;
-      margin-right: 1.5rem;
-      white-space: nowrap;
-      opacity: 0;
+      p {
+        user-select: none;
+        color: t('button-color-dark');
+        margin: 0;
+        margin-left: 0.5rem;
+        margin-right: 1.5rem;
+        white-space: nowrap;
+        opacity: 0;
+      }
     }
   }
 }

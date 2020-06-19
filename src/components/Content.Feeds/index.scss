@@ -1,111 +1,114 @@
 @import '../../styles/variables.scss';
+@import '../../styles/themes.scss';
 
 #Feeds {
-  .feeds-content {
-    .feed-post-list {
-      margin: 0;
-      padding: 0;
+  @include themify($themes) {
+    .feeds-content {
+      .feed-post-list {
+        margin: 0;
+        padding: 0;
 
-      .feed-post {
-        background-color: $item-background-color-light;
-        margin: 1rem;
-        padding: 0.75rem 1rem;
-        border-radius: 3px;
-        list-style: none;
-        cursor: grab;
-        user-select: none;
-        box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1), 2px 2px 4px 0px rgba(0, 0, 0, 0.1);
+        .feed-post {
+          background-color: t('item-background-color-light');
+          margin: 1rem;
+          padding: 0.75rem 1rem;
+          border-radius: 3px;
+          list-style: none;
+          cursor: grab;
+          user-select: none;
+          box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1), 2px 2px 4px 0px rgba(0, 0, 0, 0.1);
 
-        &:active {
-          cursor: grabbing;
-        }
-
-        &.unreaded {
-          opacity: 1;
-        }
-
-        &.readed {
-          opacity: 0.6;
-          box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
-
-          .feed-post-description {
-            display: none;
+          &:active {
+            cursor: grabbing;
           }
-        }
 
-        .feed-post-header {
-          display: flex;
-          justify-content: space-between;
-
-          .title {
-            all: unset;
-            font-weight: bold;
-            font-size: 1.1rem;
+          &.unreaded {
+            opacity: 1;
           }
-        }
 
-        .feed-post-info {
-          display: flex;
-          font-size: 0.9rem;
-          color: $text-color-super-light;
+          &.readed {
+            opacity: 0.6;
+            box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
 
-          .site-title {
-            cursor: pointer;
-            transition: 0.2s;
-
-            &:hover {
-              color: $text-color-normal;
+            .feed-post-description {
+              display: none;
             }
           }
 
-          .line {
-            margin: 0 0.25rem;
-          }
-        }
+          .feed-post-header {
+            display: flex;
+            justify-content: space-between;
 
-        .feed-post-description {
-          display: block;
-          display: -webkit-box;
-          margin-top: 0.5rem;
-          line-height: 1.1;
-          max-height: 2.8rem;
-          overflow: hidden;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 3;
-          color: $text-color-light;
-          font-weight: 300;
-          font-size: 0.85rem;
+            .title {
+              all: unset;
+              font-weight: bold;
+              font-size: 1.1rem;
+            }
+          }
+
+          .feed-post-info {
+            display: flex;
+            font-size: 0.9rem;
+            color: t('text-color-super-light');
+
+            .site-title {
+              cursor: pointer;
+              transition: 0.2s;
+
+              &:hover {
+                color: t('text-color-normal');
+              }
+            }
+
+            .line {
+              margin: 0 0.25rem;
+            }
+          }
+
+          .feed-post-description {
+            display: block;
+            display: -webkit-box;
+            margin-top: 0.5rem;
+            line-height: 1.1;
+            max-height: 2.8rem;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            color: t('text-color-light');
+            font-weight: 300;
+            font-size: 0.85rem;
+          }
         }
       }
     }
-  }
-  .feeds-error-list {
-    display: flex;
-    position: fixed;
-    right: -1px;
-    bottom: 0;
-    z-index: 9;
-    min-height: 1rem;
-    width: 50%;
-    margin: 0;
-    padding: 0;
-    background-color: rgba(0, 0, 0, 0.2);
-    color: $basic-color;
-    flex-wrap: wrap;
-    transition: 0.3s;
+    .feeds-error-list {
+      display: flex;
+      position: fixed;
+      right: -1px;
+      bottom: 0;
+      z-index: 9;
+      min-height: 1rem;
+      width: 50%;
+      margin: 0;
+      padding: 0;
+      background-color: rgba(0, 0, 0, 0.2);
+      color: t('basic-color');
+      flex-wrap: wrap;
+      transition: 0.3s;
 
-    span {
-      cursor: default;
-      opacity: 0.7;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.7);
       span {
-        opacity: 1;
+        cursor: default;
+        opacity: 0.7;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+        span {
+          opacity: 1;
+        }
       }
     }
   }

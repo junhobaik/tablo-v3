@@ -1,126 +1,130 @@
 @import '../../styles/variables.scss';
+@import '../../styles/themes.scss';
 
 .tabs-setting {
-  display: flex;
-
-  .tabs-setting-inner-wrap {
+  @include themify($themes) {
     display: flex;
-    flex-grow: 1;
-    flex-direction: column;
 
-    .list-wrap {
-      margin: 1rem;
-      padding: 1rem;
-      border-radius: 3px;
-      box-shadow: $setting-card-shadow;
-      background-color: $item-background-color-dark;
+    .tabs-setting-inner-wrap {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      background-color: t('header-background-color');
 
-      .list-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
+      .list-wrap {
+        margin: 1rem;
+        padding: 1rem;
+        border-radius: 3px;
+        box-shadow: t('setting-card-shadow');
+        background-color: t('item-background-color-dark');
 
-        h2 {
-          margin: 0;
-          font-size: 1.2rem;
-          user-select: none;
-        }
-
-        .circle-btn {
-          all: unset;
+        .list-header {
           display: flex;
-          cursor: pointer;
+          justify-content: space-between;
           align-items: center;
-          justify-content: center;
-          width: 1.5rem;
-          height: 1.5rem;
-          margin-left: 0.25rem;
-          font-size: 0.9rem;
-          background-color: $button-color-light;
-          border-radius: 100%;
-          color: $button-color-dark;
-        }
-      }
+          margin-bottom: 0.5rem;
 
-      .list {
-        display: flex;
-        flex-wrap: wrap;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        .link-item {
-          display: flex;
-          position: relative;
-          align-items: center;
-          padding: 0.25rem;
-          padding-right: 0.5rem;
-          margin: 0 0.5rem 0.75rem 0;
-          background-color: $item-background-color-light;
-          border: 1px solid $line-color-light;
-          border-radius: 3px;
-          cursor: grab;
-          transition: all 0.2s;
-
-          &:active {
-            cursor: grabbing;
-          }
-
-          .link-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 1.2rem;
-            margin-right: 0.25rem;
-
-            .no-favicon {
-              display: none;
-              font-size: 1.1rem;
-            }
-
-            .favicon {
-              display: flex;
-              align-items: center;
-              img {
-                pointer-events: none;
-                width: 1.1rem;
-                height: 1.1rem;
-              }
-            }
-          }
-
-          .link-title {
+          h2 {
+            margin: 0;
+            font-size: 1.2rem;
             user-select: none;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 10rem;
-            white-space: nowrap;
-            margin-top: 2px;
           }
 
-          .delete-btn {
+          .circle-btn {
             all: unset;
             display: flex;
-            position: absolute;
-            top: -0.4rem;
-            right: -0.6rem;
             cursor: pointer;
             align-items: center;
             justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-left: 0.25rem;
+            font-size: 0.9rem;
+            background-color: t('button-color-light');
             border-radius: 100%;
-            height: 1.2rem;
-            width: 1.2rem;
-            color: $basic-color;
-            background-color: $button-color-dark;
-            font-size: 0.8rem;
-            transition: 0.2s;
+            color: t('button-color-dark');
+          }
+        }
 
-            &.show {
-              transform: scale(1);
+        .list {
+          display: flex;
+          flex-wrap: wrap;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          .link-item {
+            display: flex;
+            position: relative;
+            align-items: center;
+            padding: 0.25rem;
+            padding-right: 0.5rem;
+            margin: 0 0.5rem 0.75rem 0;
+            background-color: t('item-background-color-light');
+            border: 1px solid t('line-color-light');
+            border-radius: 3px;
+            cursor: grab;
+            transition: all 0.2s;
+
+            &:active {
+              cursor: grabbing;
             }
-            &.hide {
-              transform: scale(0);
+
+            .link-icon {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 1.2rem;
+              margin-right: 0.25rem;
+
+              .no-favicon {
+                display: none;
+                font-size: 1.1rem;
+              }
+
+              .favicon {
+                display: flex;
+                align-items: center;
+                img {
+                  pointer-events: none;
+                  width: 1.1rem;
+                  height: 1.1rem;
+                }
+              }
+            }
+
+            .link-title {
+              user-select: none;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              width: 10rem;
+              white-space: nowrap;
+              margin-top: 2px;
+            }
+
+            .delete-btn {
+              all: unset;
+              display: flex;
+              position: absolute;
+              top: -0.4rem;
+              right: -0.6rem;
+              cursor: pointer;
+              align-items: center;
+              justify-content: center;
+              border-radius: 100%;
+              height: 1.2rem;
+              width: 1.2rem;
+              color: t('basic-color');
+              background-color: t('button-color-dark');
+              font-size: 0.8rem;
+              transition: 0.2s;
+
+              &.show {
+                transform: scale(1);
+              }
+              &.hide {
+                transform: scale(0);
+              }
             }
           }
         }

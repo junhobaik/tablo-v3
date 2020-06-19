@@ -1,4 +1,5 @@
 @import '../../styles/variables.scss';
+@import '../../styles/themes.scss';
 
 $info-0: #f9ffff;
 $info-1: #b9dfe7;
@@ -17,526 +18,529 @@ $success-1: #a9c198;
 $success-2: #2c662d;
 
 .feeds-setting {
-  display: flex;
-  flex-direction: column;
-
-  button,
-  h3,
-  input {
-    all: unset;
-  }
-
-  h2 {
-    margin: 0;
-  }
-
-  button {
-    cursor: pointer;
-  }
-
-  input {
-    cursor: text;
-  }
-
-  .add-feed {
+  @include themify($themes) {
     display: flex;
-    position: sticky;
-    left: 0;
     flex-direction: column;
-    margin: 0.5rem 1rem;
-    border-radius: 3px;
-    box-shadow: $setting-card-shadow;
-    background-color: $item-background-color-dark;
+    background-color: t('header-background-color');
 
-    .add-feed-header {
-      display: flex;
-      padding: 0 0.5rem;
-      align-items: center;
-      height: 2rem;
-
-      button {
-        display: flex;
-        border-radius: 100%;
-        align-items: center;
-        justify-content: center;
-        margin: 0 0.5rem 0 0.25rem;
-      }
-      h2 {
-        font-size: 1.1rem;
-        user-select: none;
-        transition: all 0.3s;
-      }
+    button,
+    h3,
+    input {
+      all: unset;
     }
 
-    .add-feed-content {
-      padding: 0 10%;
-      padding-bottom: 1rem;
+    h2 {
+      margin: 0;
+    }
 
-      .add-feed-form {
-        border: 1px solid $button-color-light;
-        border-radius: 3px;
+    button {
+      cursor: pointer;
+    }
 
-        .add-feed-url-check {
+    input {
+      cursor: text;
+    }
+
+    .add-feed {
+      display: flex;
+      position: sticky;
+      left: 0;
+      flex-direction: column;
+      margin: 0.5rem 1rem;
+      border-radius: 3px;
+      box-shadow: t('setting-card-shadow');
+      background-color: t('item-background-color-dark');
+
+      .add-feed-header {
+        display: flex;
+        padding: 0 0.5rem;
+        align-items: center;
+        height: 2rem;
+
+        button {
           display: flex;
-          height: 2rem;
-
-          .url-input-wrap {
-            position: relative;
-            flex-grow: 1;
-
-            input.url-input {
-              all: unset;
-              width: calc(100% - 1rem);
-              height: calc(100% - 0.5rem);
-              padding: 0.25rem 0.5rem;
-            }
-
-            .icon-wrap {
-              display: flex;
-              position: absolute;
-              top: 0;
-              align-items: center;
-              justify-content: center;
-              background-color: rgba(200, 230, 200, 0.7);
-              color: green;
-              width: 100%;
-              height: 100%;
-              cursor: not-allowed;
-
-              svg {
-                margin-left: 2.5rem;
-              }
-            }
-          }
-          button.url-check-btn {
-            all: unset;
-            cursor: pointer;
-            background-color: $button-color-light;
-            padding: 0.25rem;
-            color: $button-color-dark;
-            width: 5rem;
-            text-align: center;
-          }
+          border-radius: 100%;
+          align-items: center;
+          justify-content: center;
+          margin: 0 0.5rem 0 0.25rem;
         }
+        h2 {
+          font-size: 1.1rem;
+          user-select: none;
+          transition: all 0.3s;
+        }
+      }
 
-        .add-feed-info {
-          display: flex;
-          border-top: 1px solid $button-color-light;
-          flex-direction: column;
-          padding: 1rem 0.5rem;
+      .add-feed-content {
+        padding: 0 10%;
+        padding-bottom: 1rem;
 
-          .add-feed-info-inputs-wrap {
+        .add-feed-form {
+          border: 1px solid t('button-color-light');
+          border-radius: 3px;
+
+          .add-feed-url-check {
             display: flex;
+            height: 2rem;
 
-            & > div {
-              display: flex;
+            .url-input-wrap {
+              position: relative;
               flex-grow: 1;
-              flex-direction: column;
 
-              h3 {
+              input.url-input {
                 all: unset;
-                font-size: 0.9rem;
-                font-weight: bold;
-              }
-            }
-
-            .title-info {
-              input {
-                all: unset;
-                cursor: text;
-                border: 1px solid $button-color-light;
-                border-radius: 5px;
+                width: calc(100% - 1rem);
+                height: calc(100% - 0.5rem);
                 padding: 0.25rem 0.5rem;
-                height: 1.5rem;
-                max-width: 12rem;
+              }
+
+              .icon-wrap {
+                display: flex;
+                position: absolute;
+                top: 0;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(200, 230, 200, 0.7);
+                color: green;
+                width: 100%;
+                height: 100%;
+                cursor: not-allowed;
+
+                svg {
+                  margin-left: 2.5rem;
+                }
               }
             }
+            button.url-check-btn {
+              all: unset;
+              cursor: pointer;
+              background-color: t('button-color-light');
+              padding: 0.25rem;
+              color: t('button-color-dark');
+              width: 5rem;
+              text-align: center;
+            }
+          }
 
-            .collection-info {
-              select {
-                height: 2.2rem;
-                max-width: 12rem;
-                background-color: $basic-color;
-                border: 1px solid $button-color-light;
+          .add-feed-info {
+            display: flex;
+            border-top: 1px solid t('button-color-light');
+            flex-direction: column;
+            padding: 1rem 0.5rem;
 
-                &:focus {
-                  outline: none;
+            .add-feed-info-inputs-wrap {
+              display: flex;
+
+              & > div {
+                display: flex;
+                flex-grow: 1;
+                flex-direction: column;
+
+                h3 {
+                  all: unset;
+                  font-size: 0.9rem;
+                  font-weight: bold;
+                }
+              }
+
+              .title-info {
+                input {
+                  all: unset;
+                  cursor: text;
+                  border: 1px solid t('button-color-light');
+                  border-radius: 5px;
+                  padding: 0.25rem 0.5rem;
+                  height: 1.5rem;
+                  max-width: 12rem;
+                }
+              }
+
+              .collection-info {
+                select {
+                  height: 2.2rem;
+                  max-width: 12rem;
+                  background-color: t('basic-color');
+                  border: 1px solid t('button-color-light');
+
+                  &:focus {
+                    outline: none;
+                  }
+                }
+              }
+            }
+            .add-button {
+              margin-top: 1rem;
+
+              button {
+                all: unset;
+                display: flex;
+                cursor: pointer;
+                align-items: center;
+
+                background-color: t('primary-color-light');
+                color: t('basic-color');
+                padding: 0.5rem 1rem;
+                border-radius: 3px;
+
+                svg {
+                  margin-right: 0.25rem;
                 }
               }
             }
           }
-          .add-button {
-            margin-top: 1rem;
-
-            button {
-              all: unset;
-              display: flex;
-              cursor: pointer;
-              align-items: center;
-
-              background-color: $primary-color-light;
-              color: $basic-color;
-              padding: 0.5rem 1rem;
-              border-radius: 3px;
-
-              svg {
-                margin-right: 0.25rem;
-              }
-            }
-          }
         }
-      }
 
-      .add-feed-message {
-        display: flex;
-        margin-top: 1rem;
-        border-radius: 3px;
-        border: 1px solid $info-1;
-        background-color: $info-0;
-        color: $info-2;
-
-        .icon-wrap {
+        .add-feed-message {
           display: flex;
-          padding-left: 0.25rem;
-          width: 1.5rem;
-          align-items: center;
-          justify-content: center;
-        }
-        .text-wrap {
-          padding: 0.5rem;
-        }
+          margin-top: 1rem;
+          border-radius: 3px;
+          border: 1px solid $info-1;
+          background-color: $info-0;
+          color: $info-2;
 
-        &.warn {
-          border: 1px solid $warn-1;
-          background-color: $warn-0;
-          color: $warn-2;
-        }
-        &.error {
-          border: 1px solid $error-1;
-          background-color: $error-0;
-          color: $error-2;
-        }
-        &.success {
-          border: 1px solid $success-1;
-          background-color: $success-0;
-          color: $success-2;
-        }
-      }
-    }
-  }
-
-  .feed-collection-list {
-    all: unset;
-    display: flex;
-    flex-direction: column;
-    margin: 0.5rem 1rem;
-    border-radius: 3px;
-    box-shadow: $setting-card-shadow;
-    background-color: $item-background-color-dark;
-
-    .feed-collection-drop-space {
-      display: none;
-      position: absolute;
-      top: -2px;
-      left: 0;
-      z-index: 3;
-      height: 100%;
-      width: 100%;
-      border-top: 3px solid transparent;
-    }
-
-    .feed-collection {
-      all: unset;
-      display: flex;
-      position: relative;
-      flex-direction: column;
-      padding: 0.5rem;
-      border-bottom: 1px solid $line-color-light;
-
-      .toggle-visiblility-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid $button-color-dark;
-        border-radius: 100%;
-        overflow: hidden;
-        padding: 1px;
-        margin-right: 0.5rem;
-        opacity: 0.7;
-
-        .inner {
-          $inner-size: 100%;
-          border-radius: 100%;
-          width: $inner-size;
-          height: $inner-size;
-          &.vislble {
-            background-color: $button-color-emphasis;
-          }
-          &.hidden {
-            background-color: transparent;
-          }
-        }
-
-        &.collection-visibility-hide {
-          pointer-events: none;
-          .inner {
-            display: none;
-          }
-        }
-      }
-
-      .feed-collection-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.25rem;
-        height: 2.2rem;
-
-        .left {
-          display: flex;
-          flex-grow: 1;
-          align-items: center;
-
-          .toggle-visiblility-btn {
-            $size: 1rem;
-            width: $size;
-            height: $size;
-            margin-bottom: 2px;
-          }
-
-          .collection-title-input,
-          .collection-title-text {
-            height: 1.5rem;
-            margin-top: 2px;
-            font-size: 1.1rem;
-          }
-          .collection-title-input {
-            flex-grow: 1;
-          }
-          .collection-title-text {
-            cursor: grab;
-            user-select: none;
-            font-weight: bold;
-          }
-        }
-
-        .right {
-          display: flex;
-          position: relative;
-          color: $basic-color;
-          font-size: 0.8rem;
-          align-items: center;
-
-          .expend {
+          .icon-wrap {
             display: flex;
-            position: absolute;
-            right: 0rem;
-            z-index: 1;
-            align-items: center;
-            background-color: $button-color-dark;
-            padding-right: 1.5rem;
-            height: 1.5rem;
-            border-radius: 1.5rem;
-            justify-content: space-around;
-            width: 0;
-            transition: width 0.1s;
-            overflow: hidden;
-
-            button {
-              display: flex;
-              align-items: center;
-            }
-            .edit-btn {
-              font-size: 0.7rem;
-            }
-
-            &.show {
-              padding-left: 0.25rem;
-              width: 3rem;
-            }
-          }
-
-          .cog {
-            display: flex;
-            z-index: 2;
+            padding-left: 0.25rem;
+            width: 1.5rem;
             align-items: center;
             justify-content: center;
-            height: 1.5rem;
-            width: 1.5rem;
-            border-radius: 100%;
-            background-color: $button-color-dark;
           }
-        }
-      }
-
-      .feed-collection-content {
-        all: unset;
-        display: flex;
-        flex-wrap: wrap;
-        min-height: 2.5rem;
-
-        .feed-wrap {
-          position: relative;
-
-          .drop-space {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-          }
-        }
-
-        .add-pin {
-          display: flex;
-          position: absolute;
-          top: 0;
-          left: -0.45rem;
-          z-index: 2;
-          pointer-events: none;
-          user-select: none;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          height: 2.2rem;
-          opacity: 0;
-
-          svg {
-            font-size: 0.9rem;
-          }
-          .line {
-            min-height: 2rem;
-            background-color: black;
-            width: 2px;
-            border-bottom-left-radius: 2px;
-            border-bottom-right-radius: 2px;
-          }
-        }
-
-        .feed-item {
-          display: flex;
-          position: relative;
-          z-index: 1;
-          cursor: grab;
-          border-radius: 3px;
-          border: 1px solid rgba(0, 0, 0, 0.1);
-          margin: 0.25rem 0.5rem;
-          background-color: $item-background-color-light;
-          align-items: center;
-          width: 100%;
-          height: 100%;
-          padding: 0.25rem;
-          height: 1.5rem;
-          width: 10rem;
-          opacity: 1;
-          transition: 0.2s;
-
-          &.collection-visibility-hide {
-            opacity: 0.4;
+          .text-wrap {
+            padding: 0.5rem;
           }
 
-          .toggle-visiblility-btn {
-            height: 0.8rem;
-            width: 0.8rem;
-            min-width: 0.8rem;
-            min-height: 0.8rem;
-            // margin-bottom: 1px;
+          &.warn {
+            border: 1px solid $warn-1;
+            background-color: $warn-0;
+            color: $warn-2;
           }
-
-          h3.title-text {
-            display: block;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            margin-top: 1px;
-          }
-
-          a.title-text-link,
-          div.title-input-wrap {
-            flex-grow: 1;
-            margin-right: 0.5rem;
-            max-width: 9rem;
-            overflow: hidden;
-          }
-
-          .btns-wrap {
-            display: flex;
-            position: absolute;
-            right: -0.5rem;
-            flex-direction: column;
-
-            .edit-btn,
-            .delete-btn {
-              display: flex;
-              width: 1rem;
-              height: 1rem;
-              border-radius: 100%;
-              background-color: $button-color-dark;
-              align-items: center;
-              justify-content: center;
-              color: $basic-color;
-              transform: scale(0);
-              transition: 0;
-            }
-            .edit-btn {
-              font-size: 0.5rem;
-              margin-bottom: 0.2rem;
-            }
-            .delete-btn {
-              font-size: 0.7rem;
-            }
-
-            &.show {
-              .edit-btn,
-              .delete-btn {
-                transform: scale(1);
-              }
-            }
-
-            &.is-transition {
-              .edit-btn,
-              .delete-btn {
-                transition: 0.15s;
-              }
-            }
-          }
-
-          &.over-failed {
-            background-color: $error-0;
+          &.error {
             border: 1px solid $error-1;
-
-            .error-feed-icon-wrap {
-              display: flex;
-              font-size: 0.9rem;
-              margin-right: 0.25rem;
-              align-items: center;
-              color: $error-2;
-            }
+            background-color: $error-0;
+            color: $error-2;
+          }
+          &.success {
+            border: 1px solid $success-1;
+            background-color: $success-0;
+            color: $success-2;
           }
         }
       }
     }
 
-    .add-collection {
+    .feed-collection-list {
+      all: unset;
       display: flex;
-      position: relative;
-      flex-grow: 1;
-      padding: 1.5rem 0;
-      justify-content: center;
-      align-items: flex-start;
+      flex-direction: column;
+      margin: 0.5rem 1rem;
+      border-radius: 3px;
+      box-shadow: t('setting-card-shadow');
+      background-color: t('item-background-color-dark');
 
-      button {
-        color: $button-color-light;
-        transition: 0.2s;
+      .feed-collection-drop-space {
+        display: none;
+        position: absolute;
+        top: -2px;
+        left: 0;
+        z-index: 3;
+        height: 100%;
+        width: 100%;
+        border-top: 3px solid transparent;
+      }
 
-        svg {
-          font-size: 1.5rem;
+      .feed-collection {
+        all: unset;
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        padding: 0.5rem;
+        border-bottom: 1px solid t('line-color-light');
+
+        .toggle-visiblility-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid t('button-color-dark');
+          border-radius: 100%;
+          overflow: hidden;
+          padding: 1px;
+          margin-right: 0.5rem;
+          opacity: 0.7;
+
+          .inner {
+            $inner-size: 100%;
+            border-radius: 100%;
+            width: $inner-size;
+            height: $inner-size;
+            &.vislble {
+              background-color: t('button-color-emphasis');
+            }
+            &.hidden {
+              background-color: transparent;
+            }
+          }
+
+          &.collection-visibility-hide {
+            pointer-events: none;
+            .inner {
+              display: none;
+            }
+          }
         }
 
-        &:hover {
-          color: $button-color-dark;
+        .feed-collection-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 0.25rem;
+          height: 2.2rem;
+
+          .left {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+
+            .toggle-visiblility-btn {
+              $size: 1rem;
+              width: $size;
+              height: $size;
+              margin-bottom: 2px;
+            }
+
+            .collection-title-input,
+            .collection-title-text {
+              height: 1.5rem;
+              margin-top: 2px;
+              font-size: 1.1rem;
+            }
+            .collection-title-input {
+              flex-grow: 1;
+            }
+            .collection-title-text {
+              cursor: grab;
+              user-select: none;
+              font-weight: bold;
+            }
+          }
+
+          .right {
+            display: flex;
+            position: relative;
+            color: t('basic-color');
+            font-size: 0.8rem;
+            align-items: center;
+
+            .expend {
+              display: flex;
+              position: absolute;
+              right: 0rem;
+              z-index: 1;
+              align-items: center;
+              background-color: t('button-color-dark');
+              padding-right: 1.5rem;
+              height: 1.5rem;
+              border-radius: 1.5rem;
+              justify-content: space-around;
+              width: 0;
+              transition: width 0.1s;
+              overflow: hidden;
+
+              button {
+                display: flex;
+                align-items: center;
+              }
+              .edit-btn {
+                font-size: 0.7rem;
+              }
+
+              &.show {
+                padding-left: 0.25rem;
+                width: 3rem;
+              }
+            }
+
+            .cog {
+              display: flex;
+              z-index: 2;
+              align-items: center;
+              justify-content: center;
+              height: 1.5rem;
+              width: 1.5rem;
+              border-radius: 100%;
+              background-color: t('button-color-dark');
+            }
+          }
+        }
+
+        .feed-collection-content {
+          all: unset;
+          display: flex;
+          flex-wrap: wrap;
+          min-height: 2.5rem;
+
+          .feed-wrap {
+            position: relative;
+
+            .drop-space {
+              display: none;
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 2;
+            }
+          }
+
+          .add-pin {
+            display: flex;
+            position: absolute;
+            top: 0;
+            left: -0.45rem;
+            z-index: 2;
+            pointer-events: none;
+            user-select: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 2.2rem;
+            opacity: 0;
+
+            svg {
+              font-size: 0.9rem;
+            }
+            .line {
+              min-height: 2rem;
+              background-color: black;
+              width: 2px;
+              border-bottom-left-radius: 2px;
+              border-bottom-right-radius: 2px;
+            }
+          }
+
+          .feed-item {
+            display: flex;
+            position: relative;
+            z-index: 1;
+            cursor: grab;
+            border-radius: 3px;
+            border: 1px solid t('line-color-light');
+            margin: 0.25rem 0.5rem;
+            background-color: t('item-background-color-light');
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 0.25rem;
+            height: 1.5rem;
+            width: 10rem;
+            opacity: 1;
+            transition: 0.2s;
+
+            &.collection-visibility-hide {
+              opacity: 0.4;
+            }
+
+            .toggle-visiblility-btn {
+              height: 0.8rem;
+              width: 0.8rem;
+              min-width: 0.8rem;
+              min-height: 0.8rem;
+              // margin-bottom: 1px;
+            }
+
+            h3.title-text {
+              display: block;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              margin-top: 1px;
+            }
+
+            a.title-text-link,
+            div.title-input-wrap {
+              flex-grow: 1;
+              margin-right: 0.5rem;
+              max-width: 9rem;
+              overflow: hidden;
+            }
+
+            .btns-wrap {
+              display: flex;
+              position: absolute;
+              right: -0.5rem;
+              flex-direction: column;
+
+              .edit-btn,
+              .delete-btn {
+                display: flex;
+                width: 1rem;
+                height: 1rem;
+                border-radius: 100%;
+                background-color: t('button-color-dark');
+                align-items: center;
+                justify-content: center;
+                color: t('basic-color');
+                transform: scale(0);
+                transition: 0;
+              }
+              .edit-btn {
+                font-size: 0.5rem;
+                margin-bottom: 0.2rem;
+              }
+              .delete-btn {
+                font-size: 0.7rem;
+              }
+
+              &.show {
+                .edit-btn,
+                .delete-btn {
+                  transform: scale(1);
+                }
+              }
+
+              &.is-transition {
+                .edit-btn,
+                .delete-btn {
+                  transition: 0.15s;
+                }
+              }
+            }
+
+            &.over-failed {
+              background-color: $error-0;
+              border: 1px solid $error-1;
+
+              .error-feed-icon-wrap {
+                display: flex;
+                font-size: 0.9rem;
+                margin-right: 0.25rem;
+                align-items: center;
+                color: $error-2;
+              }
+            }
+          }
+        }
+      }
+
+      .add-collection {
+        display: flex;
+        position: relative;
+        flex-grow: 1;
+        padding: 1.5rem 0;
+        justify-content: center;
+        align-items: flex-start;
+
+        button {
+          color: t('button-color-light');
+          transition: 0.2s;
+
+          svg {
+            font-size: 1.5rem;
+          }
+
+          &:hover {
+            color: t('button-color-dark');
+          }
         }
       }
     }

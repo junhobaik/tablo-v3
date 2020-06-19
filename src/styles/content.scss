@@ -1,20 +1,23 @@
-@import '../styles//variables.scss';
+@import '../styles/variables.scss';
+@import '../styles/themes.scss';
 
 #Feeds,
 #Tabs {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: $app-background-color;
+  @include themify($themes) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: t('app-background-color');
 
-  .feeds-content,
-  .tabs-content {
-    flex-grow: 1;
-  }
-  .feeds-content {
-    border-left: 1px solid rgba(0, 0, 0, 0.1);
-  }
-  .tabs-content {
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    .feeds-content,
+    .tabs-content {
+      flex-grow: 1;
+    }
+    .feeds-content {
+      border-left: 1px solid t('line-color-light');
+    }
+    .tabs-content {
+      border-right: 1px solid t('line-color-light');
+    }
   }
 }

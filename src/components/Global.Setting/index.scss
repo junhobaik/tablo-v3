@@ -1,96 +1,99 @@
 @import '../../styles/variables.scss';
+@import '../../styles/themes.scss';
 
 #Setting {
-  display: flex;
-  flex-direction: column;
-  max-width: 50rem;
-  background-color: $app-background-color;
-
-  height: 100%;
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    padding: 0;
-    margin: 0;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-  h2 {
-    font-size: 1.4rem;
-  }
-  h3 {
-    font-size: 1.2rem;
-  }
-  h4 {
-    font-size: 1rem;
-  }
-
-  & > div {
-    border-bottom: 1px solid $line-color-light;
-    padding: 0.5rem 1rem;
-  }
-
-  .radio-wrap {
-    display: flex;
-    align-items: center;
-  }
-
-  .open-link {
+  @include themify($themes) {
     display: flex;
     flex-direction: column;
+    max-width: 50rem;
+    background-color: t('app-background-color');
 
-    .open-link-inner-wrap {
+    height: 100%;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      padding: 0;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+    h2 {
+      font-size: 1.4rem;
+    }
+    h3 {
+      font-size: 1.2rem;
+    }
+    h4 {
+      font-size: 1rem;
+    }
+
+    & > div {
+      border-bottom: 1px solid t('line-color-light');
+      padding: 0.5rem 1rem;
+    }
+
+    .radio-wrap {
       display: flex;
-      margin-top: 0.5rem;
+      align-items: center;
+    }
 
-      & > div {
-        flex-grow: 1;
+    .open-link {
+      display: flex;
+      flex-direction: column;
+
+      .open-link-inner-wrap {
+        display: flex;
+        margin-top: 0.5rem;
 
         & > div {
-          margin-left: 0.5rem;
-        }
-      }
-    }
-  }
-  .posts {
-    .posts-inner-wrap {
-      & > div {
-        display: flex;
-        align-items: center;
+          flex-grow: 1;
 
-        h3 {
-          margin: 0 0.5rem;
-        }
-
-        button {
-          all: unset;
-          cursor: pointer;
-          margin-left: 0.25rem;
-          border: 1px solid $button-color-dark;
-          border-radius: 3px;
-          padding: 0 0.25rem;
-          font-size: 0.8rem;
-          min-height: 1.2rem;
-          margin-top: 1px;
-          transition: 0.2s;
-
-          &:hover {
-            background-color: $button-color-light;
+          & > div {
+            margin-left: 0.5rem;
           }
         }
       }
     }
-  }
+    .posts {
+      .posts-inner-wrap {
+        & > div {
+          display: flex;
+          align-items: center;
 
-  .last {
-    display: flex;
-    border: none;
-    flex-grow: 1;
-    align-items: flex-end;
-    justify-content: flex-end;
+          h3 {
+            margin: 0 0.5rem;
+          }
+
+          button {
+            all: unset;
+            cursor: pointer;
+            margin-left: 0.25rem;
+            border: 1px solid t('button-color-dark');
+            border-radius: 3px;
+            padding: 0 0.25rem;
+            font-size: 0.8rem;
+            min-height: 1.2rem;
+            margin-top: 1px;
+            transition: 0.2s;
+
+            &:hover {
+              background-color: t('button-color-light');
+            }
+          }
+        }
+      }
+    }
+
+    .last {
+      display: flex;
+      border: none;
+      flex-grow: 1;
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
   }
 }

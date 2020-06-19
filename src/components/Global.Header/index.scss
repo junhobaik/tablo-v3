@@ -1,41 +1,45 @@
 @import '../../styles/variables.scss';
+@import '../../styles/themes.scss';
 
 #Header {
-  display: flex;
-  height: $header-height;
-  z-index: 2;
-  overflow: hidden;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 0.5rem;
-
-  .title-wrap {
+  @include themify($themes) {
     display: flex;
+    height: $header-height;
+    z-index: 2;
+    overflow: hidden;
     align-items: center;
-    height: 100%;
+    justify-content: space-between;
+    padding: 0 0.5rem;
+    background-color: t('header-background-color');
 
-    h1 {
-      font-size: 1rem;
-      user-select: none;
-      font-weight: 900;
-      margin: 0;
+    .title-wrap {
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+      h1 {
+        font-size: 1rem;
+        user-select: none;
+        font-weight: 900;
+        margin: 0;
+      }
+      span {
+        margin-left: 0.25rem;
+        margin-top: 0.18rem;
+        font-size: 0.6rem;
+        opacity: 0.3;
+      }
     }
-    span {
-      margin-left: 0.25rem;
-      margin-top: 0.18rem;
-      font-size: 0.6rem;
-      opacity: 0.3;
-    }
-  }
 
-  button {
-    all: unset;
-    cursor: pointer;
-    color: $button-color-dark;
-    transition: 0.2s;
+    button {
+      all: unset;
+      cursor: pointer;
+      color: t('button-color-dark');
+      transition: 0.2s;
 
-    &:hover {
-      color: $button-color-emphasis;
+      &:hover {
+        color: t('button-color-emphasis');
+      }
     }
   }
 }
