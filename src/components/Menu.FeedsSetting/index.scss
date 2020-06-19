@@ -514,7 +514,7 @@ $success-2: #2c662d;
             }
 
             &.over-failed {
-              background-color: $error-0;
+              // background-color: $error-0;
               border: 1px solid $error-1;
 
               .error-feed-icon-wrap {
