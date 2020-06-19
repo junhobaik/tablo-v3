@@ -1,5 +1,3 @@
-import { TabsState } from './reducer';
-
 export const ADD_TAB_ITEM = 'tabs/ADD_TAB_ITEM';
 export const DELETE_TAB_ITEM = 'tabs/DELETE_TAB_ITEM';
 export const DELETE_COLLECTION = 'tabs/DELETE_COLLECTION';
@@ -20,25 +18,32 @@ export interface CollectionItem {
   title: string;
   folded: boolean;
 }
-export interface TabItem {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-  collection: string;
-}
-
-export interface AddTabItem {
-  index: number | null;
-  title: string;
-  description: string;
-  url: string;
-  collection: string;
-}
 
 export interface SimpleItem {
   title: string;
   url: string;
+}
+
+export interface TabItemForAdd {
+  index: number | null;
+  title: string;
+  url: string;
+  description: string;
+  collection: string;
+}
+
+export interface TabItem {
+  id: string;
+  url: string;
+  title: string;
+  collection: string;
+  description: string;
+}
+
+export interface TabsState {
+  tabs: TabItem[];
+  collections: CollectionItem[];
+  cart: SimpleItem[];
 }
 
 // Action Types
@@ -48,7 +53,7 @@ interface AddCollectionAction {
 }
 interface AddTabItemAction {
   type: typeof ADD_TAB_ITEM;
-  state: AddTabItem;
+  state: TabItemForAdd;
 }
 
 interface DeleteTabItemAction {
@@ -66,13 +71,13 @@ interface SetFoldedCollectionAction {
   id: string;
 }
 
-interface EditTabItemTitle {
+interface EditTabItemTitleAction {
   type: typeof EDIT_TAB_ITEM_TITLE;
   id: string;
   title: string;
 }
 
-interface EditTabItemDescription {
+interface EditTabItemDescriptionAction {
   type: typeof EDIT_TAB_ITEM_DESCRIPTION;
   id: string;
   description: string;
@@ -88,7 +93,7 @@ interface DeleteCollectionAction {
   collectionID: string;
 }
 
-interface EditCollectionTitle {
+interface EditCollectionTitleAction {
   type: typeof EDIT_COLLECTION_TITLE;
   title: string;
   id: string;
@@ -121,14 +126,14 @@ export type TabsActionTypes =
   | EmptyCartAction
   | MoveTabItemAction
   | MoveCollectionAction
-  | EditCollectionTitle
+  | EditCollectionTitleAction
   | DeleteCollectionAction
   | AddTabItemAction
   | DeleteTabItemAction
   | ResetTabsAction
   | SetFoldedCollectionAction
-  | EditTabItemTitle
-  | EditTabItemDescription
+  | EditTabItemTitleAction
+  | EditTabItemDescriptionAction
   | AddCollectionAction
   | TabsArchiveAction;
 
@@ -136,7 +141,7 @@ const addCollection = () => {
   return { type: ADD_COLLECTION };
 };
 
-const addTabItem = (state: AddTabItem) => {
+const addTabItem = (state: TabItemForAdd) => {
   return { type: ADD_TAB_ITEM, state };
 };
 

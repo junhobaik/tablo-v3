@@ -19,7 +19,7 @@ import { Collection, FeedForAdd } from "../../modules/feeds/actions";
 import {
   CollectionItem,
   SimpleItem,
-  AddTabItem,
+  TabItemForAdd,
 } from "../../modules/tabs/actions";
 import utils from "../utils";
 
@@ -125,7 +125,7 @@ const Popup = () => {
   const addToState = (
     type: "feeds" | "tabs",
     collectionID: string,
-    data: SimpleItem | AddTabItem | FeedForAdd
+    data: SimpleItem | TabItemForAdd | FeedForAdd
   ) => {
     setState((prev: RootState | undefined) => {
       if (prev) {
@@ -143,7 +143,7 @@ const Popup = () => {
             }
 
             case "new": {
-              const tabData = data as AddTabItem;
+              const tabData = data as TabItemForAdd;
               const newCollectionID = uuidv4();
               return {
                 ...prev,
@@ -174,7 +174,7 @@ const Popup = () => {
             }
 
             default: {
-              const tabData = data as AddTabItem;
+              const tabData = data as TabItemForAdd;
               return {
                 ...prev,
                 tabs: {

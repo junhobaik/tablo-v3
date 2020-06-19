@@ -1,8 +1,6 @@
 import {
-  TabItem,
-  CollectionItem,
-  SimpleItem,
   TabsActionTypes,
+  TabsState,
   ADD_COLLECTION,
   ADD_TAB_ITEM,
   RESET_TABS,
@@ -21,12 +19,6 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import moment from 'moment';
-
-export interface TabsState {
-  tabs: TabItem[];
-  collections: CollectionItem[];
-  cart: SimpleItem[];
-}
 
 const initialState: TabsState = {
   collections: [
