@@ -1,20 +1,20 @@
-export const RESET_FEED = "feeds/RESET_FEED";
-export const SET_ISCHANGED = "feeds/SET_ISCHANGED";
-export const TOGGLE_VISIBILITY = "feeds/TOGGLE_VISIBILITY";
+export const RESET_FEED = 'feeds/RESET_FEED';
+export const SET_ISCHANGED = 'feeds/SET_ISCHANGED';
+export const TOGGLE_VISIBILITY = 'feeds/TOGGLE_VISIBILITY';
 
-export const ADD_FEED = "feeds/ADD_FEED";
-export const FAILD_LOAD_FEED = "feeds/FAILD_LOAD_FEED";
-export const EDIT_FEED_TITEL = "feeds/EDIT_FEED_TITEL";
-export const DELETE_FEED = "feeds/DELETE_FEED";
-export const MOVE_FEED_ITEM = "feeds/MOVE_FEED_ITEM";
-export const READ_POST = "feeds/READ_POST";
+export const ADD_FEED = 'feeds/ADD_FEED';
+export const FAILD_LOAD_FEED = 'feeds/FAILD_LOAD_FEED';
+export const EDIT_FEED_TITEL = 'feeds/EDIT_FEED_TITEL';
+export const DELETE_FEED = 'feeds/DELETE_FEED';
+export const MOVE_FEED_ITEM = 'feeds/MOVE_FEED_ITEM';
+export const READ_POST = 'feeds/READ_POST';
 
-export const ADD_COLLECTION = "feeds/ADD_COLLECTION";
-export const DELETE_COLLECTION = "feeds/DELETE_COLLECTION";
-export const EDIT_COLLECTION_TITLE = "feeds/EDIT_COLLECTION_TITLE";
-export const MOVE_FEED_COLLECTION = "feeds/MOVE_FEED_COLLECTION";
+export const ADD_COLLECTION = 'feeds/ADD_COLLECTION';
+export const DELETE_COLLECTION = 'feeds/DELETE_COLLECTION';
+export const EDIT_COLLECTION_TITLE = 'feeds/EDIT_COLLECTION_TITLE';
+export const MOVE_FEED_COLLECTION = 'feeds/MOVE_FEED_COLLECTION';
 
-export type FeedTargetType = "feed" | "collection";
+export type FeedTargetType = 'feed' | 'collection';
 export interface FeedForAdd {
   title: string;
   siteUrl: string;
@@ -108,10 +108,10 @@ interface DeleteFeedAction {
   id: string;
 }
 
-interface MoveFeedITemAction {
+interface MoveFeedItemAction {
   type: typeof MOVE_FEED_ITEM;
   dropCollectionID: string;
-  dragFeedID: string;
+  dragItemID: string;
   dropIndex: number;
 }
 
@@ -130,7 +130,7 @@ interface ReadPostAction {
 export type FeedActionType =
   | ReadPostAction
   | MoveFeedCollectionAction
-  | MoveFeedITemAction
+  | MoveFeedItemAction
   | DeleteFeedAction
   | EditFeedTitleAction
   | ToggleVisibilityAction
@@ -182,12 +182,8 @@ const deleteFeed = (id: string) => {
   return { type: DELETE_FEED, id };
 };
 
-const moveFeedItem = (
-  dropCollectionID: string,
-  dragFeedID: string,
-  dropIndex: number
-) => {
-  return { type: MOVE_FEED_ITEM, dropCollectionID, dragFeedID, dropIndex };
+const moveFeedItem = (dropCollectionID: string, dragItemID: string, dropIndex: number) => {
+  return { type: MOVE_FEED_ITEM, dropCollectionID, dragItemID, dropIndex };
 };
 
 const moveFeedCollection = (dragCollectionID: string, dropIndex: number) => {

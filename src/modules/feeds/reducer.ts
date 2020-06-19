@@ -14,93 +14,48 @@ import {
   MOVE_FEED_COLLECTION,
   MOVE_FEED_ITEM,
   READ_POST,
-} from "./actions";
-import _ from "lodash";
-import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
+} from './actions';
+import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
 
 const initialState: FeedsState = {
   loaded: false,
   isChanged: false,
   feeds: [
     {
-      id: "ff0",
-      title: "Dev.White (err)",
-      siteUrl: "https://junhobaik.github.io",
-      feedUrl: "https://junhobaik.github.io/rsss",
-      collectionID: "fc1",
+      id: 'ff0',
+      title: 'Dev.White (err)',
+      siteUrl: 'https://junhobaik.github.io',
+      feedUrl: 'https://junhobaik.github.io/rsss',
+      collectionID: 'fc1',
       faildCount: 0,
       visibility: true,
     },
     {
-      id: "ff1",
-      title: "Dev.White",
-      siteUrl: "https://junhobaik.github.io",
-      feedUrl: "https://junhobaik.github.io/rss",
-      collectionID: "fc1",
-      faildCount: 0,
-      visibility: true,
-    },
-    {
-      id: "ff2",
-      title: "Kakao Tech",
-      siteUrl: "https://tech.kakao.com",
-      feedUrl: "https://tech.kakao.com/feed",
-      collectionID: "fc2",
-      faildCount: 0,
-      visibility: true,
-    },
-    {
-      id: "ff3",
-      title: "D2 Naver",
-      siteUrl: "https://d2.naver.com",
-      feedUrl: "https://d2.naver.com/d2.atom",
-      collectionID: "fc2",
-      faildCount: 0,
-      visibility: true,
-    },
-    {
-      id: "ff4",
-      title: "Bloter",
-      siteUrl: "http://www.bloter.net",
-      feedUrl: "http://www.bloter.net/feed",
-      collectionID: "fc2",
+      id: 'ff1',
+      title: 'Dev.White',
+      siteUrl: 'https://junhobaik.github.io',
+      feedUrl: 'https://junhobaik.github.io/rss',
+      collectionID: 'fc1',
       faildCount: 0,
       visibility: true,
     },
   ],
   collections: [
     {
-      id: "fc1",
-      title: "collection 1",
-      visibility: true,
-    },
-    {
-      id: "fc2",
-      title: "collection 2",
-      visibility: true,
-    },
-    {
-      id: "fc3",
-      title: "collection 3",
-      visibility: false,
-    },
-    {
-      id: "fc4",
-      title: "collection 4",
+      id: 'fc1',
+      title: 'Inbox',
       visibility: true,
     },
   ],
   readPosts: [],
 };
 
-const feedsReducer = (
-  state = initialState,
-  action: FeedActionType
-): FeedsState => {
+const feedsReducer = (state = initialState, action: FeedActionType): FeedsState => {
   switch (action.type) {
     case RESET_FEED: {
-      sessionStorage.setItem("tablo3_feeds", "true");
+      sessionStorage.setItem('tablo3_feeds', 'true');
       return { ...action.state, loaded: true };
     }
 
@@ -115,7 +70,7 @@ const feedsReducer = (
           ...state.collections,
           {
             id: uuidv4(),
-            title: `Collection [${moment().format("YYMMDD HH:mm:ss")}]`,
+            title: `Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
             visibility: true,
           },
         ],
@@ -124,7 +79,7 @@ const feedsReducer = (
 
     case ADD_FEED: {
       const { title, siteUrl, feedUrl, collectionID } = action.payload;
-      const findedFeed = _.find(state.feeds, ["feedUrl", feedUrl]);
+      const findedFeed = _.find(state.feeds, ['feedUrl', feedUrl]);
       if (findedFeed) return state;
 
       if (collectionID) {
@@ -165,7 +120,7 @@ const feedsReducer = (
           ...state.collections,
           {
             id: newCollectionId,
-            title: `Collection [${moment().format("YYMMDD HH:mm:ss")}]`,
+            title: `Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
             visibility: true,
           },
         ],
@@ -175,7 +130,7 @@ const feedsReducer = (
 
     case EDIT_FEED_TITEL: {
       const newState = _.cloneDeep(state);
-      const index = _.findIndex(newState.feeds, ["id", action.id]);
+      const index = _.findIndex(newState.feeds, ['id', action.id]);
       newState.feeds[index].title = action.title;
       return newState;
     }
@@ -192,7 +147,7 @@ const feedsReducer = (
 
     case FAILD_LOAD_FEED: {
       const newState = _.cloneDeep(state);
-      const findedIndex = _.findIndex(newState.feeds, ["id", action.id]);
+      const findedIndex = _.findIndex(newState.feeds, ['id', action.id]);
 
       if (action.count !== undefined) {
         newState.feeds[findedIndex].faildCount = action.count;
@@ -219,7 +174,7 @@ const feedsReducer = (
 
     case EDIT_COLLECTION_TITLE: {
       const newState = _.cloneDeep(state);
-      const index = _.findIndex(newState.collections, ["id", action.id]);
+      const index = _.findIndex(newState.collections, ['id', action.id]);
       newState.collections[index].title = action.title;
       return newState;
     }
@@ -227,12 +182,12 @@ const feedsReducer = (
     case TOGGLE_VISIBILITY: {
       const newState = _.cloneDeep(state);
 
-      if (action.targetType === "feed") {
-        const index = _.findIndex(newState.feeds, ["id", action.id]);
+      if (action.targetType === 'feed') {
+        const index = _.findIndex(newState.feeds, ['id', action.id]);
         const old = newState.feeds[index].visibility;
         newState.feeds[index].visibility = !old;
       } else {
-        const index = _.findIndex(newState.collections, ["id", action.id]);
+        const index = _.findIndex(newState.collections, ['id', action.id]);
         const old = newState.collections[index].visibility;
         newState.collections[index].visibility = !old;
       }
@@ -242,24 +197,25 @@ const feedsReducer = (
 
     case MOVE_FEED_ITEM: {
       const newState = _.cloneDeep(state);
-      const { dropCollectionID, dragFeedID, dropIndex } = action;
+      const { dropCollectionID, dragItemID, dropIndex } = action;
       const { feeds } = newState;
-
-      const item = _.find(feeds, ["id", dragFeedID]);
-      _.remove(feeds, ["id", dragFeedID]);
-
-      const filteredFeeds = _.filter(feeds, ["collectionID", dropCollectionID]);
-      _.remove(feeds, ["collectionID", dropCollectionID]);
-
-      console.log(dropCollectionID, dragFeedID, dropIndex, item, filteredFeeds);
-
+      let targetIndex = dropIndex;
+      const item = _.find(feeds, ['id', dragItemID]);
       if (item) {
-        item.collectionID = dropCollectionID;
+        const filteredFeed = _.filter(feeds, ['collectionID', dropCollectionID]);
+        if (item.collectionID === dropCollectionID) {
+          if (_.findIndex(filteredFeed, ['id', dragItemID]) < dropIndex) targetIndex -= 1;
+          _.remove(filteredFeed, ['id', dragItemID]);
+        } else {
+          item.collectionID = dropCollectionID;
+        }
+        _.remove(feeds, ['id', dragItemID]);
+        _.remove(feeds, ['collectionID', dropCollectionID]);
         newState.feeds = [
           ...feeds,
-          ..._.slice(filteredFeeds, 0, dropIndex),
+          ..._.slice(filteredFeed, 0, targetIndex),
           item,
-          ..._.slice(filteredFeeds, dropIndex, filteredFeeds.length),
+          ..._.slice(filteredFeed, targetIndex),
         ];
       }
       return newState;
@@ -269,23 +225,17 @@ const feedsReducer = (
       const newState = _.cloneDeep(state);
       const { dragCollectionID, dropIndex } = action;
 
-      const findedIndex = _.findIndex(newState.collections, [
-        "id",
-        dragCollectionID,
-      ]);
+      const findedIndex = _.findIndex(newState.collections, ['id', dragCollectionID]);
       const findedCollection = _.cloneDeep(newState.collections[findedIndex]);
 
-      _.remove(newState.collections, ["id", dragCollectionID]);
+      _.remove(newState.collections, ['id', dragCollectionID]);
+
       const targetIndex = dropIndex > findedIndex ? dropIndex - 1 : dropIndex;
 
       newState.collections = [
         ..._.slice(newState.collections, 0, targetIndex),
         findedCollection,
-        ..._.slice(
-          newState.collections,
-          targetIndex,
-          newState.collections.length
-        ),
+        ..._.slice(newState.collections, targetIndex, newState.collections.length),
       ];
       return newState;
     }

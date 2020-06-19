@@ -2,7 +2,7 @@ import {
   TabItem,
   CollectionItem,
   SimpleItem,
-  TabActionTypes,
+  TabsActionTypes,
   ADD_COLLECTION,
   ADD_TAB_ITEM,
   RESET_TABS,
@@ -17,10 +17,10 @@ import {
   MOVE_TAB_ITEM,
   EMPTY_CART,
   DELETE_CART_ITEM,
-} from "./actions";
-import { v4 as uuidv4 } from "uuid";
-import _ from "lodash";
-import moment from "moment";
+} from './actions';
+import { v4 as uuidv4 } from 'uuid';
+import _ from 'lodash';
+import moment from 'moment';
 
 export interface TabsState {
   tabs: TabItem[];
@@ -31,41 +31,41 @@ export interface TabsState {
 const initialState: TabsState = {
   collections: [
     {
-      id: "c1",
-      title: "Collection 1",
+      id: 'c1',
+      title: 'Collection 1',
       folded: false,
     },
     {
-      id: "c2",
-      title: "Development",
+      id: 'c2',
+      title: 'Development',
       folded: false,
     },
   ],
   tabs: [
     {
-      id: "t1",
-      title: "Google",
-      description: "Google Search Page",
-      url: "https://www.google.com/",
-      collection: "c1",
+      id: 't1',
+      title: 'Google',
+      description: 'Google Search Page',
+      url: 'https://www.google.com/',
+      collection: 'c1',
     },
     {
-      id: "t2",
-      title: "My Blog",
-      description: "Dev.White Blog",
-      url: "https://junhobaik.github.io/",
-      collection: "c2",
+      id: 't2',
+      title: 'My Blog',
+      description: 'Dev.White Blog',
+      url: 'https://junhobaik.github.io/',
+      collection: 'c2',
     },
   ],
   cart: [
     {
-      title: "Dev.White",
-      url: "https://junhobaik.github.io/",
+      title: 'Dev.White',
+      url: 'https://junhobaik.github.io/',
     },
   ],
 };
 
-function tabReducer(state = initialState, action: TabActionTypes): TabsState {
+function tabReducer(state = initialState, action: TabsActionTypes): TabsState {
   switch (action.type) {
     case ADD_COLLECTION: {
       return {
@@ -74,7 +74,7 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
           ...state.collections,
           {
             id: uuidv4(),
-            title: `Collection [${moment().format("YYMMDD HH:mm:ss")}]`,
+            title: `Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
             folded: false,
           },
         ],
@@ -93,11 +93,7 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
       if (index !== null) {
         return {
           ...state,
-          tabs: [
-            ..._.slice(state.tabs, 0, index),
-            newItem,
-            ..._.slice(state.tabs, index, state.tabs.length),
-          ],
+          tabs: [..._.slice(state.tabs, 0, index), newItem, ..._.slice(state.tabs, index, state.tabs.length)],
         };
       }
 
@@ -146,7 +142,7 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
         newItems.push({
           id: uuidv4(),
           title: v.title,
-          description: "",
+          description: '',
           url: v.url,
           collection: collectionID,
         });
@@ -158,7 +154,7 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
           ...state.collections,
           {
             id: collectionID,
-            title: `Archive [${moment().format("YYMMDD HH:mm:ss")}]`,
+            title: `Archive [${moment().format('YYMMDD HH:mm:ss')}]`,
             folded: false,
           },
         ],
@@ -186,7 +182,7 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
     case EDIT_COLLECTION_TITLE: {
       const newState = _.cloneDeep(state);
 
-      const index = _.findIndex(newState.collections, ["id", action.id]);
+      const index = _.findIndex(newState.collections, ['id', action.id]);
       newState.collections[index].title = action.title;
 
       return newState;
@@ -194,39 +190,35 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
 
     case MOVE_COLLECTION: {
       const newState = _.cloneDeep(state);
-      const index = _.findIndex(newState.collections, ["id", action.id]);
+      const index = _.findIndex(newState.collections, ['id', action.id]);
       const temp = _.cloneDeep(newState.collections[index]);
-      _.remove(newState.collections, ["id", action.id]);
-      const targetIndex =
-        action.index > index ? action.index - 1 : action.index;
+      _.remove(newState.collections, ['id', action.id]);
+      const targetIndex = action.index > index ? action.index - 1 : action.index;
       newState.collections = [
         ..._.slice(newState.collections, 0, targetIndex),
         temp,
-        ..._.slice(
-          newState.collections,
-          targetIndex,
-          newState.collections.length
-        ),
+        ..._.slice(newState.collections, targetIndex, newState.collections.length),
       ];
       return newState;
     }
 
     case MOVE_TAB_ITEM: {
       const newState = _.cloneDeep(state);
-      const { collectionID, id, index } = action;
+      const { dropCollectionID, dragItemID, dropIndex } = action;
       const { tabs } = newState;
-      const item = _.find(tabs, ["id", id]);
-      _.remove(tabs, ["id", id]);
-      const filteredTab = _.filter(tabs, ["collection", collectionID]);
-      _.remove(tabs, ["collection", collectionID]);
+      let targetIndex = dropIndex;
+      const item = _.find(tabs, ['id', dragItemID]);
       if (item) {
-        item.collection = collectionID;
-        newState.tabs = [
-          ...tabs,
-          ..._.slice(filteredTab, 0, index),
-          item,
-          ..._.slice(filteredTab, index, filteredTab.length),
-        ];
+        const filteredTab = _.filter(tabs, ['collection', dropCollectionID]);
+        if (item.collection === dropCollectionID) {
+          if (_.findIndex(filteredTab, ['id', dragItemID]) < dropIndex) targetIndex -= 1;
+          _.remove(filteredTab, ['id', dragItemID]);
+        } else {
+          item.collection = dropCollectionID;
+        }
+        _.remove(tabs, ['id', dragItemID]);
+        _.remove(tabs, ['collection', dropCollectionID]);
+        newState.tabs = [...tabs, ..._.slice(filteredTab, 0, targetIndex), item, ..._.slice(filteredTab, targetIndex)];
       }
       return newState;
     }
@@ -237,7 +229,7 @@ function tabReducer(state = initialState, action: TabActionTypes): TabsState {
 
     case DELETE_CART_ITEM: {
       const newState = _.cloneDeep(state);
-      _.remove(newState.cart, ["url", action.url]);
+      _.remove(newState.cart, ['url', action.url]);
       return newState;
     }
 

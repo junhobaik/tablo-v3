@@ -1,19 +1,19 @@
-import { TabsState } from "./reducer";
+import { TabsState } from './reducer';
 
-export const ADD_TAB_ITEM = "tabs/ADD_TAB_ITEM";
-export const DELETE_TAB_ITEM = "tabs/DELETE_TAB_ITEM";
-export const DELETE_COLLECTION = "tabs/DELETE_COLLECTION";
-export const RESET_TABS = "tabs/RESET_TABS";
-export const SET_FOLDED_COLLECTION = "tabs/SET_FOLDED_COLLECTION";
-export const EDIT_TAB_ITEM_TITLE = "tabs/EDIT_TAB_ITEM_TITLE";
-export const EDIT_TAB_ITEM_DESCRIPTION = "tabs/EDIT_TAB_ITEM_DESCRIPTION";
-export const ADD_COLLECTION = "tabs/ADD_COLLECTION";
-export const TABS_ARCHIVE = "tabs/TABS_ARCHIVE";
-export const EDIT_COLLECTION_TITLE = "tabs/EDIT_COLLECTION_TITLE";
-export const MOVE_COLLECTION = "tabs/MOVE_COLLECTION";
-export const MOVE_TAB_ITEM = "tabs/MOVE_TAB_ITEM";
-export const EMPTY_CART = "tabs/EMPTY_CART";
-export const DELETE_CART_ITEM = "tabs/DELETE_CART_ITEM";
+export const ADD_TAB_ITEM = 'tabs/ADD_TAB_ITEM';
+export const DELETE_TAB_ITEM = 'tabs/DELETE_TAB_ITEM';
+export const DELETE_COLLECTION = 'tabs/DELETE_COLLECTION';
+export const RESET_TABS = 'tabs/RESET_TABS';
+export const SET_FOLDED_COLLECTION = 'tabs/SET_FOLDED_COLLECTION';
+export const EDIT_TAB_ITEM_TITLE = 'tabs/EDIT_TAB_ITEM_TITLE';
+export const EDIT_TAB_ITEM_DESCRIPTION = 'tabs/EDIT_TAB_ITEM_DESCRIPTION';
+export const ADD_COLLECTION = 'tabs/ADD_COLLECTION';
+export const TABS_ARCHIVE = 'tabs/TABS_ARCHIVE';
+export const EDIT_COLLECTION_TITLE = 'tabs/EDIT_COLLECTION_TITLE';
+export const MOVE_COLLECTION = 'tabs/MOVE_COLLECTION';
+export const MOVE_TAB_ITEM = 'tabs/MOVE_TAB_ITEM';
+export const EMPTY_CART = 'tabs/EMPTY_CART';
+export const DELETE_CART_ITEM = 'tabs/DELETE_CART_ITEM';
 
 export interface CollectionItem {
   id: string;
@@ -102,9 +102,9 @@ interface MoveCollectionAction {
 
 interface MoveTabItemAction {
   type: typeof MOVE_TAB_ITEM;
-  collectionID: string;
-  id: string;
-  index: number;
+  dropCollectionID: string;
+  dragItemID: string;
+  dropIndex: number;
 }
 
 interface EmptyCartAction {
@@ -116,7 +116,7 @@ interface DeleteCartItemAction {
   url: string;
 }
 
-export type TabActionTypes =
+export type TabsActionTypes =
   | DeleteCartItemAction
   | EmptyCartAction
   | MoveTabItemAction
@@ -175,8 +175,8 @@ const moveCollection = (id: string, index: number) => {
   return { type: MOVE_COLLECTION, id, index };
 };
 
-const moveTabItem = (collectionID: string, id: string, index: number) => {
-  return { type: MOVE_TAB_ITEM, collectionID, id, index };
+const moveTabItem = (dropCollectionID: string, dragItemID: string, dropIndex: number) => {
+  return { type: MOVE_TAB_ITEM, dropCollectionID, dragItemID, dropIndex };
 };
 
 const emptyCart = () => {
