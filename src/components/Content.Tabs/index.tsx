@@ -427,7 +427,7 @@ const Tabs = () => {
       drop: (e: React.DragEvent<HTMLDivElement>) => {
         toggleDropSpaceAddPin(e, false);
         const dragData = drag as DragMoveData;
-        if (dragData) dispatch(actionCreators.moveCollection(dragData.id, i));
+        if (dragData) dispatch(actionCreators.moveCollection(dragData.id, isLast ? i + 1 : i));
       },
     };
 
