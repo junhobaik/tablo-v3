@@ -17,9 +17,13 @@
       align-items: center;
       height: 100%;
 
+      h1,
+      span {
+        user-select: none;
+      }
+
       h1 {
         font-size: 1rem;
-        user-select: none;
         font-weight: 900;
         margin: 0;
       }
