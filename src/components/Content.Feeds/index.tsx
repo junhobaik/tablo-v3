@@ -81,7 +81,7 @@ const Feeds = () => {
       console.error('ERROR: loadFeedItem', err);
 
       if (retry) return null;
-      if (err.statusCode === 422) {
+      if (err.statusCode === 422 || err.statusCode === 500) {
         dispatch(feedsActionCreators.faildLoadFeed(id));
         const error = new Error('url error');
         error.name = 'URL-ERROR';
