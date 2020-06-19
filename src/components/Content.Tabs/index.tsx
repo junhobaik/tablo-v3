@@ -680,7 +680,21 @@ const Tabs = () => {
     <div id="Tabs">
       <ContentHeader content="tabs" searchFunc={() => {}} reverse={false} />
       <div className="tabs-content">
-        <ol className="collection-list">{collectionList}</ol>
+        <ol className="collection-list">
+          {collectionList}
+          {collectionList.length ? null : (
+            <div className="collection tabs-add-collection">
+              <button
+                className="add-collection-btn"
+                onClick={() => {
+                  dispatch(actionCreators.addCollection());
+                }}
+              >
+                <Fa icon={faPlusCircle} />
+              </button>
+            </div>
+          )}
+        </ol>
       </div>
     </div>
   );
