@@ -70,7 +70,7 @@ const feedsReducer = (state = initialState, action: FeedActionType): FeedsState 
           ...state.collections,
           {
             id: uuidv4(),
-            title: `Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
+            title: `New Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
             visibility: true,
           },
         ],
@@ -120,7 +120,7 @@ const feedsReducer = (state = initialState, action: FeedActionType): FeedsState 
           ...state.collections,
           {
             id: newCollectionId,
-            title: `Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
+            title: `New Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
             visibility: true,
           },
         ],

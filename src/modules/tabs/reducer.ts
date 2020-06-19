@@ -66,7 +66,7 @@ function tabReducer(state = initialState, action: TabsActionTypes): TabsState {
           ...state.collections,
           {
             id: uuidv4(),
-            title: `Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
+            title: `New Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
             folded: false,
           },
         ],
