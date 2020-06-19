@@ -9,10 +9,23 @@
   justify-content: space-between;
   padding: 0 0.5rem;
 
-  h1 {
-    font-size: 1rem;
-    user-select: none;
-    font-weight: 900;
+  .title-wrap {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    h1 {
+      font-size: 1rem;
+      user-select: none;
+      font-weight: 900;
+      margin: 0;
+    }
+    span {
+      margin-left: 0.25rem;
+      margin-top: 0.18rem;
+      font-size: 0.6rem;
+      opacity: 0.3;
+    }
   }
 
   button {
