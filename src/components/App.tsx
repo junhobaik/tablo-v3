@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { hot } from 'react-hot-loader';
 
@@ -20,7 +20,8 @@ import Modal from './utils/Modal';
 import Setting from './Global.Setting';
 import BoundaryError from './BoundaryError';
 
-const App = () => {
+const App = (props: { store: any }) => {
+  const { store } = props;
   const dispatch = useDispatch();
   const [isLoadedState, setIsLoadedState] = useState(false);
   const [isSettingModal, setIsSettingModal] = useState(false);
@@ -49,25 +50,29 @@ const App = () => {
     });
   };
 
-  useEffect(() => {
-    const { getLoaclStorage, setLocalStorage } = utils;
+  useMemo(() => {
+    store.subscribe(() => {
+      const state = store.getState();
 
-    const detectChange = setInterval(() => {
-      const isChanged = JSON.parse(getLoaclStorage('tablo3_changed') ?? 'false');
-      const isNeedReloadPosts = JSON.parse(getLoaclStorage('tablo3_reload-posts') ?? 'false');
+      chrome.storage.sync.set(
+        {
+          tablo3: state,
+        },
+        () => {
+          // chrome.storage.sync.getBytesInUse('tablo3', (res) => {
+          //   console.log(`${res}byte | ${(res / 102400) * 100}%`);
+          // });
 
-      if (isChanged) {
-        setLocalStorage('tablo3_changed', 'false');
-        loadAndSetStates(isNeedReloadPosts);
-        if (isNeedReloadPosts) setLocalStorage('tablo3_reload-posts', false);
-      }
-    }, 5000);
+          if (chrome.runtime.lastError) {
+            const error = chrome.runtime.lastError.message as string;
 
-    loadAndSetStates();
-
-    return () => {
-      clearInterval(detectChange);
-    };
+            if (error.includes('QUOTA_BYTES_PER_ITEM')) {
+              console.log('ERROR: QUOTA_BYTES_PER_ITEM');
+            }
+          }
+        }
+      );
+    });
   }, []);
 
   // dev
@@ -95,6 +100,27 @@ const App = () => {
       document.removeEventListener('keydown', func);
     };
   }, [state]);
+
+  useEffect(() => {
+    const { getLoaclStorage, setLocalStorage } = utils;
+
+    const detectChange = setInterval(() => {
+      const isChanged = JSON.parse(getLoaclStorage('tablo3_changed') ?? 'false');
+      const isNeedReloadPosts = JSON.parse(getLoaclStorage('tablo3_reload-posts') ?? 'false');
+
+      if (isChanged) {
+        setLocalStorage('tablo3_changed', 'false');
+        loadAndSetStates(isNeedReloadPosts);
+        if (isNeedReloadPosts) setLocalStorage('tablo3_reload-posts', false);
+      }
+    }, 5000);
+
+    loadAndSetStates();
+
+    return () => {
+      clearInterval(detectChange);
+    };
+  }, []);
 
   if (!isLoadedState) {
     return <div></div>;
