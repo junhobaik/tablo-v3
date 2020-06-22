@@ -18,6 +18,7 @@ import '../styles/content.scss';
 import utils from './utils';
 import Modal from './utils/Modal';
 import Setting from './Global.Setting';
+import BoundaryError from './BoundaryError';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -99,22 +100,24 @@ const App = () => {
     return <div></div>;
   }
   return (
-    <div id="theme" className={`theme-${theme}`}>
-      <div id="App">
-        <Header setIsSettingModal={setIsSettingModal} />
+    <BoundaryError>
+      <div id="theme" className={`theme-${theme}`}>
+        <div id="App">
+          <Header setIsSettingModal={setIsSettingModal} />
 
-        <div className="app-bottom" style={{ visibility: isLoadedState ? 'visible' : 'hidden' }}>
-          <div className="app-bottom-left">{windowStatus === 'feeds-setting' ? <FeedsSetting /> : <Tabs />}</div>
-          <div className="app-bottom-right">{windowStatus === 'tabs-setting' ? <TabsSetting /> : <Feeds />}</div>
+          <div className="app-bottom" style={{ visibility: isLoadedState ? 'visible' : 'hidden' }}>
+            <div className="app-bottom-left">{windowStatus === 'feeds-setting' ? <FeedsSetting /> : <Tabs />}</div>
+            <div className="app-bottom-right">{windowStatus === 'tabs-setting' ? <TabsSetting /> : <Feeds />}</div>
+          </div>
+
+          {isSettingModal ? (
+            <Modal title="Settings" toggleVisibility={setIsSettingModal}>
+              <Setting />
+            </Modal>
+          ) : null}
         </div>
-
-        {isSettingModal ? (
-          <Modal title="Settings" toggleVisibility={setIsSettingModal}>
-            <Setting />
-          </Modal>
-        ) : null}
       </div>
-    </div>
+    </BoundaryError>
   );
 };
 
