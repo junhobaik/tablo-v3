@@ -19,6 +19,8 @@ import utils from './utils';
 import Modal from './utils/Modal';
 import Setting from './Global.Setting';
 import BoundaryError from './BoundaryError';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 const App = (props: { store: any }) => {
   const { store } = props;
@@ -27,6 +29,7 @@ const App = (props: { store: any }) => {
   const [isSettingModal, setIsSettingModal] = useState(false);
   const [theme, setTheme] = useState<string>();
   const windowStatus = useSelector((state: RootState) => state.global.window);
+  const [isStorageError, setIsStorageError] = useState(false);
   const state = useSelector((state: RootState) => state); // dev
 
   const getLocalTheme = () => {
@@ -68,6 +71,7 @@ const App = (props: { store: any }) => {
 
             if (error.includes('QUOTA_BYTES_PER_ITEM')) {
               console.log('ERROR: QUOTA_BYTES_PER_ITEM');
+              setIsStorageError(true);
             }
           }
         }
@@ -139,6 +143,18 @@ const App = (props: { store: any }) => {
           {isSettingModal ? (
             <Modal title="Settings" toggleVisibility={setIsSettingModal}>
               <Setting />
+            </Modal>
+          ) : null}
+
+          {isStorageError ? (
+            <Modal title="Error" toggleVisibility={setIsStorageError}>
+              <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                <div>
+                  <FontAwesomeIcon icon={faExclamationTriangle} style={{ fontSize: '4rem', marginBottom: '1rem' }} />
+                  <p>저장할 수 있는 용량을 초과하였습니다.</p>
+                  <p>오류가 계속될 경우 기존 데이터 일부 삭제로 용량을 확보하세요.</p>
+                </div>
+              </div>
             </Modal>
           ) : null}
         </div>
