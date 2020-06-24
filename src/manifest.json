@@ -1,20 +1,17 @@
 {
   "name": "Tablo v3",
-  "version": "0.0.1",
+  "version": "0.1.0",
 
   "options_page": "options.html",
-  "background": {
-    "page": "background.html"
-  },
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
+    "default_icon": "icon.png"
   },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
   "icons": {
-    "128": "icon-128.png"
+    "128": "icon.png"
   },
   "permissions": ["background", "tabs", "storage"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
