@@ -1,5 +1,3 @@
-/* eslint no-unused-vars: 0 */
-
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';

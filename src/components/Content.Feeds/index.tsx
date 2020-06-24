@@ -1,10 +1,11 @@
-/* eslint-disable */
-/* eslint-disable no-debugger */
 /* eslint no-unused-vars: 0 */
 /* eslint @typescript-eslint/no-unused-vars: 0 */
+// useDispatch
 /* eslint no-fallthrough: 0 */
 /* eslint no-sparse-arrays: 0 */
-// TODO: ESLint에서 async/await를 사용할때 나타나는 오류 해결하기, 임시로 위에서 disable 해둠
+// async/await
+/* eslint no-extra-boolean-cast: 0 */
+// ?
 
 import * as React from 'react';
 import { useEffect, useState } from 'react';

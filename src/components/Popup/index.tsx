@@ -1,27 +1,22 @@
-/* eslint @typescript-eslint/no-unused-vars: 0 */
 /* eslint no-fallthrough: 0 */
 /* eslint no-sparse-arrays: 0 */
-/* eslint no-unused-vars: 0 */
+// async / await
 
-import * as React from "react";
-import { useState, useEffect } from "react";
-import { hot } from "react-hot-loader";
-import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
-import { faFile } from "@fortawesome/free-regular-svg-icons";
-import { faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { v4 as uuidv4 } from "uuid";
-import _ from "lodash";
-import moment from "moment";
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { hot } from 'react-hot-loader';
+import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';
+import { faFile } from '@fortawesome/free-regular-svg-icons';
+import { faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { v4 as uuidv4 } from 'uuid';
+import _ from 'lodash';
+import moment from 'moment';
 
-import "./index.scss";
-import { RootState } from "../../modules";
-import { Collection, FeedForAdd } from "../../modules/feeds/actions";
-import {
-  CollectionItem,
-  SimpleItem,
-  TabItemForAdd,
-} from "../../modules/tabs/actions";
-import utils from "../utils";
+import './index.scss';
+import { RootState } from '../../modules';
+import { Collection, FeedForAdd } from '../../modules/feeds/actions';
+import { CollectionItem, SimpleItem, TabItemForAdd } from '../../modules/tabs/actions';
+import utils from '../utils';
 
 interface Site {
   title: string;
@@ -37,11 +32,11 @@ interface Feed {
 
 const Popup = () => {
   const [site, setSite] = useState<Site>();
-  const [siteTitle, setSiteTitle] = useState<string>("");
+  const [siteTitle, setSiteTitle] = useState<string>('');
   const [isTabSubmitDone, setIsTabSubmitDone] = useState<boolean>(false);
 
   const [feed, setFeed] = useState<Feed>();
-  const [feedTitle, setFeedTitle] = useState<string>("");
+  const [feedTitle, setFeedTitle] = useState<string>('');
   const [containFeeds, setContainFeeds] = useState<boolean>(false);
   const [requestError, setRequestError] = useState<boolean>(false);
   const [isFeedSearchDone, setIsFeedSearchDone] = useState<boolean>(false);
@@ -63,8 +58,8 @@ const Popup = () => {
   };
 
   const feedCheck = async (siteUrl: string) => {
-    const url = siteUrl.split("/").splice(0, 3).join("/");
-    const urlCheck = ["feed", "rss", "feed.xml", "rss.xml", "d2.atom"];
+    const url = siteUrl.split('/').splice(0, 3).join('/');
+    const urlCheck = ['feed', 'rss', 'feed.xml', 'rss.xml', 'd2.atom'];
     let i = 0;
     let urlCheckLength = urlCheck.length;
 
@@ -78,11 +73,11 @@ const Popup = () => {
           const { title } = feedData.feed;
 
           setFeed({
-            title: title ?? "Untitled",
+            title: title ?? 'Untitled',
             siteUrl: url,
             feedUrl: `${url}/${c}`,
           });
-          setFeedTitle(title ?? "Untitled");
+          setFeedTitle(title ?? 'Untitled');
 
           await delay(500);
           setUrlCheckProgress(100);
@@ -92,10 +87,10 @@ const Popup = () => {
           throw response.status;
         }
       } catch (status) {
-        if (typeof status !== "number") {
+        if (typeof status !== 'number') {
           if (count > 5) {
-            console.log("요청 과다");
-            return "error";
+            console.log('요청 과다');
+            return 'error';
           }
           await delay(2000);
           await request(c, count + 1);
@@ -108,7 +103,7 @@ const Popup = () => {
     for (const c of urlCheck) {
       const result = await request(c);
 
-      if (result === "error") {
+      if (result === 'error') {
         setRequestError(true);
         setUrlCheckProgress(0);
         break;
@@ -122,16 +117,12 @@ const Popup = () => {
     return false;
   };
 
-  const addToState = (
-    type: "feeds" | "tabs",
-    collectionID: string,
-    data: SimpleItem | TabItemForAdd | FeedForAdd
-  ) => {
+  const addToState = (type: 'feeds' | 'tabs', collectionID: string, data: SimpleItem | TabItemForAdd | FeedForAdd) => {
     setState((prev: RootState | undefined) => {
       if (prev) {
-        if (type === "tabs") {
+        if (type === 'tabs') {
           switch (collectionID) {
-            case "cart": {
+            case 'cart': {
               const cartData = data as SimpleItem;
               return {
                 ...prev,
@@ -142,7 +133,7 @@ const Popup = () => {
               };
             }
 
-            case "new": {
+            case 'new': {
               const tabData = data as TabItemForAdd;
               const newCollectionID = uuidv4();
               return {
@@ -154,7 +145,7 @@ const Popup = () => {
                     {
                       id: uuidv4(),
                       title: tabData.title,
-                      description: "",
+                      description: '',
                       url: tabData.url,
                       collection: newCollectionID,
                     },
@@ -163,9 +154,7 @@ const Popup = () => {
                     ...prev.tabs.collections,
                     {
                       id: newCollectionID,
-                      title: `Collection [${moment().format(
-                        "YYMMDD HH:mm:ss"
-                      )}]`,
+                      title: `Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
                       folded: false,
                     },
                   ],
@@ -195,11 +184,11 @@ const Popup = () => {
           }
         }
 
-        if (type === "feeds") {
+        if (type === 'feeds') {
           let result;
 
           switch (collectionID) {
-            case "new": {
+            case 'new': {
               const feedData = data as FeedForAdd;
               const newCollectionID = uuidv4();
               result = {
@@ -222,9 +211,7 @@ const Popup = () => {
                     ...prev.feeds.collections,
                     {
                       id: newCollectionID,
-                      title: `Collection [${moment().format(
-                        "YYMMDD HH:mm:ss"
-                      )}]`,
+                      title: `Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
                       visibility: true,
                     },
                   ],
@@ -255,7 +242,7 @@ const Popup = () => {
               break;
             }
           }
-          utils.setLocalStorage("tablo3_reload-posts", true);
+          utils.setLocalStorage('tablo3_reload-posts', true);
           return result;
         }
 
@@ -293,15 +280,12 @@ const Popup = () => {
         // const favIconUrl = "https://junhobaik.github.io/favicon.ico";
 
         setSite({
-          title: title ?? "Untitled",
-          url: url ?? "",
+          title: title ?? 'Untitled',
+          url: url ?? '',
           favIconUrl,
         });
-        setSiteTitle(title ?? "Untitled");
-        const findedFeeds = _.find(state?.feeds.feeds, [
-          "siteUrl",
-          url?.split("/").splice(0, 3).join("/"),
-        ]);
+        setSiteTitle(title ?? 'Untitled');
+        const findedFeeds = _.find(state?.feeds.feeds, ['siteUrl', url?.split('/').splice(0, 3).join('/')]);
         console.log(findedFeeds);
         setContainFeeds(findedFeeds ? true : false);
 
@@ -312,7 +296,7 @@ const Popup = () => {
         }
       });
     } else {
-      chrome.storage.sync.get("tablo3", (res) => {
+      chrome.storage.sync.get('tablo3', (res) => {
         if (res.tablo3) {
           setState(res.tablo3);
           setFirstLoadDone(true);
@@ -328,7 +312,7 @@ const Popup = () => {
           tablo3: state,
         },
         () => {
-          utils.setLocalStorage("tablo3_changed", "true");
+          utils.setLocalStorage('tablo3_changed', 'true');
         }
       );
     }
@@ -347,10 +331,10 @@ const Popup = () => {
               </div>
               <img
                 className="favicon"
-                src={site.favIconUrl ?? ""}
+                src={site.favIconUrl ?? ''}
                 onError={(e: any) => {
-                  e.currentTarget.style.display = "none";
-                  e.currentTarget.parentNode.firstChild.style.display = "flex";
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentNode.firstChild.style.display = 'flex';
                 }}
               />
             </div>
@@ -371,21 +355,21 @@ const Popup = () => {
                 {tabsCollectionOptions}
               </select>
               <button
-                className={`submit-btn${isTabSubmitDone ? " submit-done" : ""}`}
+                className={`submit-btn${isTabSubmitDone ? ' submit-done' : ''}`}
                 onClick={(e) => {
                   const submit = e.currentTarget.parentNode as HTMLDivElement;
                   const select = submit.firstChild as HTMLSelectElement;
                   const collectionID = select.value;
                   const data =
-                    collectionID === "cart"
+                    collectionID === 'cart'
                       ? { url: site.url, title: siteTitle }
                       : {
                           title: siteTitle,
-                          description: "",
+                          description: '',
                           url: site.url,
                           collection: collectionID,
                         };
-                  addToState("tabs", select.value, data);
+                  addToState('tabs', select.value, data);
                   setIsTabSubmitDone(true);
                 }}
               >
@@ -405,11 +389,10 @@ const Popup = () => {
                     </div>
                     <img
                       className="favicon"
-                      src={`${feed.siteUrl}/favicon.ico` ?? ""}
+                      src={`${feed.siteUrl}/favicon.ico` ?? ''}
                       onError={(e: any) => {
-                        e.currentTarget.style.display = "none";
-                        e.currentTarget.parentNode.firstChild.style.display =
-                          "flex";
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentNode.firstChild.style.display = 'flex';
                       }}
                     />
                   </div>
@@ -424,16 +407,11 @@ const Popup = () => {
                     }}
                   />
                   <div className="submit">
-                    <select id="feedsCollectionSelect">
-                      {feedsCollectionOptions}
-                    </select>
+                    <select id="feedsCollectionSelect">{feedsCollectionOptions}</select>
                     <button
-                      className={`submit-btn${
-                        isFeedSubmitDone ? " submit-done" : ""
-                      }`}
+                      className={`submit-btn${isFeedSubmitDone ? ' submit-done' : ''}`}
                       onClick={(e) => {
-                        const submit = e.currentTarget
-                          .parentNode as HTMLDivElement;
+                        const submit = e.currentTarget.parentNode as HTMLDivElement;
                         const select = submit.firstChild as HTMLSelectElement;
                         const collectionID = select.value;
                         const data: FeedForAdd = {
@@ -442,7 +420,7 @@ const Popup = () => {
                           feedUrl: feed.feedUrl,
                           collectionID,
                         };
-                        addToState("feeds", select.value, data);
+                        addToState('feeds', select.value, data);
                         setIsFeedSubmitDone(true);
                       }}
                     >
@@ -468,10 +446,7 @@ const Popup = () => {
             <div className="search-feed">
               <div className="progress-wrap">
                 <span>FEED 주소 검색 중...</span>
-                <div
-                  className="progress"
-                  style={{ width: `${urlCheckProgress}%` }}
-                ></div>
+                <div className="progress" style={{ width: `${urlCheckProgress}%` }}></div>
               </div>
             </div>
           )}
