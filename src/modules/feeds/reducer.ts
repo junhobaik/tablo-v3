@@ -17,7 +17,7 @@ import {
   TOGGLE_ADD_FEED,
 } from './actions';
 import _ from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
+import { generate as uuid } from 'short-uuid';
 import moment from 'moment';
 
 const initialState: FeedsState = {
@@ -71,7 +71,7 @@ const feedsReducer = (state = initialState, action: FeedActionType): FeedsState 
         collections: [
           ...state.collections,
           {
-            id: uuidv4(),
+            id: uuid(),
             title: `New Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
             visibility: true,
           },
@@ -90,7 +90,7 @@ const feedsReducer = (state = initialState, action: FeedActionType): FeedsState 
           feeds: [
             ...state.feeds,
             {
-              id: uuidv4(),
+              id: uuid(),
               title,
               siteUrl,
               feedUrl,
@@ -103,13 +103,13 @@ const feedsReducer = (state = initialState, action: FeedActionType): FeedsState 
         };
       }
 
-      const newCollectionId = uuidv4();
+      const newCollectionId = uuid();
       return {
         ...state,
         feeds: [
           ...state.feeds,
           {
-            id: uuidv4(),
+            id: uuid(),
             title,
             siteUrl,
             feedUrl,

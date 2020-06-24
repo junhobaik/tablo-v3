@@ -16,7 +16,7 @@ import {
   EMPTY_CART,
   DELETE_CART_ITEM,
 } from './actions';
-import { v4 as uuidv4 } from 'uuid';
+import { generate as uuid } from 'short-uuid';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -65,7 +65,7 @@ function tabReducer(state = initialState, action: TabsActionTypes): TabsState {
         collections: [
           ...state.collections,
           {
-            id: uuidv4(),
+            id: uuid(),
             title: `New Collection [${moment().format('YYMMDD HH:mm:ss')}]`,
             folded: false,
           },
@@ -75,7 +75,7 @@ function tabReducer(state = initialState, action: TabsActionTypes): TabsState {
     case ADD_TAB_ITEM: {
       const { index } = action.state;
       const newItem = {
-        id: uuidv4(),
+        id: uuid(),
         title: action.state.title,
         description: action.state.description,
         url: action.state.url,
@@ -127,12 +127,12 @@ function tabReducer(state = initialState, action: TabsActionTypes): TabsState {
     }
 
     case TABS_ARCHIVE: {
-      const collectionID = uuidv4();
+      const collectionID = uuid();
       const newItems = [];
 
       for (const v of action.items) {
         newItems.push({
-          id: uuidv4(),
+          id: uuid(),
           title: v.title,
           description: '',
           url: v.url,
