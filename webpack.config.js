@@ -88,7 +88,6 @@ const options = {
   plugins: [
     new MiniCssExtractPlugin(),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
-    // new CleanWebpackPlugin(),
     new CopyWebpackPlugin([
       {
         from: 'src/manifest.json',
@@ -101,6 +100,9 @@ const options = {
             })
           );
         },
+      },
+      {
+        from: 'public',
       },
     ]),
     new HtmlWebpackPlugin({
@@ -124,6 +126,7 @@ const options = {
       chunks: ['background'],
     }),
     new WriteFilePlugin(),
+    new CleanWebpackPlugin(),
   ],
 };
 
