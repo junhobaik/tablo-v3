@@ -205,6 +205,7 @@ const Feeds = () => {
       pDescription = descriptionDiv.innerText;
     }
     pDescription = pDescription.substr(0, 300);
+    const shortDescription = pDescription.length > 20 ? `${pDescription.substr(0, 20)}...` : pDescription.substr(0, 20);
 
     const toggleDropSpaces = (isShow: boolean) => {
       const dropSpaces = Array.from(document.querySelectorAll('.tab-item-wrap>.drop-space')) as HTMLDivElement[];
@@ -230,7 +231,7 @@ const Feeds = () => {
               from: 'feed-post',
               title,
               url: postUrl,
-              description: pDescription,
+              description: shortDescription,
             })
           );
 
