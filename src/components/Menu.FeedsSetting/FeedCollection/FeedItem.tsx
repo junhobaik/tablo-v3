@@ -129,7 +129,6 @@ const FeedItem = ({
             e.preventDefault();
           }}
           onDrop={(e) => {
-            console.log(drag, drop);
             toggleAddPin(e, false);
 
             const dragData = drag as DragMoveData | null;

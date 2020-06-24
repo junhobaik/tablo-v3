@@ -79,7 +79,7 @@ const Feeds = () => {
         return items;
       }
     } catch (err) {
-      console.error('ERROR: loadFeedItem', err);
+      // console.error('ERROR: loadFeedItem', err);
 
       if (retry) return null;
       if (err.statusCode === 422 || err.statusCode === 500) {
@@ -283,7 +283,7 @@ const Feeds = () => {
     if (loaded && !isChanged && feeds.length) {
       const localData: LocalData | null = getLocalData();
       const reloadInterval = 3600000 * reloadPosts;
-      // console.log(Date.now() - Number(localData?.lastLoadDate ?? 0), "지남");
+
       if (!localData) {
         loadAndSetFeedItems();
       } else if (Date.now() - Number(localData.lastLoadDate) > reloadInterval) {

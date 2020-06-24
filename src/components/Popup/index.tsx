@@ -89,7 +89,6 @@ const Popup = () => {
       } catch (status) {
         if (typeof status !== 'number') {
           if (count > 5) {
-            console.log('요청 과다');
             return 'error';
           }
           await delay(2000);
@@ -274,10 +273,6 @@ const Popup = () => {
     if (firstLoadDone) {
       chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
         const { title, url, favIconUrl } = tabs[0];
-        // dev
-        // const title = "My Blog";
-        // const url = "https://junhobaik.github.io/";
-        // const favIconUrl = "https://junhobaik.github.io/favicon.ico";
 
         setSite({
           title: title ?? 'Untitled',
@@ -286,7 +281,6 @@ const Popup = () => {
         });
         setSiteTitle(title ?? 'Untitled');
         const findedFeeds = _.find(state?.feeds.feeds, ['siteUrl', url?.split('/').splice(0, 3).join('/')]);
-        console.log(findedFeeds);
         setContainFeeds(findedFeeds ? true : false);
 
         if (url && !findedFeeds) {

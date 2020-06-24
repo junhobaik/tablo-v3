@@ -1,6 +1,8 @@
 /* eslint no-unused-vars: 0 */
-/* eslint no-sparse-arrays: 0 */
+/* eslint @typescript-eslint/no-unused-vars: 0 */
 // useDispatch
+/* eslint no-sparse-arrays: 0 */
+// ?
 
 import * as React from 'react';
 import { useState } from 'react';
@@ -81,8 +83,8 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
           msg: messages.error,
         });
       }
-    } catch (err) {
-      console.log('err', err);
+    } catch {
+      // console.log(err);
     }
   }
 
@@ -162,9 +164,6 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
                   value={addUrlValue}
                   disabled={validationData ? true : false}
                   onChange={addUrlOnChange}
-                  // onFocus={() => {
-                  //   if (!addUrlValue.length) setAddUrlValue("http");
-                  // }}
                 />
                 {message.type === 'success' && validationData ? (
                   <div className="icon-wrap">

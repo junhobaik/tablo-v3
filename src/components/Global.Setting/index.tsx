@@ -73,7 +73,6 @@ const Setting = () => {
 
     const setStateLinkMethod = (e: React.ChangeEvent<HTMLInputElement>) => {
       const v = e.currentTarget.value.split('.');
-      console.log(v);
 
       setState({
         ...state,

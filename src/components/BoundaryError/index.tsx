@@ -21,9 +21,8 @@ class BoundaryError extends React.Component<Props, State> {
     };
   }
 
-  componentDidCatch(error: any, info: any) {
+  componentDidCatch() {
     this.setState({ hasError: true });
-    console.log(error, info);
   }
 
   render() {
