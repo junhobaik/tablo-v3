@@ -1,6 +1,7 @@
 {
-  "name": "Tablo v3",
-  "version": "0.1.0",
+  "name": "Tablo - Web Bookmarks & RSS Reader",
+  "description": "Web Bookmarking and management & Feed(RSS) subscriptions",
+  "version": "0.1.1",
 
   "options_page": "options.html",
   "browser_action": {
