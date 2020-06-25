@@ -23,35 +23,30 @@ import moment from 'moment';
 const initialState: TabsState = {
   collections: [
     {
-      id: 'c1',
-      title: 'Collection 1',
-      folded: false,
-    },
-    {
-      id: 'c2',
-      title: 'Development',
+      id: 'TC0',
+      title: 'Tab Collection',
       folded: false,
     },
   ],
   tabs: [
     {
-      id: 't1',
+      id: 'TI1',
       title: 'Google',
-      description: 'Google Search Page',
+      description: '',
       url: 'https://www.google.com/',
-      collection: 'c1',
+      collection: 'TC0',
     },
     {
-      id: 't2',
-      title: 'My Blog',
-      description: 'Dev.White Blog',
-      url: 'https://junhobaik.github.io/',
-      collection: 'c2',
+      id: 'TI2',
+      title: 'junhobaik/tablo-v3',
+      description: 'Github repository',
+      url: 'https://github.com/junhobaik/tablo-v3',
+      collection: 'TC0',
     },
   ],
   cart: [
     {
-      title: 'Dev.White',
+      title: 'Dev.White Blog',
       url: 'https://junhobaik.github.io/',
     },
   ],

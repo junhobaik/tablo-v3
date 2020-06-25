@@ -25,28 +25,19 @@ const initialState: FeedsState = {
   isChanged: false,
   feeds: [
     {
-      id: 'ff0',
-      title: 'Dev.White (err)',
-      siteUrl: 'https://junhobaik.github.io',
-      feedUrl: 'https://junhobaik.github.io/rsss',
-      collectionID: 'fc1',
-      faildCount: 0,
-      visibility: true,
-    },
-    {
-      id: 'ff1',
+      id: 'FI1',
       title: 'Dev.White',
       siteUrl: 'https://junhobaik.github.io',
       feedUrl: 'https://junhobaik.github.io/rss',
-      collectionID: 'fc1',
+      collectionID: 'FC1',
       faildCount: 0,
       visibility: true,
     },
   ],
   collections: [
     {
-      id: 'fc1',
-      title: 'Inbox',
+      id: 'FC1',
+      title: 'Collection',
       visibility: true,
     },
   ],
