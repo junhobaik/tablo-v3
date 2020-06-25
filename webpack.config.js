@@ -27,7 +27,6 @@ const options = {
     index: path.join(__dirname, 'src', 'pages', 'index.tsx'),
     popup: path.join(__dirname, 'src', 'pages', 'popup.tsx'),
     options: path.join(__dirname, 'src', 'pages', 'options.tsx'),
-    background: path.join(__dirname, 'src', 'pages', 'background.ts'),
   },
   output: {
     path: path.join(__dirname, 'build'),
@@ -119,11 +118,6 @@ const options = {
       template: path.join(__dirname, 'src', 'pages', 'options.html'),
       filename: 'options.html',
       chunks: ['options'],
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'pages', 'background.html'),
-      filename: 'background.html',
-      chunks: ['background'],
     }),
     new WriteFilePlugin(),
     new CleanWebpackPlugin(),

@@ -13,7 +13,7 @@
   "icons": {
     "128": "icon.png"
   },
-  "permissions": ["background", "tabs", "storage"],
+  "permissions": ["tabs", "storage"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "manifest_version": 2
 }
