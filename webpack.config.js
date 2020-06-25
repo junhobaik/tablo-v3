@@ -120,7 +120,7 @@ const options = {
       chunks: ['options'],
     }),
     new WriteFilePlugin(),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
   ],
 };
 
