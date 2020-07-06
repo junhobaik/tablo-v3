@@ -41,6 +41,7 @@ const Feeds = () => {
   const { linkMethod, reloadPosts, hidePosts } = globalState;
   const { feeds, collections, isChanged, loaded, readPosts } = feedsState;
 
+  const [isOffline, setIsOffline] = useState(false);
   const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
   const [errorFeedTitleList, setErrorFeedTitleList] = useState<string[]>([]);
   const [loadProgress, setLoadProgress] = useState<LoadProgress>({
@@ -175,9 +176,19 @@ const Feeds = () => {
   };
 
   const loadAndSetFeedItems = () => {
-    loadFeedItemAll(feeds).then(() => {
-      dispatch(feedsActionCreators.setIsChanged(false));
-    });
+    const isOnline = navigator.onLine;
+
+    if (isOnline) {
+      loadFeedItemAll(feeds).then(() => {
+        dispatch(feedsActionCreators.setIsChanged(false));
+      });
+    } else {
+      const localData = getLocalData();
+      setIsOffline(true);
+
+      setFeedItems(localData?.items ?? []);
+      setErrorFeedTitleList(localData?.errorFeeds ?? []);
+    }
   };
 
   const filteredFeedItems = _.filter(feedItems, (item) => {
@@ -301,7 +312,7 @@ const Feeds = () => {
 
   return (
     <div id="Feeds">
-      <ContentHeader content="feeds" searchFunc={() => {}} reverse={true} loadProgress={loadProgress.totalProgress} />
+      <ContentHeader content="feeds" searchFunc={() => {}} reverse={true} loadProgress={loadProgress.totalProgress} isOffline={isOffline}/>
       <div className="feeds-content">{feeds.length ? <ol className="feed-post-list">{mapToFeedItems}</ol> : null}</div>
       {errorFeedTitleList.length ? (
         <div className="feeds-error-list">

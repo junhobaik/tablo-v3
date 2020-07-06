@@ -112,6 +112,13 @@
       .status {
         flex-grow: 1;
 
+        .offline-msg {
+          margin: 0 0.5rem;
+          text-align: right;
+          opacity: 0.5;
+          font-size: 0.9rem;
+        }
+
         .load-progress {
           border: 1px solid t('button-color-0');
           margin: 0 1rem 0 0.75rem;

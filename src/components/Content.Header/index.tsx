@@ -1,40 +1,38 @@
-import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon as Fa } from "@fortawesome/react-fontawesome";
-import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { actionCreators, WindowItem } from "../../modules/global/actions";
-import { RootState } from "../../modules";
-import "./index.scss";
+import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';
+import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { actionCreators, WindowItem } from '../../modules/global/actions';
+import { RootState } from '../../modules';
+import './index.scss';
 
-type Content = "tabs" | "feeds";
+type Content = 'tabs' | 'feeds';
 
 interface ContentHeaderProps {
   content: Content;
   searchFunc: Function;
   reverse: boolean;
   loadProgress?: number;
+  isOffline?: boolean;
 }
 
 const ContentHeader = (props: ContentHeaderProps) => {
-  const { content, reverse } = props;
+  const { content, reverse, isOffline } = props;
   const dispatch = useDispatch();
   const windowStatus = useSelector((state: RootState) => state.global.window);
-  const contentUpperCaseName =
-    content.charAt(0).toUpperCase() + content.slice(1);
+  const contentUpperCaseName = content.charAt(0).toUpperCase() + content.slice(1);
 
   const openSetting = () => {
-    if (windowStatus === "default") {
+    if (windowStatus === 'default') {
       const windowName = `${content}-setting` as WindowItem;
       dispatch(actionCreators.setWindow(windowName));
     } else {
-      dispatch(actionCreators.setWindow("default"));
+      dispatch(actionCreators.setWindow('default'));
     }
   };
 
   return (
-    <div
-      className={`${content}-header content-header ${reverse ? "reverse" : ""}`}
-    >
+    <div className={`${content}-header content-header ${reverse ? 'reverse' : ''}`}>
       <div className="content-header-inner-wrap">
         {/* <div className="content-search">
           <button
@@ -63,20 +61,17 @@ const ContentHeader = (props: ContentHeaderProps) => {
           />
         </div> */}
         <div className="status">
-          {content === "feeds" &&
-          props.loadProgress &&
-          props.loadProgress <= 100 ? (
+          {content === 'feeds' && isOffline ? (
+            <p className="offline-msg">인터넷이 연결되어있지 않습니다</p>
+          ) : content === 'feeds' && props.loadProgress && props.loadProgress <= 100 ? (
             <div className="load-progress">
-              <div
-                className="progress"
-                style={{ width: `${props.loadProgress}%` }}
-              ></div>
+              <div className="progress" style={{ width: `${props.loadProgress}%` }}></div>
             </div>
           ) : null}
         </div>
       </div>
       <button onClick={openSetting}>
-        {windowStatus === "default" ? (
+        {windowStatus === 'default' ? (
           <>
             <span>{`Open ${contentUpperCaseName} Menu`}</span>
             <Fa icon={faAngleRight} />
