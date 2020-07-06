@@ -7,7 +7,7 @@ body {
   padding: 0;
   overscroll-behavior: none;
   font-family: 'NotoSansKR';
-  font-size: 16px;
+  font-size: $app-font-size;
 }
 
 #App {
