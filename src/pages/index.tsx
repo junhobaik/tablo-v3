@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux';
 import configureStore from '../modules/configureStore';
+import '../utils/i18n';
 
 import App from '../components/App';
 

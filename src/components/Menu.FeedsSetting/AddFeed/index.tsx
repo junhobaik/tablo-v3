@@ -19,6 +19,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { actionCreators as feedsActionCreators, FeedForAdd, FeedsState } from '../../../modules/feeds/actions';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 type MessageType = 'warn' | 'error' | 'info' | 'success';
 
@@ -27,16 +28,18 @@ interface Message {
   msg: string;
 }
 
-const messages = {
-  first: 'Feed URL을 입력해주세요. 반드시 https:// 또는 http:// 로 시작해야합니다.',
-  info: 'Feed URL을 입력하세요..',
-  http: 'URL은 반드시 https:// 또는 http:// 로 시작해야합니다.',
-  slash: "Feed URL 형식이 맞지 않습니다, '/'의 개수를 확인하세요.",
-  error: 'Feed 주소가 올바르지 않거나, 지원하지 않는 형식의 Feed입니다.',
-  success: 'Feed 주소가 확인되었습니다, 추가 정보를 입력하세요.',
-};
-
 const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
+  const [t] = useTranslation();
+  const messages = {
+    first: t('add_feed-first'),
+    info: t('add_feed-info'),
+    http: t('add_feed-http'),
+    slash: t('add_feed-slash'),
+    error: t('add_feed-error'),
+    success: t('add_feed-success'),
+    already: t('add_feed-already'),
+  };
+
   const dispatch = useDispatch();
   const [addUrlValue, setAddUrlValue] = useState<string>('');
   const [addTitleValue, setTitleValue] = useState<string>('');
@@ -63,7 +66,7 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
         if (_.find(feeds, ['feedUrl', feedData.feed.url])) {
           setMessage({
             type: 'error',
-            msg: `이미 존재하는 피드입니다.`,
+            msg: messages.already,
           });
         } else {
           setValidationData({
@@ -236,12 +239,12 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
                         addFeedReset();
                         setMessage({
                           type: 'info',
-                          msg: `"${title}" 피드가 정상적으로 추가되었습니다.`,
+                          msg: `"${title}" ${t('add_feed-success-add')}`,
                         });
                       } else {
                         setMessage({
                           type: 'error',
-                          msg: `알 수 없는 오류가 발생했습니다, URL Check를 다시 해주세요.`,
+                          msg: t('add-feed-unknown-error'),
                         });
                       }
                     }}
