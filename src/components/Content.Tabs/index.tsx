@@ -332,7 +332,7 @@ const Tabs = () => {
                       <input
                         type="text"
                         className="description-input"
-                        placeholder={v.description}
+                        placeholder={v.description.length ? v.description : '(Description)'}
                         onKeyDown={(e) => disableEditFromKey(e)}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           dispatch(actionCreators.editTabItemDescription(v.id, e.currentTarget.value));
