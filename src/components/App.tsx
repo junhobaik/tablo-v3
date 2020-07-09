@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { hot } from 'react-hot-loader';
 
@@ -49,34 +49,74 @@ const App = (props: { store: any }) => {
       }
 
       getLocalTheme();
-      setIsLoadedState(true);
+      if (!isLoadedState) setIsLoadedState(true);
     });
   };
 
-  useMemo(() => {
-    store.subscribe(() => {
-      const state = store.getState();
+  useEffect(() => {
+    let unsubscribe: Function | undefined;
+    let onChangeEvent: any | undefined;
 
-      chrome.storage.sync.set(
-        {
-          tablo3: state,
-        },
-        () => {
-          // chrome.storage.sync.getBytesInUse('tablo3', (res) => {
-          //   console.log(`${res}byte | ${(res / 102400) * 100}%`);
-          // });
+    if (isLoadedState) {
+      // eslint-disable-next-line no-unused-vars
+      onChangeEvent = (storage: any) => {
+        console.log('chrome.storage.onChanged');
 
-          if (chrome.runtime.lastError) {
-            const error = chrome.runtime.lastError.message as string;
-
-            if (error.includes('QUOTA_BYTES_PER_ITEM')) {
-              console.log('ERROR: QUOTA_BYTES_PER_ITEM');
-              setIsStorageError(true);
-            }
-          }
+        const { oldValue, newValue } = storage.tablo3;
+        if (oldValue !== newValue) {
+          console.log('old !== new');
+          loadAndSetStates();
         }
-      );
-    });
+      };
+
+      unsubscribe = store.subscribe(() => {
+        console.log('store.subscribe()');
+        const state = store.getState();
+
+        chrome.storage.sync.get('tablo3', (storage) => {
+          let oldData: RootState | undefined | null;
+          if (storage.tablo3) oldData = storage.tablo3;
+
+          chrome.storage.sync.set(
+            {
+              tablo3: state,
+            },
+            () => {
+              if (chrome.runtime.lastError) {
+                const error = chrome.runtime.lastError.message as string;
+
+                if (error.includes('QUOTA_BYTES_PER_ITEM')) {
+                  console.log('ERROR: QUOTA_BYTES_PER_ITEM');
+                  setIsStorageError(true);
+
+                  if (oldData) {
+                    chrome.storage.sync.set(
+                      {
+                        tablo3: oldData,
+                      },
+                      () => {
+                        loadAndSetStates();
+                      }
+                    );
+                  }
+                }
+              }
+            }
+          );
+        });
+      });
+
+      chrome.storage.onChanged.addListener(onChangeEvent);
+    }
+    return () => {
+      if (unsubscribe) unsubscribe();
+      if (onChangeEvent) chrome.storage.onChanged.removeListener(onChangeEvent);
+    };
+  }, [isLoadedState]);
+
+  useEffect(() => {
+    loadAndSetStates();
+    return () => {};
   }, []);
 
   // dev
@@ -104,27 +144,6 @@ const App = (props: { store: any }) => {
       document.removeEventListener('keydown', func);
     };
   }, [state]);
-
-  useEffect(() => {
-    const { getLoaclStorage, setLocalStorage } = utils;
-
-    const detectChange = setInterval(() => {
-      const isChanged = JSON.parse(getLoaclStorage('tablo3_changed') ?? 'false');
-      const isNeedReloadPosts = JSON.parse(getLoaclStorage('tablo3_reload-posts') ?? 'false');
-
-      if (isChanged) {
-        setLocalStorage('tablo3_changed', 'false');
-        loadAndSetStates(isNeedReloadPosts);
-        if (isNeedReloadPosts) setLocalStorage('tablo3_reload-posts', false);
-      }
-    }, 5000);
-
-    loadAndSetStates();
-
-    return () => {
-      clearInterval(detectChange);
-    };
-  }, []);
 
   if (!isLoadedState) {
     return <div></div>;
