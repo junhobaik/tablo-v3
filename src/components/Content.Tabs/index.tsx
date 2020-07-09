@@ -156,7 +156,7 @@ const Tabs = () => {
                 actionCreators.addTabItem({
                   index: drop.index,
                   title: dragData.title,
-                  description: '',
+                  description: dragData.description,
                   url: dragData.url,
                   collection: drop.collection,
                 })
@@ -451,6 +451,15 @@ const Tabs = () => {
       </div>
     );
 
+    const toggleCollectionSettingButton = (e: React.MouseEvent<HTMLDivElement>, isShow: boolean) => {
+      const expend = e.currentTarget.parentNode?.querySelector('.setting-expend') as HTMLDivElement | null | undefined;
+      if (expend) {
+        expend.style.top = isShow ? '0' : '-0.75rem';
+        expend.style.opacity = isShow ? '1' : '0';
+        expend.style.pointerEvents = isShow ? 'all' : 'none';
+      }
+    };
+
     return (
       <Fragment key={`collection-${v.id}`}>
         <li className="collection">
@@ -564,36 +573,8 @@ const Tabs = () => {
                   }}
                 />
               </div>
-              <div
-                className="collection-setting"
-                onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
-                  // TODO: 차후 중복 제거
-                  const expend = e.currentTarget.parentNode?.querySelector('.setting-expend') as
-                    | HTMLDivElement
-                    | null
-                    | undefined;
-                  if (expend) {
-                    expend.style.top = '-0.75rem';
-                    expend.style.opacity = '0';
-                    expend.style.pointerEvents = 'none';
-                  }
-                }}
-              >
-                <div
-                  className="setting-btn circle-btn"
-                  onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-                    // TODO: 차후 중복 제거
-                    const expend = e.currentTarget.parentNode?.querySelector('.setting-expend') as
-                      | HTMLDivElement
-                      | null
-                      | undefined;
-                    if (expend) {
-                      expend.style.top = '0';
-                      expend.style.opacity = '1';
-                      expend.style.pointerEvents = 'all';
-                    }
-                  }}
-                >
+              <div className="collection-setting" onMouseLeave={(e) => toggleCollectionSettingButton(e, false)}>
+                <div className="setting-btn circle-btn" onMouseEnter={(e) => toggleCollectionSettingButton(e, true)}>
                   <Fa icon={faCog} />
                 </div>
                 <div className="setting-expend">
