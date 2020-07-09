@@ -8,8 +8,10 @@ import { LocalData } from '../Content.Feeds';
 import utils from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 
 const Setting = () => {
+  const [t] = useTranslation();
   const [state, setState] = useState<RootState>();
   const [firstLoad, setFirstLoad] = useState<boolean>(false);
   const [theme, setTheme] = useState<string>('light');
@@ -107,7 +109,7 @@ const Setting = () => {
     return (
       <div id="Setting">
         <div className="theme">
-          <h2>Theme</h2>
+          <h2>{t('setting-theme')}</h2>
           <div className="color">
             <div
               className="light"
@@ -129,20 +131,20 @@ const Setting = () => {
         </div>
 
         <div className="open-link">
-          <h2>How to Open Link</h2>
+          <h2>{t('setting-open_link_title')}</h2>
           <div className="open-link-inner-wrap">
             <div className="tabs">
               <h3>Tabs</h3>
               <div className="tabs-inner-wrap">
-                <h4>Link</h4>
+                <h4>{t('setting-link')}</h4>
                 <div className="tabs-link">
-                  {createRadioButton('tab', 'new', 'New tab')}
-                  {createRadioButton('tab', 'current', 'Current Tab')}
+                  {createRadioButton('tab', 'new', t('setting-new_tab'))}
+                  {createRadioButton('tab', 'current', t('setting-current_tab'))}
                 </div>
-                <h4>Collection</h4>
+                <h4>{t('setting-collection')}</h4>
                 <div className="tabs-window">
-                  {createRadioButton('collection', 'new', 'New Window')}
-                  {createRadioButton('collection', 'current', 'Current Window')}
+                  {createRadioButton('collection', 'new', t('setting-new_window'))}
+                  {createRadioButton('collection', 'current', t('setting-current_window'))}
                 </div>
               </div>
             </div>
@@ -150,15 +152,15 @@ const Setting = () => {
             <div className="feeds">
               <h3>Feeds</h3>
               <div className="feeds-inner-wrap">
-                <h4>Post</h4>
+                <h4>{t('setting-post')}</h4>
                 <div className="feeds-post">
-                  {createRadioButton('post', 'new', 'New tab')}
-                  {createRadioButton('post', 'current', 'Current tab')}
+                  {createRadioButton('post', 'new', t('setting-new_tab'))}
+                  {createRadioButton('post', 'current', t('setting-current_tab'))}
                 </div>
-                <h4>Feed</h4>
+                <h4>{t('setting-feed')}</h4>
                 <div className="feeds-feed">
-                  {createRadioButton('feed', 'new', 'New tab')}
-                  {createRadioButton('feed', 'current', 'Current tab')}
+                  {createRadioButton('feed', 'new', t('setting-new_tab'))}
+                  {createRadioButton('feed', 'current', t('setting-current_tab'))}
                 </div>
               </div>
             </div>
@@ -166,40 +168,40 @@ const Setting = () => {
         </div>
 
         <div className="posts">
-          <h2>Posts</h2>
+          <h2>{t('setting-posts_title')}</h2>
 
           <div className="posts-inner-wrap">
             <div className="hide-post">
-              <h3>Hide old posts</h3>
+              <h3>{t('setting-hide_post_title')}</h3>
               <select
                 onChange={(e) => {
                   setStateHidePosts(Number(e.currentTarget.value) as HidePostsDay);
                 }}
                 defaultValue={hidePosts}
               >
-                <option value="0">No Hide</option>
-                <option value="7">7D</option>
-                <option value="14">14D</option>
-                <option value="30">30D</option>
-                <option value="60">60D</option>
-                <option value="90">90D</option>
+                <option value="0">{t('setting-post_no_hide')}</option>
+                <option value="7">7 {t('days')}</option>
+                <option value="14">14 {t('days')}</option>
+                <option value="30">30 {t('days')}</option>
+                <option value="60">60 {t('days')}</option>
+                <option value="90">90 {t('days')}</option>
               </select>
             </div>
 
             <div className="reload-post">
-              <h3> Reload cycle of feed posts</h3>
+              <h3>{t('setting-reload_post-title')}</h3>
               <select
                 onChange={(e) => {
                   setStateReloadPosts(Number(e.currentTarget.value) as ReloadPostsHour);
                 }}
                 defaultValue={reloadPosts}
               >
-                {process.env.NODE_ENV === 'development' ? <option value="0">0</option> : null}
-                <option value="3">3H</option>
-                <option value="6">6H</option>
-                <option value="9">9H</option>
-                <option value="12">12H</option>
-                <option value="24">24H</option>
+                {process.env.NODE_ENV === 'development' ? <option value="0">0 (dev only)</option> : null}
+                <option value="3">3 {t('hours')}</option>
+                <option value="6">6 {t('hours')}</option>
+                <option value="9">9 {t('hours')}</option>
+                <option value="12">12 {t('hours')}</option>
+                <option value="24">24 {t('hours')}</option>
               </select>
               <button
                 className="force-reload"
@@ -216,14 +218,14 @@ const Setting = () => {
                   location.reload();
                 }}
               >
-                Force Reload
+                {t('forced_reload')}
               </button>
             </div>
           </div>
         </div>
 
         <div className="last">
-          <span>변경 사항은 최대 5초 후 적용됩니다.</span>
+          <span>{t('setting-submit_msg')}</span>
         </div>
       </div>
     );

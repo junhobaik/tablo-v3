@@ -3,9 +3,30 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 const resources = {
-  ko: {
+  en: {
     translation: {
-      'add_feed-first': 'RSS-Feed URL을 입력해주세요. 반드시 https:// 또는 http:// 로 시작해야합니다.',
+      days: 'days',
+      hours: 'hours',
+      // Setting
+      'setting-theme': 'Theme',
+      'setting-open_link_title': 'How to Open Links',
+      'setting-link': 'Link',
+      'setting-collection': 'Collection',
+      'setting-post': 'Post',
+      'setting-feed': 'Feed',
+      'setting-new_tab': 'New tab',
+      'setting-current_tab': 'Current tab',
+      'setting-new_window': 'New window',
+      'setting-current_window': 'Current window',
+      'setting-posts_title': 'Posts (Feed)',
+      'setting-hide_post_title': 'Hide old posts',
+      'setting-post_no_hide': 'No Hide',
+      'setting-reload_post-title': 'Reload cycle of feed posts',
+      forced_reload: 'Forced reload',
+      'setting-submit_msg': 'Changes take effect after up to 5 seconds.',
+
+      // AddFeed
+      'add_feed-first': 'Please enter the RSS-Feed URL. It must start with https:// or http://.',
       'add_feed-info': 'Enter the RSS-Feed URL.',
       'add_feed-http': 'URL must start with https:// or http://.',
       'add_feed-slash': "RSS-Feed URL format is not correct, check the number of'/'.",
@@ -16,9 +37,31 @@ const resources = {
       'add-feed-unknown-error': 'An unknown error occurred, please check the URL again.',
     },
   },
-  en: {
+  ko: {
     translation: {
-      'add_feed-first': 'Please enter the RSS-Feed URL. It must start with https:// or http://.',
+      days: '일',
+      hours: '시간',
+
+      // Setting
+      'setting-theme': '테마',
+      'setting-open_link_title': '링크 열기 방식',
+      'setting-link': '링크',
+      'setting-collection': '콜렉션',
+      'setting-post': '게시물',
+      'setting-feed': '피드 사이트',
+      'setting-new_tab': '새 탭',
+      'setting-current_tab': '현재 탭',
+      'setting-new_window': '새 창',
+      'setting-current_window': '현재 창',
+      'setting-posts_title': '게시물 (Feed)',
+      'setting-hide_post_title': '오래된 게시물 숨기기',
+      'setting-post_no_hide': '숨기지 않음',
+      'setting-reload_post-title': '게시물 목록 갱신 시간',
+      forced_reload: '강제 새로고침',
+      'setting-submit_msg': '변경 사항은 최대 5초 후 적용됩니다.',
+
+      // AddFeed
+      'add_feed-first': 'RSS-Feed URL을 입력해주세요. 반드시 https:// 또는 http:// 로 시작해야합니다.',
       'add_feed-info': 'RSS-Feed URL을 입력하세요.',
       'add_feed-http': 'URL은 반드시 https:// 또는 http:// 로 시작해야합니다.',
       'add_feed-slash': "RSS-Feed URL 형식이 맞지 않습니다, '/'의 개수를 확인하세요.",
@@ -36,16 +79,22 @@ i18n.on('languageChanged', function (lng) {
 });
 
 i18n
-  .use(initReactI18next)
   .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
     resources,
-    lng: 'en',
-    fallbackLng: 'en',
+    fallbackLng: 'ko',
     keySeparator: false,
 
     interpolation: {
       escapeValue: false,
+    },
+    detection: {
+      order: ['navigator'],
+      caches: ['cookie'],
+      excludeCacheFor: ['cimode'],
+      cookieMinutes: 10,
+      cookieDomain: 'myDomain',
     },
   });
 
