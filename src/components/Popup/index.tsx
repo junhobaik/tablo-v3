@@ -16,7 +16,7 @@ import './index.scss';
 import { RootState } from '../../modules';
 import { Collection, FeedForAdd } from '../../modules/feeds/actions';
 import { CollectionItem, SimpleItem, TabItemForAdd } from '../../modules/tabs/actions';
-import utils from '../utils';
+import utils from '../../utils';
 
 interface Site {
   title: string;

@@ -20,7 +20,7 @@ import { RootState } from '../../modules';
 import { Feed, FeedItem, actionCreators as feedsActionCreators } from '../../modules/feeds/actions';
 import { actionCreators as globalActionCreators } from '../../modules/global/actions';
 import ExpendButton from '../utils/ExpendButton';
-import utils from '../utils';
+import utils from '../../utils';
 
 export interface LocalData {
   items: FeedItem[];

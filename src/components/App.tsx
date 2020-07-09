@@ -21,7 +21,7 @@ import BoundaryError from './BoundaryError';
 
 import './app.scss';
 import '../styles/content.scss';
-import utils from './utils';
+import utils from '../utils';
 
 const App = (props: { store: any }) => {
   const { store } = props;

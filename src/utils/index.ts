@@ -1,4 +1,4 @@
-import { LocalStorageName } from "../../modules/global/actions";
+import { LocalStorageName } from "../modules/global/actions";
 
 export default {
   getLoaclStorage: (name: LocalStorageName) => {

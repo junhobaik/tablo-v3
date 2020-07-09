@@ -5,7 +5,7 @@ import './index.scss';
 import { RootState } from '../../modules';
 import { LinkMethod, ReloadPostsHour, HidePostsDay } from '../../modules/global/actions';
 import { LocalData } from '../Content.Feeds';
-import utils from '../utils';
+import utils from '../../utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
