@@ -59,19 +59,12 @@ const App = (props: { store: any }) => {
     let onChangeEvent: any | undefined;
 
     if (isLoadedState) {
-      // eslint-disable-next-line no-unused-vars
       onChangeEvent = (storage: any) => {
-        console.log('chrome.storage.onChanged');
-
         const { oldValue, newValue } = storage.tablo3;
-        if (oldValue !== newValue) {
-          console.log('old !== new');
-          loadAndSetStates();
-        }
+        if (oldValue !== newValue) loadAndSetStates();
       };
 
       unsubscribe = store.subscribe(() => {
-        console.log('store.subscribe()');
         const state = store.getState();
 
         chrome.storage.sync.get('tablo3', (storage) => {
@@ -116,8 +109,24 @@ const App = (props: { store: any }) => {
   }, [isLoadedState]);
 
   useEffect(() => {
+    const { getLoaclStorage, setLocalStorage } = utils;
+
+    const detectChange = setInterval(() => {
+      const isChanged = JSON.parse(getLoaclStorage('tablo3_changed') ?? 'false');
+      const isNeedReloadPosts = JSON.parse(getLoaclStorage('tablo3_reload-posts') ?? 'false');
+
+      if (isChanged) {
+        setLocalStorage('tablo3_changed', 'false');
+        loadAndSetStates(isNeedReloadPosts);
+        if (isNeedReloadPosts) setLocalStorage('tablo3_reload-posts', false);
+      }
+    }, 2500);
+
     loadAndSetStates();
-    return () => {};
+
+    return () => {
+      clearInterval(detectChange);
+    };
   }, []);
 
   // dev
