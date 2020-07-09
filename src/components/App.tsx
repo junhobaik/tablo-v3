@@ -2,25 +2,26 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { hot } from 'react-hot-loader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import { RootState } from '../modules';
+import { actionCreators as tabsActionCreators } from '../modules/tabs/actions';
+import { actionCreators as globalActionCreators } from '../modules/global/actions';
+import { actionCreators as feedsActionCreators } from '../modules/feeds/actions';
+
 import Tabs from './Content.Tabs';
 import Feeds from './Content.Feeds';
 import Header from './Global.Header';
 import TabsSetting from './Menu.TabsSetting';
 import FeedsSetting from './Menu.FeedsSetting';
-import { actionCreators as tabsActionCreators } from '../modules/tabs/actions';
-import { actionCreators as globalActionCreators } from '../modules/global/actions';
-import { actionCreators as feedsActionCreators } from '../modules/feeds/actions';
+import Modal from './utils/Modal';
+import Setting from './Global.Setting';
+import BoundaryError from './BoundaryError';
 
 import './app.scss';
 import '../styles/content.scss';
 import utils from './utils';
-import Modal from './utils/Modal';
-import Setting from './Global.Setting';
-import BoundaryError from './BoundaryError';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 const App = (props: { store: any }) => {
   const { store } = props;
@@ -79,7 +80,7 @@ const App = (props: { store: any }) => {
 
           chrome.storage.sync.set(
             {
-              tablo3: state,
+              tablo3: { ...state, global: { ...state.global, drag: null, drop: null } },
             },
             () => {
               if (chrome.runtime.lastError) {
