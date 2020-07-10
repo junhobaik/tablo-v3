@@ -167,6 +167,9 @@ const AddFeed = ({ feedsState }: { feedsState: FeedsState }) => {
                   value={addUrlValue}
                   disabled={validationData ? true : false}
                   onChange={addUrlOnChange}
+                  onKeyDown={(e) => {
+                    if (e.keyCode === 13) (document.querySelector('.url-check-btn') as HTMLButtonElement).click();
+                  }}
                 />
                 {message.type === 'success' && validationData ? (
                   <div className="icon-wrap">
