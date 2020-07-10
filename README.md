@@ -1,8 +1,8 @@
-# Tablo (Version 3)
+# Tablo (version 3)
 
 - Downloads
 
-  - ~~[Chrome Web Store](#)~~ : 등록 대기 중
+  - [Chrome Web Store](https://chrome.google.com/webstore/detail/tablo-web-bookmarks-rss-r/cdiobbblbgahienaeoflpcldpncgacbb)
   - [junhobaik/tablo-v3/releases](https://github.com/junhobaik/tablo-v3/releases)
 
 - Issues: [junhobaik/tablo-v3/issues](https://github.com/junhobaik/tablo-v3/issues)
@@ -38,6 +38,6 @@
 - eslint
 - prettier
 - fontawesome
-- Chrome API
+- chrome API
 - i18next
 - ...
