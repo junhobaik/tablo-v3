@@ -285,7 +285,7 @@ const Tabs = () => {
             >
               <div
                 className="tab-link-wrap"
-                draggable
+                draggable={isEdit ? false : true}
                 onDragStart={tabItemWrapEvents.dragStart}
                 onDragEnd={tabItemWrapEvents.dragEnd}
                 onMouseDown={tabItemWrapEvents.mouseDown}
@@ -294,7 +294,10 @@ const Tabs = () => {
                   className="tab-link"
                   onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
                     e.preventDefault();
-                    if (!getIsEdit()) window.open(v.url, tabLinkMethod);
+                    tabLinkMethod;
+                    // if (!getIsEdit()) window.open(v.url, tabLinkMethod);
+                    console.log(e.currentTarget.parentNode?.parentNode);
+                    // if (!editTarget?.length) window.open(v.url, tabLinkMethod);
                   }}
                 >
                   <div className="tab-header">
@@ -648,7 +651,17 @@ const Tabs = () => {
     const disableEdit = (e: Event) => {
       const target = e.target as HTMLElement;
       const tag = target.tagName;
-      const isEdit = tag === 'INPUT' || tag === 'TEXTAREA';
+      let isEdit = tag === 'INPUT' || tag === 'TEXTAREA';
+
+      let parentEl: HTMLElement | null = target;
+      for (let i = 0; i < 4; i++) {
+        if (parentEl.parentNode) {
+          parentEl = parentEl.parentNode as HTMLElement;
+          if (parentEl.classList.contains('edit-item')) isEdit = true;
+        } else {
+          break;
+        }
+      }
 
       if (!isEdit) setEditTarget('');
     };

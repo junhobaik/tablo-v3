@@ -262,9 +262,19 @@
               border: 2px solid transparent;
               border-radius: 3px;
               box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 0.1), 2px 2px 4px 0px rgba(0, 0, 0, 0.1);
+              cursor: grab;
+
+              &:active {
+                cursor: grabbing;
+              }
 
               &.edit-item {
                 border: 2px solid t('primary-color-light');
+
+                cursor: default;
+                &:active {
+                  cursor: default;
+                }
               }
 
               .tab-link-wrap {
@@ -275,11 +285,6 @@
 
                 .tab-link {
                   all: unset;
-                  cursor: grab;
-
-                  &:active {
-                    cursor: grabbing;
-                  }
 
                   .tab-header {
                     display: flex;
