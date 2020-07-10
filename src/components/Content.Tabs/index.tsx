@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faWindowRestore, faFile } from '@fortawesome/free-regular-svg-icons';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 import { RootState } from '../../modules';
 import { CollectionItem, TabItem, actionCreators } from '../../modules/tabs/actions';
@@ -23,6 +24,7 @@ import './index.scss';
 import ExpendButton from '../utils/ExpendButton';
 
 const Tabs = () => {
+  const [t] = useTranslation();
   const dispatch = useDispatch();
   const tabsState = useSelector((state: RootState) => state.tabs);
   const globalState = useSelector((state: RootState) => state.global);
@@ -553,8 +555,8 @@ const Tabs = () => {
               <div className="collection-open-all-wrap">
                 <ExpendButton
                   icon={faWindowRestore}
-                  text="Open all links"
-                  size={8}
+                  text={t('open_collection')}
+                  size={9}
                   clickEvent={() => {
                     const links: string[] = [];
                     for (const tab of filteredTabs) {

@@ -7,6 +7,16 @@ const resources = {
     translation: {
       days: 'days',
       hours: 'hours',
+
+      read: 'Read',
+      unread: 'Unread',
+      open_collection: 'Open all links',
+      offline: 'No internet connection',
+      current_tabs: 'Current Tabs',
+      cart: 'Cart',
+      archive: 'Save as collection',
+      cart_clear: 'Empty Cart',
+
       // Setting
       'setting-theme': 'Theme',
       'setting-open_link_title': 'How to Open Links',
@@ -41,6 +51,15 @@ const resources = {
     translation: {
       days: '일',
       hours: '시간',
+
+      read: '읽음',
+      unread: '읽지 않음',
+      open_collection: '모든 링크 열기',
+      offline: '인터넷이 연결되어있지 않습니다',
+      current_tabs: '현재 탭 목록',
+      cart: '카트',
+      archive: '콜렉션으로 저장',
+      cart_clear: '카트 비우기',
 
       // Setting
       'setting-theme': '테마',

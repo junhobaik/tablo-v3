@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
+
 import { actionCreators, WindowItem } from '../../modules/global/actions';
 import { RootState } from '../../modules';
 import './index.scss';
@@ -17,6 +19,7 @@ interface ContentHeaderProps {
 }
 
 const ContentHeader = (props: ContentHeaderProps) => {
+  const [t] = useTranslation();
   const { content, reverse, isOffline } = props;
   const dispatch = useDispatch();
   const windowStatus = useSelector((state: RootState) => state.global.window);
@@ -62,7 +65,7 @@ const ContentHeader = (props: ContentHeaderProps) => {
         </div> */}
         <div className="status">
           {content === 'feeds' && isOffline ? (
-            <p className="offline-msg">인터넷이 연결되어있지 않습니다</p>
+            <p className="offline-msg">{t('offline')}</p>
           ) : content === 'feeds' && props.loadProgress && props.loadProgress <= 100 ? (
             <div className="load-progress">
               <div className="progress" style={{ width: `${props.loadProgress}%` }}></div>
@@ -73,12 +76,12 @@ const ContentHeader = (props: ContentHeaderProps) => {
       <button onClick={openSetting}>
         {windowStatus === 'default' ? (
           <>
-            <span>{`Open ${contentUpperCaseName} Menu`}</span>
+            <span>{`${contentUpperCaseName} Menu`}</span>
             <Fa icon={faAngleRight} />
           </>
         ) : (
           <>
-            <span>{`Close ${contentUpperCaseName} Menu`}</span>
+            <span>{`${contentUpperCaseName} Menu`}</span>
             <Fa icon={faAngleLeft} />
           </>
         )}

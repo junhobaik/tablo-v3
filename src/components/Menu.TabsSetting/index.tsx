@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';
 import { faFile, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faArchive, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 
 import { actionCreators as globalActionCreators } from '../../modules/global/actions';
 import './index.scss';
@@ -12,6 +13,7 @@ import { actionCreators as tabsActionCreators, SimpleItem, actionCreators } from
 import { RootState } from '../../modules';
 
 const Tabs = () => {
+  const [t] = useTranslation();
   const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.tabs.cart);
   const [currentTabList, setCurrentTabList] = useState<SimpleItem[]>([]);
@@ -130,12 +132,12 @@ const Tabs = () => {
       <div className="tabs-setting-inner-wrap inner-wrap">
         <div className="current-tab-list-wrap list-wrap">
           <div className="current-tab-list-header list-header">
-            <h2>Current Tabs</h2>
+            <h2>{t('current_tabs')}</h2>
             <div className="save-all-link">
               <ExpendButton
                 icon={faArchive}
-                text="Save all Tabs"
-                size={8.5}
+                text={t('archive')}
+                size={9}
                 clickEvent={() => {
                   const items = currentTabList as SimpleItem[];
                   dispatch(tabsActionCreators.tabsArchive(items));
@@ -148,11 +150,11 @@ const Tabs = () => {
 
         <div className="cart-list-wrap list-wrap">
           <div className="cart-list-header list-header">
-            <h2>Cart</h2>
+            <h2>{t('cart')}</h2>
             <div className="empty-cart">
               <ExpendButton
                 icon={faTrashAlt}
-                text="Empty Cart"
+                text={t('cart_clear')}
                 size={8}
                 clickEvent={() => {
                   dispatch(actionCreators.emptyCart());

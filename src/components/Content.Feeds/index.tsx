@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { faBook, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 import './index.scss';
 import ContentHeader from '../Content.Header';
@@ -35,6 +36,7 @@ interface LoadProgress {
 }
 
 const Feeds = () => {
+  const [t] = useTranslation();
   const dispatch = useDispatch();
   const feedsState = useSelector((state: RootState) => state.feeds);
   const globalState = useSelector((state: RootState) => state.global);
@@ -263,8 +265,8 @@ const Feeds = () => {
           >
             <ExpendButton
               icon={isRead ? faBookOpen : faBook}
-              size={6}
-              text={isRead ? 'Unread' : 'Read'}
+              size={7}
+              text={isRead ? t('unread') : t('read')}
               clickEvent={() => {
                 dispatch(feedsActionCreators.readPost(postUrl, !isRead));
               }}
@@ -312,7 +314,13 @@ const Feeds = () => {
 
   return (
     <div id="Feeds">
-      <ContentHeader content="feeds" searchFunc={() => {}} reverse={true} loadProgress={loadProgress.totalProgress} isOffline={isOffline}/>
+      <ContentHeader
+        content="feeds"
+        searchFunc={() => {}}
+        reverse={true}
+        loadProgress={loadProgress.totalProgress}
+        isOffline={isOffline}
+      />
       <div className="feeds-content">{feeds.length ? <ol className="feed-post-list">{mapToFeedItems}</ol> : null}</div>
       {errorFeedTitleList.length ? (
         <div className="feeds-error-list">
