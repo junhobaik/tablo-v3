@@ -294,10 +294,7 @@ const Tabs = () => {
                   className="tab-link"
                   onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
                     e.preventDefault();
-                    tabLinkMethod;
-                    // if (!getIsEdit()) window.open(v.url, tabLinkMethod);
-                    console.log(e.currentTarget.parentNode?.parentNode);
-                    // if (!editTarget?.length) window.open(v.url, tabLinkMethod);
+                    if (!editTarget?.length) window.open(v.url, tabLinkMethod);
                   }}
                 >
                   <div className="tab-header">
@@ -654,7 +651,7 @@ const Tabs = () => {
       let isEdit = tag === 'INPUT' || tag === 'TEXTAREA';
 
       let parentEl: HTMLElement | null = target;
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         if (parentEl.parentNode) {
           parentEl = parentEl.parentNode as HTMLElement;
           if (parentEl.classList.contains('edit-item')) isEdit = true;
