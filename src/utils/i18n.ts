@@ -109,10 +109,6 @@ const resources = {
   },
 };
 
-i18n.on('languageChanged', function (lng) {
-  console.log(lng);
-});
-
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
