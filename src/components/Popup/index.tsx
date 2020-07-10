@@ -11,6 +11,7 @@ import { faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 import './index.scss';
 import { RootState } from '../../modules';
@@ -31,6 +32,7 @@ interface Feed {
 }
 
 const Popup = () => {
+  const [t] = useTranslation();
   const [site, setSite] = useState<Site>();
   const [siteTitle, setSiteTitle] = useState<string>('');
   const [isTabSubmitDone, setIsTabSubmitDone] = useState<boolean>(false);
@@ -317,7 +319,7 @@ const Popup = () => {
       <h1>Tablo</h1>
       {site && site.url.length ? (
         <>
-          <h2>Add Link to Tabs</h2>
+          <h2>{t('popup-add_link')}</h2>
           <div className="site item-wrap">
             <div className="favicon-wrap">
               <div className="no-favicon">
@@ -372,7 +374,7 @@ const Popup = () => {
             </div>
           </div>
 
-          <h2>Add Feed to Feeds</h2>
+          <h2>{t('popup-add_feed')}</h2>
           {isFeedSearchDone ? (
             <div className="add-feed">
               {feed ? (
@@ -424,22 +426,22 @@ const Popup = () => {
                 </div>
               ) : (
                 <div className="no-feed">
-                  <span>피드 주소를 확인 할 수 없습니다.</span>
+                  <span>{t('popup-no_feed')}</span>
                 </div>
               )}
             </div>
           ) : containFeeds ? (
             <div className="contain-feed">
-              <span>이미 존재하는 FEED.</span>
+              <span>{t('popup-contain_feed')}</span>
             </div>
           ) : requestError ? (
             <div className="request-error">
-              <span>죄송합니다, 요청 오류 발생.</span>
+              <span>{t('popup-request_error')}</span>
             </div>
           ) : (
             <div className="search-feed">
               <div className="progress-wrap">
-                <span>FEED 주소 검색 중...</span>
+                <span>{t('popup-feed_progress')}</span>
                 <div className="progress" style={{ width: `${urlCheckProgress}%` }}></div>
               </div>
             </div>

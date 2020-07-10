@@ -45,6 +45,14 @@ const resources = {
       'add_feed-already': 'This feed already exists.',
       'add_feed-success-add': 'feed was added normally.',
       'add-feed-unknown-error': 'An unknown error occurred, please check the URL again.',
+
+      // Popup
+      'popup-add_link': 'Add Link to Tabs',
+      'popup-add_feed': 'Add Feed to Feeds',
+      'popup-no_feed': 'Could not check feed address',
+      'popup-contain_feed': 'This feed already exists.',
+      'popup-request_error': 'Sorry, request error occurred.',
+      'popup-feed_progress': 'Searching for Feed address...',
     },
   },
   ko: {
@@ -89,6 +97,14 @@ const resources = {
       'add_feed-already': '이미 존재하는 피드입니다.',
       'add_feed-success-add': '피드가 정상적으로 추가되었습니다.',
       'add-feed-unknown-error': '알 수 없는 오류가 발생했습니다, URL Check를 다시 해주세요.',
+
+      // Popup
+      'popup-add_link': '링크 추가하기',
+      'popup-add_feed': '피드 추가하기',
+      'popup-no_feed': '피드 주소를 확인 할 수 없습니다.',
+      'popup-contain_feed': '이미 존재하는 피드',
+      'popup-request_error': '죄송합니다, 요청 오류 발생.',
+      'popup-feed_progress': 'FEED 주소 검색 중...',
     },
   },
 };
