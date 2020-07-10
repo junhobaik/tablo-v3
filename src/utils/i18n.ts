@@ -118,7 +118,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'ko',
+    fallbackLng: 'en',
     keySeparator: false,
 
     interpolation: {
