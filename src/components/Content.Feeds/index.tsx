@@ -297,12 +297,13 @@ const Feeds = () => {
       const localData: LocalData | null = getLocalData();
       const reloadInterval = 3600000 * reloadPosts;
 
+      setFeedItems(localData?.items ?? []);
+
       if (!localData) {
         loadAndSetFeedItems();
       } else if (Date.now() - Number(localData.lastLoadDate) > reloadInterval) {
         loadAndSetFeedItems();
       } else {
-        setFeedItems(localData?.items ?? []);
         setErrorFeedTitleList(localData?.errorFeeds ?? []);
       }
     }
