@@ -85,6 +85,9 @@ const options = {
       .concat(['.ts', '.tsx', '.jsx', '.js', '.css', '.scss']),
   },
   plugins: [
+    new CleanWebpackPlugin({
+      cleanAfterEveryBuildPatterns: ['!*.html'],
+    }),
     new MiniCssExtractPlugin(),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     new CopyWebpackPlugin([
@@ -120,7 +123,6 @@ const options = {
       chunks: ['options'],
     }),
     new WriteFilePlugin(),
-    // new CleanWebpackPlugin(),
   ],
 };
 
