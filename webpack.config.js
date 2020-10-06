@@ -1,7 +1,6 @@
 /* eslint-disable */
 const webpack = require('webpack');
 const path = require('path');
-const fileSystem = require('fs');
 const env = require('./utils/env');
 const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -9,17 +8,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
-
 const alias = {
   'react-dom': '@hot-loader/react-dom',
 };
 
 const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
-
-if (fileSystem.existsSync(secretsPath)) {
-  alias['secrets'] = secretsPath;
-}
 
 const options = {
   mode: process.env.NODE_ENV || 'development',
@@ -37,8 +30,7 @@ const options = {
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader',
-        options: {},
+        loader: 'ts-loader',
       },
       {
         test: /\.scss/,
@@ -66,15 +58,6 @@ const options = {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
-      },
-      {
-        test: /\.ts(x?)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'ts-loader',
-          },
-        ],
       },
     ],
   },
@@ -128,7 +111,7 @@ const options = {
 
 if (env.NODE_ENV === 'development') {
   // options.devtool = "cheap-module-eval-source-map";
-  options.devtool = 'source-map';
+  // options.devtool = 'source-map';
 }
 
 module.exports = options;
